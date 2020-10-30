@@ -1,3 +1,3 @@
 # Example Data Directory
 
-This is an directory, intended to store example data.
+This is a directory, intended to store example data.
