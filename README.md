@@ -8,4 +8,4 @@ This is how explain the topic to my friends:
 
 [//]: # (IMAGES)
 
-[how]: /doc/images/how I explain my thesis to friends.png This is how explain the topic to my friends
+[how]: /doc/images/how "I explain my thesis to friends.png This is how explain the topic to my friends"
