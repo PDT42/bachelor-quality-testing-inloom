@@ -8,4 +8,4 @@ This is how explain the topic to my friends:
 
 [//]: # (IMAGES)
 
-[how]: "\doc\images\how I explain my thesis to friends.bmp" "Logo Title Text 2"
+[how]: \doc\images\how I explain my thesis to friends.bmp" "Logo Title Text 2
