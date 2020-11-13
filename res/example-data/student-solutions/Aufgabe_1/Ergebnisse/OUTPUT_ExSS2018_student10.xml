@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TestResult>
+ <TestData>
+  <ExpertModel id="Expert_OOA_Class_SoSe2018"/>
+  <TestModel id="ExSS2018_student10"/>
+  <MetaModel type="OOAClassModel"/>
+  <MCSIdentifier id="mcs_inloom_ooa_class"/>
+  <MCSVersion value="1.1.0"/>
+ </TestData>
+ <Results>
+  <Result>
+   <ExpertObject>r1</ExpertObject>
+   <ExpertType>Relationship</ExpertType>
+   <TestObject></TestObject>
+   <TestType></TestType>
+   <Rule>R089801</Rule>
+   <Category>MISSING</Category>
+   <Points>0.0</Points>
+   <Msg>No Relationship for r1 was found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>r2</ExpertObject>
+   <ExpertType>Relationship</ExpertType>
+   <TestObject>r2</TestObject>
+   <TestType>Relationship</TestType>
+   <Rule>R080501</Rule>
+   <Category>ERROR</Category>
+   <Points>0.5</Points>
+   <Msg>An Relationship between Paper and Topic was found (Type: Association) but was not completely correct.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>r3</ExpertObject>
+   <ExpertType>Relationship</ExpertType>
+   <TestObject>r3</TestObject>
+   <TestType>Relationship</TestType>
+   <Rule>R080403</Rule>
+   <Category>ERROR</Category>
+   <Points>0.5</Points>
+   <Msg>An Aggregation between Paper and Track was found but is to specific.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>r4</ExpertObject>
+   <ExpertType>Relationship</ExpertType>
+   <TestObject>r4</TestObject>
+   <TestType>Relationship</TestType>
+   <Rule>R080403</Rule>
+   <Category>ERROR</Category>
+   <Points>0.5</Points>
+   <Msg>An Aggregation between Paper and ConferenceEdition was found but is to specific.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>r5</ExpertObject>
+   <ExpertType>Relationship</ExpertType>
+   <TestObject></TestObject>
+   <TestType></TestType>
+   <Rule>R089801</Rule>
+   <Category>MISSING</Category>
+   <Points>0.0</Points>
+   <Msg>No Relationship for r5 was found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>r6</ExpertObject>
+   <ExpertType>Relationship</ExpertType>
+   <TestObject>r6</TestObject>
+   <TestType>Relationship</TestType>
+   <Rule>R080501</Rule>
+   <Category>ERROR</Category>
+   <Points>0.5</Points>
+   <Msg>An Relationship between ConferenceEdition and Track was found (Type: Association) but was not completely correct.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>r7</ExpertObject>
+   <ExpertType>Relationship</ExpertType>
+   <TestObject>r7</TestObject>
+   <TestType>Relationship</TestType>
+   <Rule>R080501</Rule>
+   <Category>ERROR</Category>
+   <Points>0.5</Points>
+   <Msg>An Relationship between Conference and ConferenceEdition was found (Type: Shared) but was not completely correct.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>r8</ExpertObject>
+   <ExpertType>Relationship</ExpertType>
+   <TestObject></TestObject>
+   <TestType></TestType>
+   <Rule>R089801</Rule>
+   <Category>MISSING</Category>
+   <Points>0.0</Points>
+   <Msg>No Relationship for r8 was found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>r9</ExpertObject>
+   <ExpertType>Relationship</ExpertType>
+   <TestObject></TestObject>
+   <TestType></TestType>
+   <Rule>R089801</Rule>
+   <Category>MISSING</Category>
+   <Points>0.0</Points>
+   <Msg>No Relationship for r9 was found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>r10</ExpertObject>
+   <ExpertType>Relationship</ExpertType>
+   <TestObject></TestObject>
+   <TestType></TestType>
+   <Rule>R089801</Rule>
+   <Category>MISSING</Category>
+   <Points>0.0</Points>
+   <Msg>No Relationship for r10 was found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>r11</ExpertObject>
+   <ExpertType>Relationship</ExpertType>
+   <TestObject></TestObject>
+   <TestType></TestType>
+   <Rule>R089801</Rule>
+   <Category>MISSING</Category>
+   <Points>0.0</Points>
+   <Msg>No Relationship for r11 was found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>r12</ExpertObject>
+   <ExpertType>Relationship</ExpertType>
+   <TestObject></TestObject>
+   <TestType></TestType>
+   <Rule>R089801</Rule>
+   <Category>MISSING</Category>
+   <Points>0.0</Points>
+   <Msg>No Relationship for r12 was found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>r13</ExpertObject>
+   <ExpertType>Relationship</ExpertType>
+   <TestObject></TestObject>
+   <TestType></TestType>
+   <Rule>R089801</Rule>
+   <Category>MISSING</Category>
+   <Points>0.0</Points>
+   <Msg>No Relationship for r13 was found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>r14</ExpertObject>
+   <ExpertType>Relationship</ExpertType>
+   <TestObject>r14</TestObject>
+   <TestType>Relationship</TestType>
+   <Rule>R080403</Rule>
+   <Category>ERROR</Category>
+   <Points>0.5</Points>
+   <Msg>An Aggregation between Authorship and Institution was found but is to specific.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>r15</ExpertObject>
+   <ExpertType>Relationship</ExpertType>
+   <TestObject>r15</TestObject>
+   <TestType>Relationship</TestType>
+   <Rule>R080501</Rule>
+   <Category>ERROR</Category>
+   <Points>0.5</Points>
+   <Msg>An Relationship between Institution and Country was found (Type: Shared) but was not completely correct.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>ac1_ac</ExpertObject>
+   <ExpertType>AssociationClassEnd</ExpertType>
+   <TestObject>Authorship</TestObject>
+   <TestType>Class</TestType>
+   <Rule>R090102</Rule>
+   <Category>ERROR</Category>
+   <Points>0.5</Points>
+   <Msg>The Relationships of Class Authorship were not correctly modeled.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>ac1e1</ExpertObject>
+   <ExpertType>RelationshipEnd</ExpertType>
+   <TestObject>ac1e1</TestObject>
+   <TestType>RelationshipEnd</TestType>
+   <Rule>R110202</Rule>
+   <Category>ERROR</Category>
+   <Points>0.5</Points>
+   <Msg>An AssociationEnd to Class Researcher was found but is not completely correct.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>ac1e2</ExpertObject>
+   <ExpertType>RelationshipEnd</ExpertType>
+   <TestObject>ac2e1</TestObject>
+   <TestType>RelationshipEnd</TestType>
+   <Rule>R110202</Rule>
+   <Category>ERROR</Category>
+   <Points>0.5</Points>
+   <Msg>An AssociationEnd to Class Paper was found but is not completely correct.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject></ExpertObject>
+   <ExpertType></ExpertType>
+   <TestObject>r2e2</TestObject>
+   <TestType>RelationshipEnd</TestType>
+   <Rule>R119901</Rule>
+   <Category>INFO</Category>
+   <Points>0.0</Points>
+   <Msg>Relationship Ends should normally have  a Multiplicity.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject></ExpertObject>
+   <ExpertType></ExpertType>
+   <TestObject>r3e2</TestObject>
+   <TestType>RelationshipEnd</TestType>
+   <Rule>R119901</Rule>
+   <Category>INFO</Category>
+   <Points>0.0</Points>
+   <Msg>Relationship Ends should normally have  a Multiplicity.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject></ExpertObject>
+   <ExpertType></ExpertType>
+   <TestObject>r4e2</TestObject>
+   <TestType>RelationshipEnd</TestType>
+   <Rule>R119901</Rule>
+   <Category>INFO</Category>
+   <Points>0.0</Points>
+   <Msg>Relationship Ends should normally have  a Multiplicity.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject></ExpertObject>
+   <ExpertType></ExpertType>
+   <TestObject>r5e1</TestObject>
+   <TestType>RelationshipEnd</TestType>
+   <Rule>R119901</Rule>
+   <Category>INFO</Category>
+   <Points>0.0</Points>
+   <Msg>Relationship Ends should normally have  a Multiplicity.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject></ExpertObject>
+   <ExpertType></ExpertType>
+   <TestObject>r5e2</TestObject>
+   <TestType>RelationshipEnd</TestType>
+   <Rule>R119901</Rule>
+   <Category>INFO</Category>
+   <Points>0.0</Points>
+   <Msg>Relationship Ends should normally have  a Multiplicity.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject></ExpertObject>
+   <ExpertType></ExpertType>
+   <TestObject>r6e1</TestObject>
+   <TestType>RelationshipEnd</TestType>
+   <Rule>R119901</Rule>
+   <Category>INFO</Category>
+   <Points>0.0</Points>
+   <Msg>Relationship Ends should normally have  a Multiplicity.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject></ExpertObject>
+   <ExpertType></ExpertType>
+   <TestObject>r7e1</TestObject>
+   <TestType>RelationshipEnd</TestType>
+   <Rule>R119901</Rule>
+   <Category>INFO</Category>
+   <Points>0.0</Points>
+   <Msg>Relationship Ends should normally have  a Multiplicity.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject></ExpertObject>
+   <ExpertType></ExpertType>
+   <TestObject>r14e2</TestObject>
+   <TestType>RelationshipEnd</TestType>
+   <Rule>R119901</Rule>
+   <Category>INFO</Category>
+   <Points>0.0</Points>
+   <Msg>Relationship Ends should normally have  a Multiplicity.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject></ExpertObject>
+   <ExpertType></ExpertType>
+   <TestObject>r15e1</TestObject>
+   <TestType>RelationshipEnd</TestType>
+   <Rule>R119901</Rule>
+   <Category>INFO</Category>
+   <Points>0.0</Points>
+   <Msg>Relationship Ends should normally have  a Multiplicity.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject></ExpertObject>
+   <ExpertType></ExpertType>
+   <TestObject>r15e2</TestObject>
+   <TestType>RelationshipEnd</TestType>
+   <Rule>R119901</Rule>
+   <Category>INFO</Category>
+   <Points>0.0</Points>
+   <Msg>Relationship Ends should normally have  a Multiplicity.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject></ExpertObject>
+   <ExpertType></ExpertType>
+   <TestObject>ac1e2</TestObject>
+   <TestType>RelationshipEnd</TestType>
+   <Rule>R119901</Rule>
+   <Category>INFO</Category>
+   <Points>0.0</Points>
+   <Msg>Relationship Ends should normally have  a Multiplicity.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject></ExpertObject>
+   <ExpertType></ExpertType>
+   <TestObject>ac2e2</TestObject>
+   <TestType>RelationshipEnd</TestType>
+   <Rule>R119901</Rule>
+   <Category>INFO</Category>
+   <Points>0.0</Points>
+   <Msg>Relationship Ends should normally have  a Multiplicity.</Msg>
+  </Result>
+ </Results>
+ <ResultPoints>
+  <MaxPoints>27.0</MaxPoints>
+  <TestPoints>5.0</TestPoints>
+ </ResultPoints>
+</TestResult>

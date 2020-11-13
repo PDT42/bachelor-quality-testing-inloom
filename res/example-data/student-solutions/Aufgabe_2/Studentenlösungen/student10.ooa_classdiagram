@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ooa_classdiagram:OOAClassModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ooa_classdiagram="http://www.inloom.org/ooa_classdiagram" ID="ExSS2017_student10">
+  <classes xsi:type="ooa_classdiagram:Class" name="Studienordnung">
+    <properties  name="jahr"/>
+  </classes>
+  <classes xsi:type="ooa_classdiagram:Class" name="Modul">
+    <properties  name="id"/>
+    <properties  name="beschreibung"/>
+    <properties  name="anzahlSWS"/>
+    <properties  name="anzahlLP"/>
+  </classes>
+  <classes xsi:type="ooa_classdiagram:Class" name="Lehrveranstaltung"/>
+  <classes xsi:type="ooa_classdiagram:Class" name="Person"/>
+  <classes xsi:type="ooa_classdiagram:Class" name="Studiengang"/>
+  <classes xsi:type="ooa_classdiagram:Class" name="Professur"/>
+  <classes xsi:type="ooa_classdiagram:Class" name="Lehrangebot"/>
+  <classes xsi:type="ooa_classdiagram:Class" name="Bachelor"/>
+  <classes xsi:type="ooa_classdiagram:Class" name="Master"/>
+  <classes xsi:type="ooa_classdiagram:Class" name="Diplom"/>
+  <classes xsi:type="ooa_classdiagram:Class" name="Lehramt"/>
+  <classes xsi:type="ooa_classdiagram:Class" name="modulverantwortlicher"/>
+  <classes xsi:type="ooa_classdiagram:Class" name="lehrbeauftragter"/>
+  <generalizations general="Studiengang" specific="Bachelor" id="g1"/>
+  <generalizations general="Studiengang" specific="Diplom" id="g2"/>
+  <generalizations general="Studiengang" specific="Lehramt" id="g3"/>
+  <generalizations general="Studiengang" specific="Master" id="g4"/>
+  <generalizations general="Person" specific="modulverantwortlicher" id="g5"/>
+  <generalizations general="Person" specific="lehrbeauftragter" id="g6"/>
+  <relationships id="r1">
+    <relationshipEnds  upper="1" lower="1" class="Studienordnung" id="r1e1"/>
+    <relationshipEnds  upper="-1" lower="3" class="Modul" id="r1e2">
+      <role name="ListeModule"/>
+    </relationshipEnds>
+  </relationships>
+  <relationships name="" id="r2">
+    <relationshipEnds  upper="-1" lower="1" class="Studienordnung" id="r2e1"/>
+    <relationshipEnds  class="Studiengang" id="r2e2"/>
+  </relationships>
+  <relationships name="zugeordnet zu" readingDirection="r7e1" id="r7">
+    <relationshipEnds  upper="1" lower="1" class="Professur" id="r7e1"/>
+    <relationshipEnds  upper="-1" lower="1" class="Person" id="r7e2"/>
+  </relationships>
+  <relationships id="r8">
+    <relationshipEnds  upper="-1" lower="1" class="Lehrveranstaltung" id="r8e1"/>
+    <relationshipEnds  upper="1" lower="1" class="modulverantwortlicher" id="r8e2"/>
+  </relationships>
+  <relationships id="r9">
+    <relationshipEnds  upper="-1" lower="1" class="Lehrveranstaltung" id="r9e1"/>
+    <relationshipEnds  upper="-1" lower="1" class="lehrbeauftragter" id="r9e2"/>
+  </relationships>
+  <relationships id="r10">
+    <relationshipEnds  class="Lehrveranstaltung" id="r10e1"/>
+    <relationshipEnds  type="shared" class="Lehrangebot" id="r10e2"/>
+  </relationships>
+  <relationships  id="ac1">
+    <relationshipEnds upper="-1" lower="1" class="Modul" id="ac1e1"/>
+    <relationshipEnds upper="-1" lower="1" class="Lehrveranstaltung" id="ac1e2"/>
+  </relationships>
+</ooa_classdiagram:OOAClassModel>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ooa_classdiagram:OOAClassModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ooa_classdiagram="http://www.inloom.org/ooa_classdiagram" ID="ExSS2018_student8">
+  <classes xsi:type="ooa_classdiagram:Class"   name="Researcher"/>
+  <classes xsi:type="ooa_classdiagram:Class"   name="Paper"/>
+  <classes xsi:type="ooa_classdiagram:Class"   name="Authorship"/>
+  <classes xsi:type="ooa_classdiagram:Class"   name="Profil"/>
+  <classes xsi:type="ooa_classdiagram:Class"   name="Institution"/>
+  <classes xsi:type="ooa_classdiagram:Class"   name="Topic"/>
+  <classes xsi:type="ooa_classdiagram:Class"   name="Track"/>
+  <classes xsi:type="ooa_classdiagram:Class"   name="Country"/>
+  <classes xsi:type="ooa_classdiagram:Class"   name="ConferenceEdition"/>
+  <classes xsi:type="ooa_classdiagram:Class"   name="Conference"/>
+  <relationships name="belongsTo" readingDirection="r2e2" id="r2">
+    <relationshipEnds  upper="1" lower="1" class="Paper" id="r2e1"/>
+    <relationshipEnds  upper="-1" type="shared" class="Topic" id="r2e2"/>
+  </relationships>
+  <relationships name="" id="r3">
+    <relationshipEnds  type="shared" class="Paper" id="r3e1"/>
+    <relationshipEnds  upper="-1" lower="3" class="Track" id="r3e2"/>
+  </relationships>
+  <relationships name="publishedIn" readingDirection="r4e2" id="r4">
+    <relationshipEnds  class="Paper" id="r4e1"/>
+    <relationshipEnds  class="ConferenceEdition" id="r4e2"/>
+  </relationships>
+  <relationships id="r5">
+    <relationshipEnds  upper="-1" class="Topic" id="r5e1">
+      <role  name="topicsOfInterests"/>
+    </relationshipEnds>
+    <relationshipEnds  class="ConferenceEdition" id="r5e2"/>
+  </relationships>
+  <relationships name="has" readingDirection="r7e2" id="r7">
+    <relationshipEnds  type="shared" class="Conference" id="r7e1"/>
+    <relationshipEnds  upper="-1" lower="1" class="ConferenceEdition" id="r7e2"/>
+  </relationships>
+  <relationships name="organizedBy" readingDirection="r9e2" id="r9">
+    <relationshipEnds  class="ConferenceEdition" id="r9e1"/>
+    <relationshipEnds  class="Country" id="r9e2"/>
+  </relationships>
+  <relationships id="r12">
+    <relationshipEnds  upper="-1" lower="3" class="ConferenceEdition" id="r12e1"/>
+    <relationshipEnds  type="shared" class="Researcher" id="r12e2"/>
+  </relationships>
+  <relationships name="has" readingDirection="r13e2" id="r13">
+    <relationshipEnds  type="shared" class="Researcher" id="r13e1"/>
+    <relationshipEnds  upper="-1" class="Profil" id="r13e2"/>
+  </relationships>
+  <relationships id="r15">
+    <relationshipEnds  class="Institution" id="r15e1"/>
+    <relationshipEnds  upper="1" lower="1" class="Country" id="r15e2"/>
+  </relationships>
+  <relationships  name="is autor" readingDirection="ac1e2" id="ac1">
+    <relationshipEnds class="Researcher" id="ac1e1"/>
+    <relationshipEnds class="Paper" id="ac1e2"/>
+  </relationships>
+  <relationships name="confPapers" readingDirection="r16e1" id="r16">
+    <relationshipEnds  upper="-1" lower="1" class="Paper" id="r16e1"/>
+    <relationshipEnds  type="composite" class="ConferenceEdition" id="r16e2"/>
+  </relationships>
+  <relationships name="organize" readingDirection="r17e1" id="r17">
+    <relationshipEnds  class="ConferenceEdition" id="r17e1"/>
+    <relationshipEnds  class="Country" id="r17e2"/>
+  </relationships>
+  <relationships  name="has autor" readingDirection="ac2e1" id="ac2">
+    <relationshipEnds class="Researcher" id="ac2e1"/>
+    <relationshipEnds class="Paper" id="ac2e2"/>
+  </relationships>
+  <relationships  name="autor" readingDirection="ac3e1" id="ac3">
+    <relationshipEnds upper="-1" lower="1" class="Authorship" id="ac3e1"/>
+    <relationshipEnds type="composite" class="Paper" id="ac3e2"/>
+  </relationships>
+</ooa_classdiagram:OOAClassModel>

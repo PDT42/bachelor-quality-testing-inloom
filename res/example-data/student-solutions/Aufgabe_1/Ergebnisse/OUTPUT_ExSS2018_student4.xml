@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TestResult>
+ <TestData>
+  <ExpertModel id="Expert_OOA_Class_SoSe2018"/>
+  <TestModel id="ExSS2018_student4"/>
+  <MetaModel type="OOAClassModel"/>
+  <MCSIdentifier id="mcs_inloom_ooa_class"/>
+  <MCSVersion value="1.1.0"/>
+ </TestData>
+ <Results>
+  <Result>
+   <ExpertObject>r1</ExpertObject>
+   <ExpertType>Relationship</ExpertType>
+   <TestObject></TestObject>
+   <TestType></TestType>
+   <Rule>R089801</Rule>
+   <Category>MISSING</Category>
+   <Points>0.0</Points>
+   <Msg>No Relationship for r1 was found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>r2</ExpertObject>
+   <ExpertType>Relationship</ExpertType>
+   <TestObject>r2</TestObject>
+   <TestType>Relationship</TestType>
+   <Rule>R080501</Rule>
+   <Category>ERROR</Category>
+   <Points>0.5</Points>
+   <Msg>An Relationship between Paper and Topic was found (Type: Association) but was not completely correct.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>r3</ExpertObject>
+   <ExpertType>Relationship</ExpertType>
+   <TestObject>r3</TestObject>
+   <TestType>Relationship</TestType>
+   <Rule>R080101</Rule>
+   <Category>CORRECT</Category>
+   <Points>1.0</Points>
+   <Msg>A Relationship between Paper and Track was found (Type: Association).</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>r4</ExpertObject>
+   <ExpertType>Relationship</ExpertType>
+   <TestObject>r4</TestObject>
+   <TestType>Relationship</TestType>
+   <Rule>R080501</Rule>
+   <Category>ERROR</Category>
+   <Points>0.5</Points>
+   <Msg>An Relationship between Paper and ConferenceEdition was found (Type: Association) but was not completely correct.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>r5</ExpertObject>
+   <ExpertType>Relationship</ExpertType>
+   <TestObject>r5</TestObject>
+   <TestType>Relationship</TestType>
+   <Rule>R080501</Rule>
+   <Category>ERROR</Category>
+   <Points>0.5</Points>
+   <Msg>An Relationship between Topic and ConferenceEdition was found (Type: Association) but was not completely correct.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>r6</ExpertObject>
+   <ExpertType>Relationship</ExpertType>
+   <TestObject>r6</TestObject>
+   <TestType>Relationship</TestType>
+   <Rule>R080501</Rule>
+   <Category>ERROR</Category>
+   <Points>0.5</Points>
+   <Msg>An Relationship between ConferenceEdition and Track was found (Type: Association) but was not completely correct.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>r7</ExpertObject>
+   <ExpertType>Relationship</ExpertType>
+   <TestObject>r7</TestObject>
+   <TestType>Relationship</TestType>
+   <Rule>R080501</Rule>
+   <Category>ERROR</Category>
+   <Points>0.5</Points>
+   <Msg>An Relationship between Conference and ConferenceEdition was found (Type: Association) but was not completely correct.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>r8</ExpertObject>
+   <ExpertType>Relationship</ExpertType>
+   <TestObject></TestObject>
+   <TestType></TestType>
+   <Rule>R089801</Rule>
+   <Category>MISSING</Category>
+   <Points>0.0</Points>
+   <Msg>No Relationship for r8 was found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>r9</ExpertObject>
+   <ExpertType>Relationship</ExpertType>
+   <TestObject>r9</TestObject>
+   <TestType>Relationship</TestType>
+   <Rule>R080501</Rule>
+   <Category>ERROR</Category>
+   <Points>0.5</Points>
+   <Msg>An Relationship between ConferenceEdition and Country was found (Type: Association) but was not completely correct.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>r10</ExpertObject>
+   <ExpertType>Relationship</ExpertType>
+   <TestObject>r10</TestObject>
+   <TestType>Relationship</TestType>
+   <Rule>R080501</Rule>
+   <Category>ERROR</Category>
+   <Points>0.5</Points>
+   <Msg>An Relationship between Researcher and ConferenceEdition was found (Type: Association) but was not completely correct.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>r11</ExpertObject>
+   <ExpertType>Relationship</ExpertType>
+   <TestObject>r11</TestObject>
+   <TestType>Relationship</TestType>
+   <Rule>R080501</Rule>
+   <Category>ERROR</Category>
+   <Points>0.5</Points>
+   <Msg>An Relationship between Researcher and ConferenceEdition was found (Type: Association) but was not completely correct.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>r12</ExpertObject>
+   <ExpertType>Relationship</ExpertType>
+   <TestObject>r12</TestObject>
+   <TestType>Relationship</TestType>
+   <Rule>R080501</Rule>
+   <Category>ERROR</Category>
+   <Points>0.5</Points>
+   <Msg>An Relationship between Researcher and ConferenceEdition was found (Type: Association) but was not completely correct.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>r13</ExpertObject>
+   <ExpertType>Relationship</ExpertType>
+   <TestObject>r13</TestObject>
+   <TestType>Relationship</TestType>
+   <Rule>R080101</Rule>
+   <Category>CORRECT</Category>
+   <Points>1.0</Points>
+   <Msg>A Relationship between Researcher and Profil was found (Type: Composite).</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>r14</ExpertObject>
+   <ExpertType>Relationship</ExpertType>
+   <TestObject>r14</TestObject>
+   <TestType>Relationship</TestType>
+   <Rule>R080501</Rule>
+   <Category>ERROR</Category>
+   <Points>0.5</Points>
+   <Msg>An Relationship between Authorship and Institution was found (Type: Association) but was not completely correct.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>r15</ExpertObject>
+   <ExpertType>Relationship</ExpertType>
+   <TestObject>r15</TestObject>
+   <TestType>Relationship</TestType>
+   <Rule>R080501</Rule>
+   <Category>ERROR</Category>
+   <Points>0.5</Points>
+   <Msg>An Relationship between Institution and Country was found (Type: Association) but was not completely correct.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>ac1_ac</ExpertObject>
+   <ExpertType>AssociationClassEnd</ExpertType>
+   <TestObject>ac1_ac</TestObject>
+   <TestType>AssociationClassEnd</TestType>
+   <Rule>R090101</Rule>
+   <Category>CORRECT</Category>
+   <Points>1.0</Points>
+   <Msg>Associationclass Authorship was found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>r4e2_publishedIn</ExpertObject>
+   <ExpertType>Role</ExpertType>
+   <TestObject>r4</TestObject>
+   <TestType>Relationship</TestType>
+   <Rule>R100201</Rule>
+   <Category>WARNING</Category>
+   <Points>0.5</Points>
+   <Msg>r4 was found. There could be a more optimal solution.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>r5e1_topicsOfInterests</ExpertObject>
+   <ExpertType>Role</ExpertType>
+   <TestObject>r5</TestObject>
+   <TestType>Relationship</TestType>
+   <Rule>R100201</Rule>
+   <Category>WARNING</Category>
+   <Points>0.5</Points>
+   <Msg>r5 was found. There could be a more optimal solution.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>r14e2_myInstitution</ExpertObject>
+   <ExpertType>Role</ExpertType>
+   <TestObject>r14</TestObject>
+   <TestType>Relationship</TestType>
+   <Rule>R100201</Rule>
+   <Category>WARNING</Category>
+   <Points>0.5</Points>
+   <Msg>r14 was found. There could be a more optimal solution.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>ac1e1_autor</ExpertObject>
+   <ExpertType>Role</ExpertType>
+   <TestObject>ac1</TestObject>
+   <TestType>Relationship</TestType>
+   <Rule>R100202</Rule>
+   <Category>ERROR</Category>
+   <Points>0.25</Points>
+   <Msg>ac1 was found but was but it is not completely correct.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>ac1e1</ExpertObject>
+   <ExpertType>RelationshipEnd</ExpertType>
+   <TestObject>ac1e1</TestObject>
+   <TestType>RelationshipEnd</TestType>
+   <Rule>R110101</Rule>
+   <Category>CORRECT</Category>
+   <Points>1.0</Points>
+   <Msg>An RelationshipEnd to Class Researcher was found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>ac1e2</ExpertObject>
+   <ExpertType>RelationshipEnd</ExpertType>
+   <TestObject>ac1e2</TestObject>
+   <TestType>RelationshipEnd</TestType>
+   <Rule>R110101</Rule>
+   <Category>CORRECT</Category>
+   <Points>1.0</Points>
+   <Msg>An RelationshipEnd to Class Paper was found.</Msg>
+  </Result>
+ </Results>
+ <ResultPoints>
+  <MaxPoints>27.0</MaxPoints>
+  <TestPoints>12.25</TestPoints>
+ </ResultPoints>
+</TestResult>

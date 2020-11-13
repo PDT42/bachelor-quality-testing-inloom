@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ooa_classdiagram:OOAClassModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ooa_classdiagram="http://www.inloom.org/ooa_classdiagram" ID="ExSS2019_student1">
+  <classes xsi:type="ooa_classdiagram:Class"   name="Profile">
+    <operations  name="post"/>
+    <operations  name="comment"/>
+  </classes>
+  <classes xsi:type="ooa_classdiagram:Class" name="Subject">
+    <properties  name="subject"/>
+  </classes>
+  <classes xsi:type="ooa_classdiagram:Class" name="Posting">
+    <properties  name="text"/>
+  </classes>
+  <classes xsi:type="ooa_classdiagram:Class" name="Comment">
+    <properties  name="text"/>
+  </classes>
+  <generalizations general="Posting" specific="Comment" id="g1"/>
+  <relationships id="r1">
+    <relationshipEnds  upper="-1" type="shared" class="Profile" id="r1e1"/>
+    <relationshipEnds  upper="-1" class="Subject" id="r1e2">
+      <role  name="interest"/>
+    </relationshipEnds>
+  </relationships>
+  <relationships name="poster" readingDirection="r2e2" id="r2">
+    <relationshipEnds  upper="-1" type="composite" class="Profile" id="r2e1">
+      <role  name="poster"/>
+    </relationshipEnds>
+    <relationshipEnds  upper="-1" class="Posting" id="r2e2">
+      <role  name="posting"/>
+    </relationshipEnds>
+  </relationships>
+  <relationships  id="ac1">
+    <relationshipEnds upper="-1" class="Profile" id="ac1e1">
+      <role  name="commenter"/>
+    </relationshipEnds>
+    <relationshipEnds upper="-1" class="Posting" id="ac1e2">
+      <role  name="commented"/>
+    </relationshipEnds>
+    <associationclassEnd class="Comment"/>
+  </relationships>
+</ooa_classdiagram:OOAClassModel>

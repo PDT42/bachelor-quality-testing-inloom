@@ -1,0 +1,386 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TestResult>
+ <TestData>
+  <ExpertModel id="Expert_OOA_Class_SoSe2018"/>
+  <TestModel id="ExSS2018_student1"/>
+  <MetaModel type="OOAClassModel"/>
+  <MCSIdentifier id="mcs_inloom_ooa_class"/>
+  <MCSVersion value="1.1.0"/>
+ </TestData>
+ <Results>
+  <Result>
+   <ExpertObject>r1</ExpertObject>
+   <ExpertType>Relationship</ExpertType>
+   <TestObject>r1</TestObject>
+   <TestType>Relationship</TestType>
+   <Rule>R080101</Rule>
+   <Category>CORRECT</Category>
+   <Points>1.0</Points>
+   <Msg>A Relationship between Paper and Paper was found (Type: Association).</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>r2</ExpertObject>
+   <ExpertType>Relationship</ExpertType>
+   <TestObject>r2</TestObject>
+   <TestType>Relationship</TestType>
+   <Rule>R080101</Rule>
+   <Category>CORRECT</Category>
+   <Points>1.0</Points>
+   <Msg>A Relationship between Paper and Topic was found (Type: Association).</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>r3</ExpertObject>
+   <ExpertType>Relationship</ExpertType>
+   <TestObject>r3</TestObject>
+   <TestType>Relationship</TestType>
+   <Rule>R080101</Rule>
+   <Category>CORRECT</Category>
+   <Points>1.0</Points>
+   <Msg>A Relationship between Paper and Track was found (Type: Association).</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>r4</ExpertObject>
+   <ExpertType>Relationship</ExpertType>
+   <TestObject>r4</TestObject>
+   <TestType>Relationship</TestType>
+   <Rule>R080101</Rule>
+   <Category>CORRECT</Category>
+   <Points>1.0</Points>
+   <Msg>A Relationship between Paper and ConferenceEdition was found (Type: Association).</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>r5</ExpertObject>
+   <ExpertType>Relationship</ExpertType>
+   <TestObject>r5</TestObject>
+   <TestType>Relationship</TestType>
+   <Rule>R080101</Rule>
+   <Category>CORRECT</Category>
+   <Points>1.0</Points>
+   <Msg>A Relationship between Topic and ConferenceEdition was found (Type: Association).</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>r6</ExpertObject>
+   <ExpertType>Relationship</ExpertType>
+   <TestObject>r6</TestObject>
+   <TestType>Relationship</TestType>
+   <Rule>R080501</Rule>
+   <Category>ERROR</Category>
+   <Points>0.5</Points>
+   <Msg>An Relationship between ConferenceEdition and Track was found (Type: Association) but was not completely correct.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>r7</ExpertObject>
+   <ExpertType>Relationship</ExpertType>
+   <TestObject>r7</TestObject>
+   <TestType>Relationship</TestType>
+   <Rule>R080101</Rule>
+   <Category>CORRECT</Category>
+   <Points>1.0</Points>
+   <Msg>A Relationship between Conference and ConferenceEdition was found (Type: Shared).</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>r8</ExpertObject>
+   <ExpertType>Relationship</ExpertType>
+   <TestObject>r8</TestObject>
+   <TestType>Relationship</TestType>
+   <Rule>R080403</Rule>
+   <Category>ERROR</Category>
+   <Points>0.5</Points>
+   <Msg>An Aggregation between Conference and Conference was found but is to specific.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>r9</ExpertObject>
+   <ExpertType>Relationship</ExpertType>
+   <TestObject>r9</TestObject>
+   <TestType>Relationship</TestType>
+   <Rule>R080501</Rule>
+   <Category>ERROR</Category>
+   <Points>0.5</Points>
+   <Msg>An Relationship between ConferenceEdition and Country was found (Type: Association) but was not completely correct.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>r10</ExpertObject>
+   <ExpertType>Relationship</ExpertType>
+   <TestObject>r10</TestObject>
+   <TestType>Relationship</TestType>
+   <Rule>R080101</Rule>
+   <Category>CORRECT</Category>
+   <Points>1.0</Points>
+   <Msg>A Relationship between ConferenceEdition and Researcher was found (Type: Association).</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>r11</ExpertObject>
+   <ExpertType>Relationship</ExpertType>
+   <TestObject>r11</TestObject>
+   <TestType>Relationship</TestType>
+   <Rule>R080101</Rule>
+   <Category>CORRECT</Category>
+   <Points>1.0</Points>
+   <Msg>A Relationship between ConferenceEdition and Researcher was found (Type: Association).</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>r12</ExpertObject>
+   <ExpertType>Relationship</ExpertType>
+   <TestObject>r12</TestObject>
+   <TestType>Relationship</TestType>
+   <Rule>R080101</Rule>
+   <Category>CORRECT</Category>
+   <Points>1.0</Points>
+   <Msg>A Relationship between ConferenceEdition and Researcher was found (Type: Association).</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>r13</ExpertObject>
+   <ExpertType>Relationship</ExpertType>
+   <TestObject>r13</TestObject>
+   <TestType>Relationship</TestType>
+   <Rule>R080101</Rule>
+   <Category>CORRECT</Category>
+   <Points>1.0</Points>
+   <Msg>A Relationship between Researcher and Profil was found (Type: Composite).</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>r14</ExpertObject>
+   <ExpertType>Relationship</ExpertType>
+   <TestObject>r14</TestObject>
+   <TestType>Relationship</TestType>
+   <Rule>R080101</Rule>
+   <Category>CORRECT</Category>
+   <Points>1.0</Points>
+   <Msg>A Relationship between Authorship and Institution was found (Type: Association).</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>r15</ExpertObject>
+   <ExpertType>Relationship</ExpertType>
+   <TestObject>r15</TestObject>
+   <TestType>Relationship</TestType>
+   <Rule>R080101</Rule>
+   <Category>CORRECT</Category>
+   <Points>1.0</Points>
+   <Msg>A Relationship between Institution and Country was found (Type: Shared).</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>ac1_ac</ExpertObject>
+   <ExpertType>AssociationClassEnd</ExpertType>
+   <TestObject>ac1_ac</TestObject>
+   <TestType>AssociationClassEnd</TestType>
+   <Rule>R090101</Rule>
+   <Category>CORRECT</Category>
+   <Points>1.0</Points>
+   <Msg>Associationclass Authorship was found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>r1e1_cites</ExpertObject>
+   <ExpertType>Role</ExpertType>
+   <TestObject>r1e1_cites</TestObject>
+   <TestType>Role</TestType>
+   <Rule>R100101</Rule>
+   <Category>CORRECT</Category>
+   <Points>0.5</Points>
+   <Msg>Role r1e1_cites was found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>r1e2_isCited</ExpertObject>
+   <ExpertType>Role</ExpertType>
+   <TestObject>r1e2_isCited</TestObject>
+   <TestType>Role</TestType>
+   <Rule>R100101</Rule>
+   <Category>CORRECT</Category>
+   <Points>0.5</Points>
+   <Msg>Role r1e2_isCited was found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>r4e1_confPapers</ExpertObject>
+   <ExpertType>Role</ExpertType>
+   <TestObject>r4e1_confPapers</TestObject>
+   <TestType>Role</TestType>
+   <Rule>R100101</Rule>
+   <Category>CORRECT</Category>
+   <Points>0.5</Points>
+   <Msg>Role r4e1_confPapers was found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>r4e2_publishedIn</ExpertObject>
+   <ExpertType>Role</ExpertType>
+   <TestObject>r4e2_publishedIn</TestObject>
+   <TestType>Role</TestType>
+   <Rule>R100101</Rule>
+   <Category>CORRECT</Category>
+   <Points>0.5</Points>
+   <Msg>Role r4e2_publishedIn was found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>r5e1_topicsOfInterests</ExpertObject>
+   <ExpertType>Role</ExpertType>
+   <TestObject>r5e1_topicsOfInterests</TestObject>
+   <TestType>Role</TestType>
+   <Rule>R100101</Rule>
+   <Category>CORRECT</Category>
+   <Points>0.5</Points>
+   <Msg>Role r5e1_topicsOfInterests was found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>r5e2_conferences</ExpertObject>
+   <ExpertType>Role</ExpertType>
+   <TestObject>r5e2_conferences</TestObject>
+   <TestType>Role</TestType>
+   <Rule>R100101</Rule>
+   <Category>CORRECT</Category>
+   <Points>0.5</Points>
+   <Msg>Role r5e2_conferences was found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>r6e2_program</ExpertObject>
+   <ExpertType>Role</ExpertType>
+   <TestObject>r6e2_program</TestObject>
+   <TestType>Role</TestType>
+   <Rule>R100101</Rule>
+   <Category>CORRECT</Category>
+   <Points>0.5</Points>
+   <Msg>Role r6e2_program was found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>r7e2_proceedings</ExpertObject>
+   <ExpertType>Role</ExpertType>
+   <TestObject>r7e2_proceedings</TestObject>
+   <TestType>Role</TestType>
+   <Rule>R100101</Rule>
+   <Category>CORRECT</Category>
+   <Points>0.5</Points>
+   <Msg>Role r7e2_proceedings was found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>r8e1_host</ExpertObject>
+   <ExpertType>Role</ExpertType>
+   <TestObject>r8e1_host</TestObject>
+   <TestType>Role</TestType>
+   <Rule>R100101</Rule>
+   <Category>CORRECT</Category>
+   <Points>0.5</Points>
+   <Msg>Role r8e1_host was found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>r8e2_isSatellit</ExpertObject>
+   <ExpertType>Role</ExpertType>
+   <TestObject>r8e2_isSatellit</TestObject>
+   <TestType>Role</TestType>
+   <Rule>R100101</Rule>
+   <Category>CORRECT</Category>
+   <Points>0.5</Points>
+   <Msg>Role r8e2_isSatellit was found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>r10e1_pcMember</ExpertObject>
+   <ExpertType>Role</ExpertType>
+   <TestObject>r10e1_pcMember</TestObject>
+   <TestType>Role</TestType>
+   <Rule>R100101</Rule>
+   <Category>CORRECT</Category>
+   <Points>0.5</Points>
+   <Msg>Role r10e1_pcMember was found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>r10e2_pc</ExpertObject>
+   <ExpertType>Role</ExpertType>
+   <TestObject>r10e2_pc</TestObject>
+   <TestType>Role</TestType>
+   <Rule>R100101</Rule>
+   <Category>CORRECT</Category>
+   <Points>0.5</Points>
+   <Msg>Role r10e2_pc was found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>r11e1_scMember</ExpertObject>
+   <ExpertType>Role</ExpertType>
+   <TestObject>r11e1_scMember</TestObject>
+   <TestType>Role</TestType>
+   <Rule>R100101</Rule>
+   <Category>CORRECT</Category>
+   <Points>0.5</Points>
+   <Msg>Role r11e1_scMember was found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>r11e2_sc</ExpertObject>
+   <ExpertType>Role</ExpertType>
+   <TestObject>r10e2_sc</TestObject>
+   <TestType>Role</TestType>
+   <Rule>R100101</Rule>
+   <Category>CORRECT</Category>
+   <Points>0.5</Points>
+   <Msg>Role r10e2_sc was found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>r12e1_pcChair</ExpertObject>
+   <ExpertType>Role</ExpertType>
+   <TestObject>r12e1_pcChair</TestObject>
+   <TestType>Role</TestType>
+   <Rule>R100101</Rule>
+   <Category>CORRECT</Category>
+   <Points>0.5</Points>
+   <Msg>Role r12e1_pcChair was found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>r12e2_pcChairCommitee</ExpertObject>
+   <ExpertType>Role</ExpertType>
+   <TestObject>r12e2_pcChairCommitee</TestObject>
+   <TestType>Role</TestType>
+   <Rule>R100101</Rule>
+   <Category>CORRECT</Category>
+   <Points>0.5</Points>
+   <Msg>Role r12e2_pcChairCommitee was found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>r14e2_myInstitution</ExpertObject>
+   <ExpertType>Role</ExpertType>
+   <TestObject>r14</TestObject>
+   <TestType>Relationship</TestType>
+   <Rule>R100201</Rule>
+   <Category>WARNING</Category>
+   <Points>0.5</Points>
+   <Msg>r14 was found. There could be a more optimal solution.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>ac1e1_autor</ExpertObject>
+   <ExpertType>Role</ExpertType>
+   <TestObject>ac1e1_autor</TestObject>
+   <TestType>Role</TestType>
+   <Rule>R100101</Rule>
+   <Category>CORRECT</Category>
+   <Points>0.5</Points>
+   <Msg>Role ac1e1_autor was found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>ac1e1</ExpertObject>
+   <ExpertType>RelationshipEnd</ExpertType>
+   <TestObject>ac1e1</TestObject>
+   <TestType>RelationshipEnd</TestType>
+   <Rule>R110101</Rule>
+   <Category>CORRECT</Category>
+   <Points>1.0</Points>
+   <Msg>An RelationshipEnd to Class Researcher was found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>ac1e2</ExpertObject>
+   <ExpertType>RelationshipEnd</ExpertType>
+   <TestObject>ac1e2</TestObject>
+   <TestType>RelationshipEnd</TestType>
+   <Rule>R110101</Rule>
+   <Category>CORRECT</Category>
+   <Points>1.0</Points>
+   <Msg>An RelationshipEnd to Class Paper was found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject></ExpertObject>
+   <ExpertType></ExpertType>
+   <TestObject>r6e1</TestObject>
+   <TestType>RelationshipEnd</TestType>
+   <Rule>R119901</Rule>
+   <Category>INFO</Category>
+   <Points>0.0</Points>
+   <Msg>Relationship Ends should normally have  a Multiplicity.</Msg>
+  </Result>
+ </Results>
+ <ResultPoints>
+  <MaxPoints>27.0</MaxPoints>
+  <TestPoints>25.5</TestPoints>
+ </ResultPoints>
+</TestResult>

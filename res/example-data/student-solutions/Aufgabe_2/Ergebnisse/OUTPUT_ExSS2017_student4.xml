@@ -1,0 +1,426 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TestResult>
+ <TestData>
+  <ExpertModel id="Expert_OOA_Class_SoSe2017"/>
+  <TestModel id="ExSS2017_student4"/>
+  <MetaModel type="OOAClassModel"/>
+  <MCSIdentifier id="mcs_inloom_ooa_class"/>
+  <MCSVersion value="1.1.0"/>
+ </TestData>
+ <Results>
+  <Result>
+   <ExpertObject>Studienordnung</ExpertObject>
+   <ExpertType>Class</ExpertType>
+   <TestObject>Studienordnung</TestObject>
+   <TestType>Class</TestType>
+   <Rule>R010101</Rule>
+   <Category>CORRECT</Category>
+   <Points>1.0</Points>
+   <Msg>Class Studienordnung was found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>Modul</ExpertObject>
+   <ExpertType>Class</ExpertType>
+   <TestObject>Modul</TestObject>
+   <TestType>Class</TestType>
+   <Rule>R010101</Rule>
+   <Category>CORRECT</Category>
+   <Points>1.0</Points>
+   <Msg>Class Modul was found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>SWS</ExpertObject>
+   <ExpertType>Class</ExpertType>
+   <TestObject>SWS</TestObject>
+   <TestType>Class</TestType>
+   <Rule>R010101</Rule>
+   <Category>CORRECT</Category>
+   <Points>1.0</Points>
+   <Msg>Class SWS was found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>Lehrveranstaltung</ExpertObject>
+   <ExpertType>Class</ExpertType>
+   <TestObject>Lehrveranstaltung</TestObject>
+   <TestType>Class</TestType>
+   <Rule>R010101</Rule>
+   <Category>CORRECT</Category>
+   <Points>1.0</Points>
+   <Msg>Class Lehrveranstaltung was found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>Person</ExpertObject>
+   <ExpertType>Class</ExpertType>
+   <TestObject>Person</TestObject>
+   <TestType>Class</TestType>
+   <Rule>R010101</Rule>
+   <Category>CORRECT</Category>
+   <Points>1.0</Points>
+   <Msg>Class Person was found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>Studiengang</ExpertObject>
+   <ExpertType>Class</ExpertType>
+   <TestObject>Studiengang</TestObject>
+   <TestType>Class</TestType>
+   <Rule>R010101</Rule>
+   <Category>CORRECT</Category>
+   <Points>1.0</Points>
+   <Msg>Class Studiengang was found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>Professur</ExpertObject>
+   <ExpertType>Class</ExpertType>
+   <TestObject>Professur</TestObject>
+   <TestType>Class</TestType>
+   <Rule>R010101</Rule>
+   <Category>CORRECT</Category>
+   <Points>1.0</Points>
+   <Msg>Class Professur was found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>Lehrangebot</ExpertObject>
+   <ExpertType>Class</ExpertType>
+   <TestObject></TestObject>
+   <TestType></TestType>
+   <Rule>R019801</Rule>
+   <Category>MISSING</Category>
+   <Points>0.0</Points>
+   <Msg>No Class with the name Lehrangebot was found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>Institut</ExpertObject>
+   <ExpertType>Class</ExpertType>
+   <TestObject>Institut</TestObject>
+   <TestType>Class</TestType>
+   <Rule>R010101</Rule>
+   <Category>CORRECT</Category>
+   <Points>1.0</Points>
+   <Msg>Class Institut was found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>Fakultaet</ExpertObject>
+   <ExpertType>Class</ExpertType>
+   <TestObject>Fakultaet</TestObject>
+   <TestType>Class</TestType>
+   <Rule>R010101</Rule>
+   <Category>CORRECT</Category>
+   <Points>1.0</Points>
+   <Msg>Class Fakultaet was found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject></ExpertObject>
+   <ExpertType></ExpertType>
+   <TestObject>semester</TestObject>
+   <TestType>Class</TestType>
+   <Rule>R019901</Rule>
+   <Category>INFO</Category>
+   <Points>0.0</Points>
+   <Msg>Class names like semester should start with upper case. </Msg>
+  </Result>
+  <Result>
+   <ExpertObject>Studienordnung_jahr</ExpertObject>
+   <ExpertType>Property</ExpertType>
+   <TestObject>Studienordnung_jahr</TestObject>
+   <TestType>Property</TestType>
+   <Rule>R020101</Rule>
+   <Category>CORRECT</Category>
+   <Points>0.5</Points>
+   <Msg>Property Studienordnung_jahr in Studienordnung were found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>Modul_id</ExpertObject>
+   <ExpertType>Property</ExpertType>
+   <TestObject>Modul_id</TestObject>
+   <TestType>Property</TestType>
+   <Rule>R020101</Rule>
+   <Category>CORRECT</Category>
+   <Points>0.5</Points>
+   <Msg>Property Modul_id in Modul were found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>Modul_beschreibung</ExpertObject>
+   <ExpertType>Property</ExpertType>
+   <TestObject>Modul_beschreibung</TestObject>
+   <TestType>Property</TestType>
+   <Rule>R020101</Rule>
+   <Category>CORRECT</Category>
+   <Points>0.5</Points>
+   <Msg>Property Modul_beschreibung in Modul were found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>SWS_anzahlSWS</ExpertObject>
+   <ExpertType>Property</ExpertType>
+   <TestObject>SWS_anzahlSWS</TestObject>
+   <TestType>Property</TestType>
+   <Rule>R020101</Rule>
+   <Category>CORRECT</Category>
+   <Points>0.5</Points>
+   <Msg>Property SWS_anzahlSWS in SWS were found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>SWS_anzahlLP</ExpertObject>
+   <ExpertType>Property</ExpertType>
+   <TestObject>SWS_anzahlLP</TestObject>
+   <TestType>Property</TestType>
+   <Rule>R020101</Rule>
+   <Category>CORRECT</Category>
+   <Points>0.5</Points>
+   <Msg>Property SWS_anzahlLP in SWS were found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>Lehrangebot_semester</ExpertObject>
+   <ExpertType>Property</ExpertType>
+   <TestObject></TestObject>
+   <TestType></TestType>
+   <Rule>R029801</Rule>
+   <Category>MISSING</Category>
+   <Points>0.0</Points>
+   <Msg>No Property with the name Lehrangebot_semester was found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>Abschluss</ExpertObject>
+   <ExpertType>Enumeration</ExpertType>
+   <TestObject>Abschluss</TestObject>
+   <TestType>Class</TestType>
+   <Rule>R040201</Rule>
+   <Category>ERROR</Category>
+   <Points>0.5</Points>
+   <Msg>Abschluss was found but is not completely correct.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>Abschluss_lg</ExpertObject>
+   <ExpertType>LiteralGroup</ExpertType>
+   <TestObject></TestObject>
+   <TestType></TestType>
+   <Rule>R059801</Rule>
+   <Category>MISSING</Category>
+   <Points>0.0</Points>
+   <Msg>No LiteralGroup with the name Abschluss_lg was found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>r1</ExpertObject>
+   <ExpertType>Relationship</ExpertType>
+   <TestObject>r1</TestObject>
+   <TestType>Relationship</TestType>
+   <Rule>R080302</Rule>
+   <Category>ERROR</Category>
+   <Points>0.5</Points>
+   <Msg>A Composition between Studienordnung and Modul was found but is to specific.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>r2</ExpertObject>
+   <ExpertType>Relationship</ExpertType>
+   <TestObject>r2</TestObject>
+   <TestType>Relationship</TestType>
+   <Rule>R080403</Rule>
+   <Category>ERROR</Category>
+   <Points>0.5</Points>
+   <Msg>An Aggregation between Studienordnung and Studiengang was found but is to specific.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>r3</ExpertObject>
+   <ExpertType>Relationship</ExpertType>
+   <TestObject></TestObject>
+   <TestType></TestType>
+   <Rule>R089801</Rule>
+   <Category>MISSING</Category>
+   <Points>0.0</Points>
+   <Msg>No Relationship for r3 was found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>r4</ExpertObject>
+   <ExpertType>Relationship</ExpertType>
+   <TestObject>r4</TestObject>
+   <TestType>Relationship</TestType>
+   <Rule>R080501</Rule>
+   <Category>ERROR</Category>
+   <Points>0.5</Points>
+   <Msg>An Relationship between Studiengang and Fakultaet was found (Type: Association) but was not completely correct.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>r5</ExpertObject>
+   <ExpertType>Relationship</ExpertType>
+   <TestObject>r5</TestObject>
+   <TestType>Relationship</TestType>
+   <Rule>R080201</Rule>
+   <Category>WARNING</Category>
+   <Points>1.0</Points>
+   <Msg>An Aggregation between Fakultaet and Institut was found. There could be a more optimal solution.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>r6</ExpertObject>
+   <ExpertType>Relationship</ExpertType>
+   <TestObject>r6</TestObject>
+   <TestType>Relationship</TestType>
+   <Rule>R080101</Rule>
+   <Category>CORRECT</Category>
+   <Points>1.0</Points>
+   <Msg>A Relationship between Institut and Professur was found (Type: Shared).</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>r7</ExpertObject>
+   <ExpertType>Relationship</ExpertType>
+   <TestObject>r7</TestObject>
+   <TestType>Relationship</TestType>
+   <Rule>R080501</Rule>
+   <Category>ERROR</Category>
+   <Points>0.5</Points>
+   <Msg>An Relationship between Professur and Person was found (Type: Association) but was not completely correct.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>r8</ExpertObject>
+   <ExpertType>Relationship</ExpertType>
+   <TestObject></TestObject>
+   <TestType></TestType>
+   <Rule>R089801</Rule>
+   <Category>MISSING</Category>
+   <Points>0.0</Points>
+   <Msg>No Relationship for r8 was found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>r9</ExpertObject>
+   <ExpertType>Relationship</ExpertType>
+   <TestObject>r9</TestObject>
+   <TestType>Relationship</TestType>
+   <Rule>R080101</Rule>
+   <Category>CORRECT</Category>
+   <Points>1.0</Points>
+   <Msg>A Relationship between Lehrveranstaltung and Person was found (Type: Association).</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>r10</ExpertObject>
+   <ExpertType>Relationship</ExpertType>
+   <TestObject></TestObject>
+   <TestType></TestType>
+   <Rule>R089801</Rule>
+   <Category>MISSING</Category>
+   <Points>0.0</Points>
+   <Msg>No Relationship for r10 was found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>ac1_ac</ExpertObject>
+   <ExpertType>AssociationClassEnd</ExpertType>
+   <TestObject>ac1_ac</TestObject>
+   <TestType>AssociationClassEnd</TestType>
+   <Rule>R090101</Rule>
+   <Category>CORRECT</Category>
+   <Points>1.0</Points>
+   <Msg>Associationclass SWS was found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>r8e2_modulverantwortlicher</ExpertObject>
+   <ExpertType>Role</ExpertType>
+   <TestObject></TestObject>
+   <TestType></TestType>
+   <Rule>R109801</Rule>
+   <Category>MISSING</Category>
+   <Points>0.0</Points>
+   <Msg>No Role for r8e2_modulverantwortlicher was found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>r9e2_lehrbeauftragter</ExpertObject>
+   <ExpertType>Role</ExpertType>
+   <TestObject>r9e1_lehrbeauftragter</TestObject>
+   <TestType>Role</TestType>
+   <Rule>R100103</Rule>
+   <Category>ERROR</Category>
+   <Points>0.25</Points>
+   <Msg>Role r9e1_lehrbeauftragter was found but was not completely correct.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>ac1e1</ExpertObject>
+   <ExpertType>RelationshipEnd</ExpertType>
+   <TestObject>ac1e1</TestObject>
+   <TestType>RelationshipEnd</TestType>
+   <Rule>R110101</Rule>
+   <Category>CORRECT</Category>
+   <Points>1.0</Points>
+   <Msg>An RelationshipEnd to Class Modul was found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>ac1e2</ExpertObject>
+   <ExpertType>RelationshipEnd</ExpertType>
+   <TestObject>ac1e2</TestObject>
+   <TestType>RelationshipEnd</TestType>
+   <Rule>R110101</Rule>
+   <Category>CORRECT</Category>
+   <Points>1.0</Points>
+   <Msg>An RelationshipEnd to Class Lehrveranstaltung was found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject></ExpertObject>
+   <ExpertType></ExpertType>
+   <TestObject>r1e1</TestObject>
+   <TestType>RelationshipEnd</TestType>
+   <Rule>R119901</Rule>
+   <Category>INFO</Category>
+   <Points>0.0</Points>
+   <Msg>Relationship Ends should normally have  a Multiplicity.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject></ExpertObject>
+   <ExpertType></ExpertType>
+   <TestObject>r2e2</TestObject>
+   <TestType>RelationshipEnd</TestType>
+   <Rule>R119901</Rule>
+   <Category>INFO</Category>
+   <Points>0.0</Points>
+   <Msg>Relationship Ends should normally have  a Multiplicity.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject></ExpertObject>
+   <ExpertType></ExpertType>
+   <TestObject>r5e1</TestObject>
+   <TestType>RelationshipEnd</TestType>
+   <Rule>R119901</Rule>
+   <Category>INFO</Category>
+   <Points>0.0</Points>
+   <Msg>Relationship Ends should normally have  a Multiplicity.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject></ExpertObject>
+   <ExpertType></ExpertType>
+   <TestObject>r6e1</TestObject>
+   <TestType>RelationshipEnd</TestType>
+   <Rule>R119901</Rule>
+   <Category>INFO</Category>
+   <Points>0.0</Points>
+   <Msg>Relationship Ends should normally have  a Multiplicity.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject></ExpertObject>
+   <ExpertType></ExpertType>
+   <TestObject>r11e1</TestObject>
+   <TestType>RelationshipEnd</TestType>
+   <Rule>R119901</Rule>
+   <Category>INFO</Category>
+   <Points>0.0</Points>
+   <Msg>Relationship Ends should normally have  a Multiplicity.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject></ExpertObject>
+   <ExpertType></ExpertType>
+   <TestObject>r12e1</TestObject>
+   <TestType>RelationshipEnd</TestType>
+   <Rule>R119901</Rule>
+   <Category>INFO</Category>
+   <Points>0.0</Points>
+   <Msg>Relationship Ends should normally have  a Multiplicity.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject></ExpertObject>
+   <ExpertType></ExpertType>
+   <TestObject>r12e2</TestObject>
+   <TestType>RelationshipEnd</TestType>
+   <Rule>R119901</Rule>
+   <Category>INFO</Category>
+   <Points>0.0</Points>
+   <Msg>Relationship Ends should normally have  a Multiplicity.</Msg>
+  </Result>
+ </Results>
+ <ResultPoints>
+  <MaxPoints>29.0</MaxPoints>
+  <TestPoints>20.25</TestPoints>
+ </ResultPoints>
+</TestResult>
