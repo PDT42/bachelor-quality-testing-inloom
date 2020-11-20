@@ -1,4 +1,4 @@
-# This is the Repo of my bachelor Theisis
+# This is the Repo of my bachelor Thesis
 
 ![How][how]
 
