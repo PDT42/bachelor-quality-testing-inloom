@@ -8,8 +8,11 @@ This is the module containing the XMLAdapter.
 import os
 import xml.etree.ElementTree as XML
 from typing import List
+from uuid import uuid4
+from warnings import warn
 
 from data_types.evaluation import Evaluation, EvaluationType
+from data_types.result import Result, ResultCategory
 
 
 class XMLAdapter:
@@ -20,21 +23,40 @@ class XMLAdapter:
     # Constants
     # °°°°°°°°°
     # TODO: Implement this and _has... functions as *format* class
+    # TODO: Outsource these to a config.ini or a config, that is
+    # TODO: loaded along with the xml files.
+
     ROOT_TAG: str = 'TestResult'
+    # \
     DATA_TAG: str = 'TestData'
-    E_MODEL_TAG: str = 'ExpertModel'
-    S_MODEL_TAG: str = 'TestModel'
-    M_MODEL_TAG: str = 'MetaModel'
+    # \\
+    EXP_MODEL_TAG: str = 'ExpertModel'
+    STUD_MODEL_TAG: str = 'TestModel'
+    META_MODEL_TAG: str = 'MetaModel'
     MCS_ID_TAG: str = 'MCSIdentifier'
     MCS_VERSION_TAG: str = 'MCSVersion'
+    # \
     RESULTS_TAG: str = 'Results'
+    # \\
     RESULT_TAG: str = 'Result'
+    # \\\
+    EXP_OBJ_TAG: str = 'ExpertObject'
+    EXP_TYPE_TAG: str = 'ExpertType'
+    STUD_OBJ_TAG: str = 'TestObject'
+    STUD_TYPE_TAG: str = 'TestType'
+    RULE_TAG: str = 'Rule'
+    CATEGORY_TAG: str = 'Category'
+    RESULT_POINTS_TAG: str = 'Points'
+    MESSAGE_TAG: str = 'Msg'
+    # \
     POINTS_TAG: str = 'ResultPoints'
-    S_POINTS_TAG: str = 'TestPoints'
-
+    # \\
+    STUD_POINTS_TAG: str = 'TestPoints'
+    MAX_POINTS_TAG: str = 'MaxPoints'
+    # --
     ROOT_CHILDREN: List[str] = [DATA_TAG, RESULTS_TAG, POINTS_TAG]
-    DATA_CHILDREN: List[str] = [E_MODEL_TAG, S_MODEL_TAG]
-    POINTS_CHILDREN: List[str] = [S_POINTS_TAG]
+    DATA_CHILDREN: List[str] = [EXP_MODEL_TAG, STUD_MODEL_TAG]
+    POINTS_CHILDREN: List[str] = [STUD_POINTS_TAG, MAX_POINTS_TAG]
 
     # Variables
     # °°°°°°°°°
@@ -48,11 +70,14 @@ class XMLAdapter:
     points_node: XML.Element
 
     # INLOOM result data attributes
-    e_model_id: str
-    s_model_id: str
-    m_model_type: str
+    exp_model_id: str
+    stud_model_id: str
+    meta_model_type: str
     mcs_id: str
     mcs_version: str
+    results: List[Result]
+    student_points: float
+    max_points: float
 
     def __init__(self, xml_path):
         """Create a new ``XMLAdapter``."""
@@ -71,6 +96,10 @@ class XMLAdapter:
             raise KeyError('Some of the required tags are missing from the XML file provided!')
         if not self._get_required_data_attributes():
             raise KeyError('Some of the required tag attributes are missing from the XML file provided!')
+        if not self._get_required_point_contents():
+            raise KeyError('Some of the required point values are missing from the XML file provided!')
+        if not self._get_required_results_contents():
+            raise KeyError('Some of the required result values are missing from the XML file provided!')
 
     def _get_required_tags(self) -> bool:
         """Check if all the Tags required for building a
@@ -78,6 +107,7 @@ class XMLAdapter:
         and store em in the appropriate adapter fields.
         """
 
+        # TODO: Supply individual Error Messages ...
         if not self.xml_root.tag == self.ROOT_TAG:
             return False
         if not all([(tag in [c.tag for c in self.xml_root]) for tag in self.ROOT_CHILDREN]):
@@ -104,56 +134,131 @@ class XMLAdapter:
         adapter fields.
         """
 
-        e_model_node = self.data_node.find(self.E_MODEL_TAG)
+        # TODO: Supply individual Error Messages ...
+        e_model_node: XML.Element = self.data_node.find(self.EXP_MODEL_TAG)
         if 'id' not in e_model_node.attrib.keys():
             return False
-        self.e_model_id = e_model_node.attrib['id']
+        self.exp_model_id = e_model_node.attrib['id']
 
-        s_model_node = self.data_node.find(self.E_MODEL_TAG)
+        s_model_node: XML.Element = self.data_node.find(self.STUD_MODEL_TAG)
         if 'id' not in s_model_node.attrib.keys():
             return False
-        self.s_model_id = s_model_node.attrib['id']
+        self.stud_model_id = s_model_node.attrib['id']
 
-        m_model_node = self.data_node.find(self.E_MODEL_TAG)
-        if 'type' not in s_model_node.attrib.keys():
+        m_model_node: XML.Element = self.data_node.find(self.META_MODEL_TAG)
+        if 'type' not in m_model_node.attrib.keys():
             return False
-        self.m_model_type = m_model_node.attrib['type']
+        self.meta_model_type = m_model_node.attrib['type']
 
-        mcs_id_node = self.data_node.find(self.MCS_ID_TAG)
+        mcs_id_node: XML.Element = self.data_node.find(self.MCS_ID_TAG)
         if 'id' not in mcs_id_node.attrib.keys():
             return False
         self.mcs_id = mcs_id_node.attrib['id']
 
-        mcs_version_node = self.data_node.find(self.MCS_VERSION_TAG)
+        mcs_version_node: XML.Element = self.data_node.find(self.MCS_VERSION_TAG)
         if 'value' not in mcs_version_node.attrib.keys():
             return False
         self.mcs_version = mcs_version_node.attrib['value']
 
         return True
 
-    def _get_required_point_values(self):
-        """Check if all the required point value for
+    def _get_required_point_contents(self):
+        """Check if all the required point contents for
         building a ``TestDataSet`` are present in the
         ``xml_tree`` and store em in the appropriate
         adapter fields.
         """
+        test_points_node: XML.Element = self.points_node.find(self.STUD_POINTS_TAG)
+        if test_points_node is None:
+            return False
+        self.student_points = float(test_points_node.text)
+
+        max_points_node: XML.Element = self.points_node.find(self.MAX_POINTS_TAG)
+        if max_points_node is None:
+            return False
+        self.max_points = float(max_points_node.text)
+
+        return True
+
+    def _get_required_results_contents(self):
+        """Check if all the required result contents for
+        building a ```TestDataSet`` are present in the
+        ``xml_tree`` and store em in the appropriate
+        adapter fields.
+        """
+
+        self.results = []
+
+        self.results_node: XML.Element = self.xml_root.find(self.RESULTS_TAG)
+        if self.results_node is None:
+            return False
+
+        xml_results = self.results_node.findall(self.RESULT_TAG)
+        if xml_results is None or not len(xml_results) > 0:
+            return False
+
+        # Converting the found result data
+        for xml_result in xml_results:
+            self.results.append(Result(
+                expert_element_label=str(xml_result.find(self.EXP_OBJ_TAG).text),
+                student_element_label=str(xml_result.find(self.STUD_OBJ_TAG).text),
+                expert_element_type=str(xml_result.find(self.EXP_TYPE_TAG).text),
+                student_element_type=str(xml_result.find(self.STUD_TYPE_TAG).text),
+                rule_id=str(xml_result.find(self.RULE_TAG).text),
+                result_category=ResultCategory[str(xml_result.find(self.CATEGORY_TAG).text)],
+                points=float(xml_result.find(self.RESULT_POINTS_TAG).text),
+                feedback_message=str(xml_result.find(self.MESSAGE_TAG).text)
+            ))
+
+        return True
 
     @staticmethod
     def eval_from_xml(
             xml_path: str,
-            eval_type: EvaluationType,
+            eval_type: EvaluationType = EvaluationType.AUTOMATIC,
             evaluator: str = 'INLOOM'
     ) -> Evaluation:
         """Create an ``Evaluation`` from the contents of the xml supplied."""
 
         xml_adapter = XMLAdapter(xml_path)
 
-        # TODO
+        evaluation_id: uuid4 = uuid4()
+
+        for result in xml_adapter.results:
+            result.evaluation_id = evaluation_id
 
         return Evaluation(
             type=eval_type,
             evaluator=evaluator,
-            student_model_id=xml_adapter.s_model_id,
-            expert_model_id=xml_adapter.e_model_id,
-            total_points=0,  # TODO
+            student_model_id=xml_adapter.stud_model_id,
+            expert_model_id=xml_adapter.exp_model_id,
+            results=xml_adapter.results,
+            total_points=xml_adapter.student_points,
+            max_points=xml_adapter.max_points,
+            evaluation_id=evaluation_id,
         )
+
+    @staticmethod
+    def evals_from_directory(
+            directory_path: str,
+            eval_type: EvaluationType = EvaluationType.AUTOMATIC,
+            evaluator: str = 'INLOOM'
+    ) -> List[Evaluation]:
+        """Create a list of ``Evaluations`` from all valid XML files in a directory."""
+
+        evaluations: List[Evaluation] = []
+
+        for file in os.listdir(directory_path):
+            if not file.endswith('.xml'):
+                warn(f'Found file: "{file}" is skipped since it\'s no .xml file!')
+
+            try:
+                evaluations.append(XMLAdapter.eval_from_xml(
+                    xml_path=os.path.join(directory_path, file),
+                    eval_type=eval_type,
+                    evaluator=evaluator
+                ))
+            except (KeyError, XML.ParseError):
+                warn(f'Found file: "{file}" seems to be invalid!')
+
+        return evaluations
