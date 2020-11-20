@@ -1,0 +1,10 @@
+<Result>
+   <ExpertObject>ac1e2</ExpertObject>
+   <ExpertType>RelationshipEnd</ExpertType>
+   <TestObject>ac1e2</TestObject>
+   <TestType>RelationshipEnd</TestType>
+   <Rule>R110101</Rule>
+   <Category>CORRECT</Category>
+   <Points>1.0</Points>
+   <Msg>An RelationshipEnd to Class Paper was found.</Msg>
+  </Result>
