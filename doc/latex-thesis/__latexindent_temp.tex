@@ -1,0 +1,115 @@
+\documentclass[english,BCOR=1.5cm,twoside]{tudscrreprt}
+
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{isodate}
+
+\usepackage[
+    style=numeric-comp,
+    backend=biber,
+    url=false,
+    doi=false,
+    isbn=false,
+    hyperref,
+]{biblatex}
+\addbibresource{bibliography.bib}
+\AtEveryBibitem{%
+    \clearfield{note}%
+}
+
+\usepackage[hidelinks]{hyperref}
+\usepackage[capitalise,nameinlink,noabbrev]{cleveref}
+
+% \usepackage[colorinlistoftodos,prependcaption,textsize=tiny]{todonotes}
+
+\usepackage{graphicx}
+\graphicspath{ {../images/} }
+
+% if you need mathy stuff
+\newtheorem{lem}{Lemma}
+\crefname{lem}{Lemma}{Lemmas}
+\newtheorem{thm}{Theorem}
+\crefname{thm}{Theorem}{Theorems}
+\newtheorem{defs}{Definition}
+\crefname{defs}{Def.}{Defs.}
+
+\usepackage{blindtext}
+
+\usepackage{csquotes}
+
+\usepackage{caption}
+\captionsetup{font=sf,labelfont=bf,labelsep=space}
+\usepackage{floatrow}
+\floatsetup{font=sf}
+\floatsetup[table]{style=plaintop}
+\captionsetup{singlelinecheck=off,format=hang,justification=raggedright}
+\DeclareCaptionSubType[alph]{figure}
+\DeclareCaptionSubType[alph]{table}
+\captionsetup[subfloat]{labelformat=brace,list=off}
+
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{tabulary}
+\usepackage{tabu}
+\usepackage{longtable}
+\usepackage{quoting}
+\usepackage[babel]{microtype}
+\usepackage{xfrac}
+
+\usepackage{enumitem}
+\setlist[itemize]{noitemsep}
+
+\usepackage{ellipsis}
+\let\ellipsispunctuation\relax
+
+% \input{lst.tex}
+
+\begin{document}
+
+% METADATA SECTION
+% °°°°°°°°°°°°°°°°
+
+\faculty{Fakultät Informatik}
+\department{}
+\institute{Institut für Software- und Multimediatechnik}
+\chair{Lehrstuhl für Softwaretechnologie}
+\title{Quality Testing Concepts} % TODO: Update. Some Error occurs ...
+\thesis{bachelor}
+\graduation[B.Sc.]{Bachelor of Science}
+\author{Paul Erlenwein}
+\emailaddress[]{paul.erlenwein@tu-dresden.de}
+\matriculationnumber{4609464}
+\matriculationyear{2016}
+\dateofbirth{31.12.1996}
+\placeofbirth{Ludwigshafen}
+\course{Distributed Systems Engineering}
+\supervisor{
+    Dr.-Ing. Birgit Demuth
+    \and Markus Hamann
+    \and Dr. Sebastian Götz % ??
+}
+\professor{Prof. Dr. rer. nat habil. Uwe Aßmann}
+\date{05.02.2021}
+\maketitle
+\newpage
+
+\tableofcontents
+\listoffigures
+\listoftables
+
+% IMPORT SECTION
+% °°°°°°°°°°°°°°
+
+\input{sections/einleitung}
+
+\printbibliography[heading=bibintoc]\label{sec:bibliography}%
+
+\appendix
+\input{sections/appendix}
+
+\confirmation
+
+\end{document}
