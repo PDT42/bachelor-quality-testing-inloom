@@ -18,13 +18,10 @@ class DbDataType:
 class VARCHAR(DbDataType):
     """This represents a Varchar-Type."""
 
-    length: int = 255
-
     sql_text = "VARCHAR"
 
-    def __init__(self, length=255):
-        self.length = length
-        super(VARCHAR, self).__init__(self.name)
+    def __init__(self):
+        super(VARCHAR, self).__init__(self.sql_text)
 
 
 class INTEGER(DbDataType):
@@ -36,10 +33,10 @@ class INTEGER(DbDataType):
         super(INTEGER, self).__init__(self.sql_text)
 
 
-class DBKEY(DbDataType):
-    """This represents any kind of database key."""
+class FLOAT(DbDataType):
+    """This represents a floating point number type."""
 
-    sql_text = "INTEGER"
+    sql_text = "NUMBER"
 
     def __init__(self):
-        super(DBKEY, self).__init__(self.sql_text)
+        super(FLOAT, self).__init__(self.sql_text)

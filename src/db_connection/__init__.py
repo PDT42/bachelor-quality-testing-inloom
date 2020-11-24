@@ -5,3 +5,4 @@
 This is the db_connection package.
 """
 
+DB_PATH: str = "../res/inloom_qt/database.db"

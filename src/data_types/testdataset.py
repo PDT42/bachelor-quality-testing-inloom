@@ -6,6 +6,7 @@ This is the module containing the TestDataSet datatype.
 """
 
 from dataclasses import dataclass
+from uuid import uuid4
 
 from data_types.evaluation import Evaluation
 
@@ -22,6 +23,8 @@ class TestDataSet:
     meta_model_type: str
     mcs_identifier: str
     mcs_version: str
+    auto_eval_id: str
+    man_eval_id: str
 
     # Evaluations
     auto_eval: Evaluation
