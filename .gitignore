@@ -28,7 +28,7 @@ share/python-wheels/
 MANIFEST
 
 # Exclude some Resources
-res/manual-evaluations
+res/evaluations/manual-evaluations
 # Exclude some Scratches
 
 # PyInstaller
