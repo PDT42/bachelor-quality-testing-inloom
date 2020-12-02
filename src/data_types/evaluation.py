@@ -38,6 +38,7 @@ class Evaluation:
     evaluation_id: uuid4 = uuid4()
 
     # Collections
+    # TODO: Put this into 'statistics' var?
     results_by_expert_label: Dict[str, List[Result]] = None
     results_by_expert_type: Dict[str, List[Result]] = None
     results_by_student_label: Dict[str, List[Result]] = None
@@ -73,5 +74,5 @@ class Evaluation:
             other.evaluator == self.evaluator,
             other.expert_model_id == self.expert_model_id,
             other.student_model_id == self.student_model_id,
-            other.max_points == self.max_points
+            other.max_points == self.max_points  # TODO: Is this necessary?
         ]) else False
