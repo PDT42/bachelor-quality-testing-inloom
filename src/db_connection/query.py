@@ -4,9 +4,11 @@
 
 This is the module that contains the ``Query``.
 """
-from dataclasses import dataclass
-from typing import List, Set
 
+from dataclasses import dataclass
+from typing import Any, List, Union
+
+from db_connection import sqlite_convert
 from db_connection.db_column import DbColumn, get_column_names
 from db_connection.db_table import DbTable
 from db_connection.filter import Filter
@@ -17,36 +19,54 @@ class Query:
 
     _db_table: DbTable
     _base_query: str
-    _filters: Set[Filter]
-    _limit: int
-    _offset: int
+    _filters: List[Filter]
+    _limit: int = None
+    _offset: int = None
 
     def __init__(self, db_table: DbTable, base_query: str):
         """Create a new Query Instance."""
 
         self._db_table = db_table
         self._base_query = base_query
-        self._filters = set()
+        self._filters = []
 
     def where(self, new_filter: Filter):
         """Add a filter to the query."""
 
-        self._filters.add(new_filter)
+        self._filters.append(new_filter)
+        return self
+
+    def add_filters(self, filters: List[Filter]):
+        """Add a list of Filters to the query."""
+
+        self._filters.extend(filters)
+        return self
 
     def limit(self, limit: int):
         """Add a limit to the query."""
 
         self._limit = limit
+        return self
 
     def offset(self, offset: int):
         """Add an offset to the query."""
 
         self._offset = offset
+        return self
 
     def resolve(self):
         """Resolve the query."""
 
         resolved_query: str = self._base_query
+
+        if len(self._filters) > 0:
+            resolved_query += f" WHERE {'AND '.join([f.resolve() for f in self._filters])}"
+        if self._limit is not None and isinstance(self._limit, int):
+            resolved_query += f" LIMIT {self._limit}"
+        if self._offset is not None and isinstance(self._offset, int):
+            resolved_query += f" OFFSET {self._offset}"
+
+        resolved_query += ';'
 
         return resolved_query
 
