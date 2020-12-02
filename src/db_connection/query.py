@@ -129,3 +129,5 @@ class SELECTQuery(Query):
         select_query: str = f"SELECT {', '.join([c.column_name for c in columns])} " + \
                             f"FROM {db_table.table_name}"
         super(SELECTQuery, self).__init__(db_table, select_query)
+
+# TODO: Add delete Query
