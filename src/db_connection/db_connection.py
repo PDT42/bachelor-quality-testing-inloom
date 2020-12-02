@@ -7,16 +7,15 @@ This is the module for the ``DbConnection``.
 import sqlite3
 from abc import abstractmethod
 from typing import Any, List
-from warnings import warn
 
-from db_connection import DB_PATH
+from db_connection import DB_PATH, VERBOSITY
 from db_connection.query import Query
 
 
 class DbConnection:
     """This is the ``DbConnection``"""
 
-    _instance: 'DbConnection'
+    _instance: 'DbConnection' = None
 
     @staticmethod
     @abstractmethod
@@ -43,19 +42,15 @@ class SqliteConnection(DbConnection):
     cursor: sqlite3.Cursor = None
 
     @staticmethod
-    def get(db_path: str = DB_PATH):
+    def get():
         """Get the instance of this singleton."""
 
         if not SqliteConnection._instance:
-            SqliteConnection._instance = SqliteConnection(db_path)
+            SqliteConnection._instance = SqliteConnection(DB_PATH)
         return SqliteConnection._instance
 
     def __init__(self, db_path: str):
         """Init a new ``SqliteConnection``."""
-
-        self.db_path = db_path
-        self.connection = sqlite3.connect(self.db_path, check_same_thread=False)
-        self.cursor = self.connection.cursor()
 
         def _dict_factory(cursor, row):
             result = {}
@@ -63,7 +58,15 @@ class SqliteConnection(DbConnection):
                 result[column[0]] = row[index]
             return result
 
+        self.db_path = db_path
+        self.connection = sqlite3.connect(self.db_path, check_same_thread=False)
         self.connection.row_factory = _dict_factory
+        self.cursor = self.connection.cursor()
+
+        SqliteConnection._instance = self
+
+        if VERBOSITY > 1:
+            print(f"Created new SQLITE Connection. Database File: \"{self.db_path}\"")
 
         super(SqliteConnection, self).__init__()
 
@@ -72,11 +75,15 @@ class SqliteConnection(DbConnection):
 
         result: List[Any] = []
 
+        if VERBOSITY > 4:
+            print(f"Executing Query on SQLITE: \"{query.resolve()}\"")
+
         try:
             self.cursor.execute(query.resolve())
             result = self.cursor.fetchall()
-        except BaseException: # TODO: Update Exception
-            warn('Sqlite Transaction failed!')
+        except BaseException:  # TODO: Update Exception
+            if VERBOSITY > 1:
+                print('Sqlite Transaction failed!')
             self.reset()
         finally:
             self.commit()
@@ -94,13 +101,13 @@ class SqliteConnection(DbConnection):
     def reset(self):
         """Reset connection."""
 
-        if self.connection:
-            self.connection.close()
         if self.cursor:
             self.cursor.execute('ROLLBACK')
+        if self.connection:
+            self.connection.close()
 
         self.connection = None
-        self._instance = SqliteConnection(DB_PATH)
+        self._instance = SqliteConnection(self.db_path)
 
     def close(self):
         """Commit changes and close the database connection."""
