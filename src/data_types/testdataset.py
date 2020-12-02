@@ -18,14 +18,18 @@ class TestDataSet:
     """
 
     # Identifying Attributes
+
+    # TODO: Add trivial attributes like Exercise name, ... for FE representation?
+
     expert_model_id: str
     student_model_id: str
     meta_model_type: str
     mcs_identifier: str
     mcs_version: str
-    auto_eval_id: str
-    man_eval_id: str
 
     # Evaluations
-    auto_eval: Evaluation
-    man_eval: Evaluation
+    auto_eval_id: str = None
+    man_eval_id: str = None
+
+    auto_eval: Evaluation = None
+    man_eval: Evaluation = None
