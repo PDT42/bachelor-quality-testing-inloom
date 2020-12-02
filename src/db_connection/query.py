@@ -82,20 +82,39 @@ class CREATEQuery(Query):
         super(CREATEQuery, self).__init__(db_table, create_query)
 
 
+# noinspection SqlInjection
 class INSERTQuery(Query):
     """This is a database ``INSERT``"""
 
-    def __init__(self, db_table: DbTable, columns: List[DbColumn], values: List[dataclass]):
+    def __init__(
+            self, db_table: DbTable,
+            values: Union[dataclass, List[dataclass]],
+            conversion_function: callable = sqlite_convert
+    ):
         """Create a new INSERT Query."""
 
+        if not isinstance(values, list):
+            values = [values]
+
+        column_names: List[str] = get_column_names(db_table.columns)
         insert_query: str = f"INSERT INTO {db_table.table_name} ("
-        insert_query += f"{', '.join(get_column_names(columns))}) "
+        insert_query += f"{', '.join(column_names)}) "
         insert_query += "VALUES "
 
-        for item in values:
-            insert_query
+        for dataclass_item in values:
+
+            item_values: List[Any] = []
+            for column_name in column_names:
+                item_value = dataclass_item.__dict__[column_name]
+                item_values.append(conversion_function(item_value))
+
+            insert_query += f"({', '.join(item_values)}),"
+
+        if insert_query[-1] == ',':
+            insert_query = insert_query[:-1]
 
         super(INSERTQuery, self).__init__(db_table, insert_query)
+
 
 class SELECTQuery(Query):
     """This is a database ``SELECT``."""
