@@ -39,8 +39,8 @@ class StatisticsService:
 
         """
 
-        # Adding Collections to evaluations
-        # °°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°
+        # Adding Collections to evaluation
+        # °°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°
 
         # Collecting results by ExpertLabel A -> [Result]
         results_by_expert_label: Dict[str, List[Result]] = {}
