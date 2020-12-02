@@ -29,6 +29,7 @@ MANIFEST
 
 # Exclude some Resources
 res/evaluations/manual-evaluations
+res/inloomqt-res/test_database.db
 # Exclude some Scratches
 
 # PyInstaller
