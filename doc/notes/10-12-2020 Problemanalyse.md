@@ -32,7 +32,7 @@ jetzt auf den "Ist"-Datensatz (studentisches _Modell_) angewendet.
 Für jedes überprüfte Modell wird ein Output XML File generiert, in dem die Resultate aller
 angewendeten Constraints festgehalten werden (Hamann Thesis 3.6.4).
 
-### Format des XML Result Files
+### Format des XML ConstraintResult Files
 
 
 > Das in der Thesis spezifizierte DTD ist nicht länger aktuell. Ich muss das gleiche auf jeden
@@ -51,8 +51,8 @@ angewendeten Constraints festgehalten werden (Hamann Thesis 3.6.4).
 <!ELEMENT TestModel EMPTY>
 <!ATTLIST TestModel name CDATA #REQUIRED> // Id of the Student Model
 
-<!ELEMENT Results (Result)>  // List of Results
-<!ELEMENT Result (TestObject, RuleObject, RuleSet, Rule, Category, Points, Msg)>  // Container
+<!ELEMENT Results (ConstraintResult)>  // List of Results
+<!ELEMENT ConstraintResult (TestObject, RuleObject, RuleSet, Rule, Category, Points, Msg)>  // Container
 <!ELEMENT TestObject (#PCDATA)>  // Name/Label of matched Element in Student Solution
 <!ELEMENT RuleObject (#PCDATA)>  // Name/Label of matched Element in Expert Solution
 <!ELEMENT RuleSet (#PCDATA)>  // Id of Rule/Constraint-Group
@@ -197,19 +197,19 @@ generierte Bewertung (__autoEval__), direkt mit einander verglichen werden.
 
 Ein solcher Vergleich würde dann anhand einer Auswahl von XML Elements stattfinden: Den 
 "Reference Attributes". Offensichtlich würde der Vergleich vornehmlich anhand der Inhalte von 
-Results, also den einzelnen Result-s stattfinden, da jede Stufe darüber auf eine Evaluation 
+Results, also den einzelnen ConstraintResult-s stattfinden, da jede Stufe darüber auf eine Evaluation 
 anhand der Note hinauslaufen würde. Es wäre sinnvoll, die Eingabe der manEval auf die gewählten 
 Reference Attributes zu reduzieren.
 
 1. TestObject & RuleObject
 
-    Anhand TestObjects & RuleObject kann überprüft werden, ob INLOOM für dieses Result das 
+    Anhand TestObjects & RuleObject kann überprüft werden, ob INLOOM für dieses ConstraintResult das 
     korrekte Element gematched hat. Ich denke dieses Element zu checken ist immer sinnvoll, da 
     sich ja schon hier entscheidet, ob eine weitere Betrachtung sinnvoll ist.
 
 2. RuleSet & Rule
 
-    RuleSet und Rule identifizieren das zur Erzeugung des Result verwendete Constraint eindeutig.
+    RuleSet und Rule identifizieren das zur Erzeugung des ConstraintResult verwendete Constraint eindeutig.
     Diese Information ist relevant um Constraint _Überdeckung_ zu vermeiden. Das Hinzufügen eines
     neuen Constraints könnte dazu führen, dass ein Anderes nicht länger in den gewünschten 
     Fällen zur Anwendung kommt und dem Studenten dadurch falsches Feedback gegeben wird.
@@ -318,7 +318,7 @@ Enough" erreicht oder schon überschritten hat. Ich denke, dass eine solche Eins
 einem möglichst (breiten|großen|statistisch relevanten) Datensatz beruhen sollte. Das wiederum 
 bedeutet, dass der Aufwand zur Erstellung eines solchen Datensatzes, zur Generierung einer 
 Qualitäts Referenz, möglichst klein sein muss. Es könnte also sinnvoll sein, optimal Bewertungen 
-(optimal Result-XML ?) auf zwei verschiedenen Detail Levels zu erstellen. 
+(optimal ConstraintResult-XML ?) auf zwei verschiedenen Detail Levels zu erstellen. 
 
 Das _gröbere_ Detail Level würde ausschließlich Attribute enthalten, die mit wenig Aufwand in 
 das Testset einpflegbar sind. Also Attribute, die aus händischen Lösungen abgeschrieben und 

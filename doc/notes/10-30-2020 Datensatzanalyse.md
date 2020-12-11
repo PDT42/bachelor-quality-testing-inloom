@@ -33,9 +33,9 @@ studentische Lösung, sowie die von Inloom erstellten Evaluationen des studentis
 <!ATTLIST MCSVersion value CDATA #REQUIRED>
 
 
-<!ELEMENT Results (Result)>  // List of Results
+<!ELEMENT Results (ConstraintResult)>  // List of Results
 
-<!ELEMENT Result (TestObject, RuleObject, RuleSet, Rule, Category, Points, Msg)>  // Container
+<!ELEMENT ConstraintResult (TestObject, RuleObject, RuleSet, Rule, Category, Points, Msg)>  // Container
 
 <!ELEMENT ExpertObject (#PCDATA)>  // Name/Label of matched element in expert solution
 <!ELEMENT ExpertType (#PCDATA)>  // Type of element in expert solution
@@ -91,7 +91,7 @@ verfügbaren Werte wählen möchte.
 
 2. *Anzahl verschiedener gematchter Elemente*
 
-    Die Anzahl der verschiedenen in verschiedenen *Result*-s gefundenen *TestElement*s. Anhand 
+    Die Anzahl der verschiedenen in verschiedenen *ConstraintResult*-s gefundenen *TestElement*s. Anhand 
     dieses Wertes kann eine Aussage darüber getroffen werden, ob INLOOM und Tutor in ihren 
     Bewertungen eine unterschiedliche Anzahl von Elementen bedacht hat.
 
@@ -115,7 +115,7 @@ verfügbaren Werte wählen möchte.
 5. 
 
 ### Mögliche Datenstruktur für Test Datensätze in der Suite
-Grundsätzlich halte ich es für sinnvoll die in den Result XML verwendete Datenstruktur zu 
+Grundsätzlich halte ich es für sinnvoll die in den ConstraintResult XML verwendete Datenstruktur zu 
 replizieren und um die erfassten Werte zur statistischen Weiterverwendung hinzuzufügen.
 
 ## Inter Rater Reliability (IRR)
