@@ -10,8 +10,8 @@ import xml.etree.ElementTree as XML
 from typing import List
 
 from data_types.evaluation import Evaluation
-from data_types.result import Result
-from xml_adapter import XMLAdapter
+from data_types.constraintresult import ConstraintResult
+from xml_adapter import XMLAdapter, XMLAdapterResult
 
 
 # TODO: Implement actual tests
@@ -20,7 +20,7 @@ class TestXMLAdapter(unittest.TestCase):
     """TestCase for the XMLAdapter."""
 
     # Constants
-    BASE_XML_PATH: str = '../../res/example-data/student-solutions/Aufgabe_1/Ergebnisse'
+    BASE_XML_PATH: str = '../../res/evaluations/automatic-evaluations/exam-st-2018'
     EXPERT_MODEL_XML: str = f'{BASE_XML_PATH}/OUTPUT_Expert_OOA_Class_SoSe2018.xml'
     STUDENT_MODEL_XML: str = f'{BASE_XML_PATH}/OUTPUT_ExSS2018_student1.xml'
 
@@ -53,7 +53,7 @@ class TestXMLAdapter(unittest.TestCase):
         """Test XMLAdapters Function ``get_required_results_content``."""
 
         result_xml_string: str = \
-            "<Result>" + \
+            "<ConstraintResult>" + \
             "<ExpertObject>r1</ExpertObject>" + \
             "<ExpertType>Relationship</ExpertType>" + \
             "<TestObject>r1</TestObject>" + \
@@ -62,7 +62,7 @@ class TestXMLAdapter(unittest.TestCase):
             "<Category>CORRECT</Category>" + \
             "<Points>1.0</Points>" + \
             "<Msg>A Relationship between Paper and Paper was found (Type: Association).</Msg>" + \
-            "</Result>"
+            "</ConstraintResult>"
 
         result_root: XML.Element = XML.fromstring(result_xml_string)
 
@@ -76,7 +76,7 @@ class TestXMLAdapter(unittest.TestCase):
         feedback_message: str = 'A Relationship between Paper and Paper was found (Type: Association).'
 
         self.expert_adapter._get_required_results_contents()
-        first_adapter_result: Result = self.expert_adapter.results[0]
+        first_adapter_result: ConstraintResult = self.expert_adapter.results[0]
 
         self.assertEqual(first_adapter_result.expert_element_label, expert_element_label)
         self.assertEqual(first_adapter_result.expert_element_type, expert_element_type)
@@ -90,11 +90,11 @@ class TestXMLAdapter(unittest.TestCase):
     def test_eval_from_xml(self):
         """Test XMLAdapters Function ``eval_from_xml``."""
 
-        exp_auto_eval: Evaluation = XMLAdapter.eval_from_xml(xml_path=self.EXPERT_MODEL_XML)
-        stud_auto_eval: Evaluation = XMLAdapter.eval_from_xml(xml_path=self.EXPERT_MODEL_XML)
+        exp_auto_eval: XMLAdapterResult = XMLAdapter.eval_from_xml(xml_path=self.EXPERT_MODEL_XML)
+        stud_auto_eval: XMLAdapterResult = XMLAdapter.eval_from_xml(xml_path=self.EXPERT_MODEL_XML)
 
     def test_evals_from_directory(self):
         """Test XMLAdapters Function ``evals_from_directory``."""
 
-        auto_evals: List[Evaluation] = XMLAdapter.evals_from_directory(
+        auto_evals: List[XMLAdapterResult] = XMLAdapter.evals_from_directory(
             directory_path=self.BASE_XML_PATH)
