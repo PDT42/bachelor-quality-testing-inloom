@@ -2,7 +2,7 @@
 :Author: Paul Erlenwein
 :Since: 2020/11/20
 
-This is the module for the ``EvaluationManager``.
+This is the module for the ``EvalManager``.
 """
 from typing import Any, List, Mapping
 
@@ -13,22 +13,22 @@ from db_connection.db_data_types import FLOAT, VARCHAR
 from db_connection.db_table import DbTable
 from db_connection.filter import Filter, FilterOperation
 from db_connection.query import CREATEQuery, INSERTQuery, Query, SELECTQuery
-from managers.results_manager import ResultsManager
+from managers.constraint_results_manager import CResultManager
 
 
-class EvaluationManager:
-    """This is the ``EvaluationManager``."""
+class EvalManager:
+    """This is the ``EvalManager``."""
 
     # Make this a Singleton
     # ~~~~~~~~~~~~~~~~~~~~~
-    _instance: 'EvaluationManager' = None
+    _instance: 'EvalManager' = None
 
     @staticmethod
     def get():
         """Get the _instance of this singleton."""
-        if not EvaluationManager._instance:
-            EvaluationManager._instance = EvaluationManager()
-        return EvaluationManager._instance
+        if not EvalManager._instance:
+            EvalManager._instance = EvalManager()
+        return EvalManager._instance
 
     # ~~~~~~~~~~~~~~~~~~~~~
 
@@ -39,40 +39,60 @@ class EvaluationManager:
     EXPERT_MODEL_ID_COLUMN: DbColumn = DbColumn('expert_model_id', VARCHAR())
     STUDENT_MODEL_ID_COLUMN: DbColumn = DbColumn('student_model_id', VARCHAR())
     MAX_POINTS_COLUMN: DbColumn = DbColumn('max_points', FLOAT())
+    EVALUATION_ID_COLUMN: DbColumn = DbColumn('evaluation_id', VARCHAR(), primary_key=True)
 
     # Variables
     db_connection: DbConnection
     evaluations_table: DbTable
     evaluations_table_columns: List[DbColumn]
-    results_manager: ResultsManager
+    results_manager: CResultManager
 
     def __init__(self):
-        """Create a new ``EvaluationManager``."""
+        """Create a new ``EvalManager``."""
 
         self.db_connection = SqliteConnection.get()
         self._init_database_table()
 
-        self.results_manager = ResultsManager.get()
+        self.results_manager = CResultManager.get()
 
     def insert_evaluations(self, evaluations: List[Evaluation]):
         """Insert a list of ``Evaluations`` into the database."""
 
-        query: Query = INSERTQuery(self.evaluations_table, evaluations)
-        self.db_connection.execute(query)
-
+        # Getting all the new evaluations
+        new_evaluations: List[Evaluation] = []
         for evaluation in evaluations:
-            if len(evaluation.results) > 0:
-                self.results_manager.insert_results(evaluation.results)
+            if not self.get_one_that_equals(evaluation):
+                new_evaluations.append(evaluation)
+
+        # Inserting new evaluations and their results
+        if len(new_evaluations) > 0:
+            query: Query = INSERTQuery(self.evaluations_table, new_evaluations)
+            self.db_connection.execute(query)
+            for evaluation in new_evaluations:
+                if len(evaluation.results) > 0:
+                    self.results_manager.insert_results(evaluation.results)
 
     def get_all_evaluations(self):
         """Get all ``Evaluations`` available  in the database."""
 
-        raise NotImplementedError()
+        query: Query = SELECTQuery(self.evaluations_table)
+        results: List[Mapping[str, Any]] = self.db_connection.execute(query)
 
-    def get_one_by_evaluation_id(self, evaluation_id: str):
+        return [Evaluation(**item) for item in results]
+
+    def get_one_by_id(self, evaluation_id: str):
         """Get an ``Evaluation`` by its ``evaluation_id``."""
 
-        raise NotImplementedError()
+        query: Query = SELECTQuery(self.evaluations_table) \
+            .where(Filter(self.EVALUATION_ID_COLUMN, FilterOperation.EQUALS, evaluation_id))
+        results: List[Mapping[str, Any]] = self.db_connection.execute(query)
+
+        if not results:
+            return None
+        elif isinstance(results, list) and len(results) > 1:
+            raise ValueError("This Evaluation was duplicated!")
+        else:
+            return Evaluation(**results[0])
 
     def get_one_that_equals(self, evaluation: Evaluation):
         """Get àn ``Evaluation`` that would __equals__ ``evaluation``."""
@@ -105,7 +125,7 @@ class EvaluationManager:
             self.EXPERT_MODEL_ID_COLUMN,
             DbColumn('total_points', FLOAT()),
             self.MAX_POINTS_COLUMN,
-            DbColumn('evaluation_id', VARCHAR(), primary_key=True)
+            self.EVALUATION_ID_COLUMN
         ]
         self.evaluations_table = DbTable(
             self.EVALUATION_TABLE_NAME, columns=self.evaluations_table_columns)
