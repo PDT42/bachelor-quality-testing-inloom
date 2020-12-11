@@ -31,6 +31,8 @@ MANIFEST
 res/evaluations/manual-evaluations
 res/inloomqt-res/test_database.db
 res/eval/
+
+node_modules/
 # Exclude some Scratches
 
 # PyInstaller
