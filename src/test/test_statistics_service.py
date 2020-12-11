@@ -17,7 +17,7 @@ class TestStatisticsService(unittest.TestCase):
     """TestCase for the StatisticsService."""
 
     # Constants
-    BASE_XML_PATH: str = '../../res/example-data/student-solutions/Aufgabe_1/Ergebnisse'
+    BASE_XML_PATH: str = '../../res/evaluations/automatic-evaluations/exam-st-2018/'
     EXPERT_MODEL_XML: str = f'{BASE_XML_PATH}/OUTPUT_Expert_OOA_Class_SoSe2018.xml'
     STUDENT_MODEL_XML: str = f'{BASE_XML_PATH}/OUTPUT_ExSS2018_student1.xml'
 
@@ -29,10 +29,10 @@ class TestStatisticsService(unittest.TestCase):
     def setUp(self):
         """Setup test requirements."""
 
-        self.expert_eval = XMLAdapter.eval_from_xml(self.EXPERT_MODEL_XML)
-        self.student_eval = XMLAdapter.eval_from_xml(self.STUDENT_MODEL_XML)
+        self.expert_eval = XMLAdapter.eval_from_xml(self.EXPERT_MODEL_XML).evaluation
+        self.student_eval = XMLAdapter.eval_from_xml(self.STUDENT_MODEL_XML).evaluation
 
-        self.test_evals = XMLAdapter.evals_from_directory(self.BASE_XML_PATH)
+        self.test_evals = [res.evaluation for res in XMLAdapter.evals_from_directory(self.BASE_XML_PATH)]
 
     def tearDown(self) -> None:
         """Clean up after tests."""
