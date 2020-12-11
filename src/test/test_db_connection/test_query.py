@@ -28,8 +28,8 @@ class TestQuery(unittest.TestCase):
         self.test_test_data_set_table: DbTable = DbTable(
             'inloom_quality_test_data_sets',
             columns=[
-                DbColumn('expert_model_id', VARCHAR(), primary_key=True),
-                DbColumn('student_model_id', VARCHAR(), not_null=True),
+                DbColumn('expert_model_id', VARCHAR()),
+                DbColumn('student_model_id', VARCHAR(), primary_key=True),
                 DbColumn('meta_model_type', VARCHAR()),
                 DbColumn('mcs_identifier', VARCHAR()),
                 DbColumn('mcs_version', VARCHAR(), default='1.0.0'),
@@ -50,13 +50,13 @@ class TestQuery(unittest.TestCase):
         create_query: Query = CREATEQuery(self.test_test_data_set_table)
 
         optimal_test_query: str = f'CREATE TABLE IF NOT EXISTS {self.test_test_data_set_table.table_name} ('
-        optimal_test_query += f'expert_model_id VARCHAR PRIMARY KEY, '
-        optimal_test_query += f'student_model_id VARCHAR NOT NULL, '
+        optimal_test_query += f'expert_model_id VARCHAR, '
+        optimal_test_query += f'student_model_id VARCHAR PRIMARY KEY, '
         optimal_test_query += f'meta_model_type VARCHAR, '
         optimal_test_query += f'mcs_identifier VARCHAR, '
         optimal_test_query += f'mcs_version VARCHAR DEFAULT \'1.0.0\', '
         optimal_test_query += f'auto_eval_id VARCHAR, '
-        optimal_test_query += f'man_eval_id VARCHAR)'
+        optimal_test_query += f'man_eval_id VARCHAR);'
 
         self.assertEqual(create_query.resolve(), optimal_test_query)
 
@@ -75,7 +75,7 @@ class TestQuery(unittest.TestCase):
         optimal_test_query += f'mcs_identifier VARCHAR, '
         optimal_test_query += f'mcs_version VARCHAR, '
         optimal_test_query += f'auto_eval_id VARCHAR, '
-        optimal_test_query += f'man_eval_id VARCHAR)'
+        optimal_test_query += f'man_eval_id VARCHAR);'
 
         self.assertEqual(create_query.resolve(), optimal_test_query)
 
@@ -87,6 +87,6 @@ class TestQuery(unittest.TestCase):
         optimal_test_query: str = f'SELECT expert_model_id, student_model_id, '
         optimal_test_query += f'meta_model_type, mcs_identifier, mcs_version, '
         optimal_test_query += f'auto_eval_id, man_eval_id '
-        optimal_test_query += f'FROM {self.test_test_data_set_table.table_name}'
+        optimal_test_query += f'FROM {self.test_test_data_set_table.table_name};'
 
         self.assertEqual(select_query.resolve(), optimal_test_query)

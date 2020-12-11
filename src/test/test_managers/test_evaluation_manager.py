@@ -7,15 +7,17 @@ These are tests for the evaluation_manager module.
 
 import unittest
 
+from data_types.constraintresult import ConstraintResult, ConstraintResultCategory
 from data_types.evaluation import Evaluation, EvaluationType
-from data_types.result import Result, ResultCategory
 from db_connection.db_connection import SqliteConnection
-from managers.evaluation_manager import EvaluationManager
+from managers.constraint_results_manager import CResultManager
+from managers.evaluation_manager import EvalManager
+from managers.testdata_manager import TDManager
 from test.test_db_connection import init_test_sqlite_connection
 
 
 class TestEvaluationManager(unittest.TestCase):
-    """These are tests for the ``EvaluationManager``."""
+    """These are tests for the ``EvalManager``."""
 
     # Constants
     BASE_XML_PATH: str = '../../../res/example-data/student-solutions/Aufgabe_1/Ergebnisse'
@@ -32,13 +34,13 @@ class TestEvaluationManager(unittest.TestCase):
         max_points=.0
     )
 
-    TEST_RESULT: Result = Result(
+    TEST_RESULT: ConstraintResult = ConstraintResult(
         expert_element_label='expert_model_element',
         student_element_label='student_model_element',
         expert_element_type='expert_type',
         student_element_type='student_type',
         rule_id='R00000',
-        result_category=ResultCategory.CORRECT,
+        result_category=ConstraintResultCategory.CORRECT,
         points=100.0,
         feedback_message='You\'re the best!',
         evaluation_id=TEST_AUTO_EVAL.evaluation_id
@@ -50,15 +52,16 @@ class TestEvaluationManager(unittest.TestCase):
         init_test_sqlite_connection()
 
         self.test_db_connection = SqliteConnection.get()
-        self.test_eval_manager = EvaluationManager.get()
-
-        pass
+        self.test_eval_manager = EvalManager.get()
 
     def tearDown(self) -> None:
         """Clean up after tests."""
 
         self.test_db_connection.close()
-        EvaluationManager._instance = None
+        SqliteConnection._instance = None
+        TDManager._instance = None
+        EvalManager._instance = None
+        CResultManager._instance = None
 
     def test_insert_evaluations(self):
         """Test EvaluationManagers Function ``insert_evaluation``."""
