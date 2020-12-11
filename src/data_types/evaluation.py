@@ -5,13 +5,13 @@
 This is the module containing the ``Evaluation``.
 """
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from enum import Enum
 from typing import Dict, List, Mapping
 from uuid import uuid4
 
+from data_types.constraintresult import ConstraintResult, ConstraintResultCategory
 from data_types.element_match import ElementMatch, ExpertElement, StudentElement
-from data_types.result import Result, ResultCategory
 
 
 class EvaluationType(Enum):
@@ -31,30 +31,31 @@ class Evaluation:
     expert_model_id: str
 
     # Results
-    results: List[Result]
     total_points: float
     max_points: float
+    results: List[ConstraintResult] = field(default_factory=list)
 
-    evaluation_id: uuid4 = uuid4()
+    evaluation_id: uuid4 = field(default_factory=uuid4)
 
     # Collections
     # TODO: Put this into 'statistics' var?
-    results_by_expert_label: Dict[str, List[Result]] = None
-    results_by_expert_type: Dict[str, List[Result]] = None
-    results_by_student_label: Dict[str, List[Result]] = None
-    results_by_student_type: Dict[str, List[Result]] = None
-    results_by_rule: Dict[str, List[Result]] = None
-    results_by_category: Dict[ResultCategory, List[Result]] = None
-    results_by_expert_element: Dict[ExpertElement, List[Result]] = None
-    results_by_student_element: Dict[StudentElement, List[Result]] = None
+    # TODO: Put this into it's own dataclass?
+    results_by_expert_label: Dict[str, List[ConstraintResult]] = None
+    results_by_expert_type: Dict[str, List[ConstraintResult]] = None
+    results_by_student_label: Dict[str, List[ConstraintResult]] = None
+    results_by_student_type: Dict[str, List[ConstraintResult]] = None
+    results_by_rule: Dict[str, List[ConstraintResult]] = None
+    results_by_category: Dict[ConstraintResultCategory, List[ConstraintResult]] = None
+    results_by_expert_element: Dict[ExpertElement, List[ConstraintResult]] = None
+    results_by_student_element: Dict[StudentElement, List[ConstraintResult]] = None
 
     # Statistics.
     number_of_mmu: int = None  # Number of unique ElementMatches found
-    flag_count: Mapping[ResultCategory, int] = None  # How often was each category flag encountered?
+    flag_count: Mapping[ConstraintResultCategory, int] = None  # How often was each category flag encountered?
     element_points: Mapping[ElementMatch, int] = None  # Sum of the points/ElementMatch
     rule_count: Mapping[str, int] = None  # How often was each rule_id encountered?
     # How often was which rule flagged with which category?
-    categories_by_rule: Mapping[str, Mapping[ResultCategory, int]] = None
+    categories_by_rule: Mapping[str, Mapping[ConstraintResultCategory, int]] = None
 
     def __hash__(self):
         return self.evaluation_id

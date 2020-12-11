@@ -11,7 +11,7 @@ from typing import Dict, List
 from data_types.element_match import ElementMatch, \
     ExpertElement, StudentElement, TypeMatch
 from data_types.evaluation import Evaluation
-from data_types.result import Result, ResultCategory
+from data_types.constraintresult import ConstraintResult, ConstraintResultCategory
 
 
 class StatisticsService:
@@ -42,78 +42,78 @@ class StatisticsService:
         # Adding Collections to evaluation
         # °°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°
 
-        # Collecting results by ExpertLabel A -> [Result]
-        results_by_expert_label: Dict[str, List[Result]] = {}
+        # Collecting results by ExpertLabel A -> [ConstraintResult]
+        results_by_expert_label: Dict[str, List[ConstraintResult]] = {}
         for exp_label, exp_label_results in groupby(
                 evaluation.results, key=lambda r: r.expert_element_label):
             results_by_expert_label[exp_label] = list(exp_label_results)
         evaluation.results_by_expert_label = results_by_expert_label
 
-        # Collecting results by ExpertType B -> [Result]
-        results_by_expert_type: Dict[str, List[Result]] = {}
+        # Collecting results by ExpertType B -> [ConstraintResult]
+        results_by_expert_type: Dict[str, List[ConstraintResult]] = {}
         for exp_type, exp_type_results in groupby(
                 evaluation.results, key=lambda r: r.expert_element_type):
             results_by_expert_type[exp_type] = list(exp_type_results)
         evaluation.results_by_expert_type = results_by_expert_type
 
-        # Collecting results by StudentLabel C -> [Result]
-        results_by_student_label: Dict[str, List[Result]] = {}
+        # Collecting results by StudentLabel C -> [ConstraintResult]
+        results_by_student_label: Dict[str, List[ConstraintResult]] = {}
         for stud_label, stud_label_results in groupby(
                 evaluation.results, key=lambda r: r.student_element_label):
             results_by_student_label[stud_label] = list(stud_label_results)
         evaluation.results_by_student_label = results_by_student_label
 
-        # Collecting results by StudentType D -> [Result]
-        results_by_student_type: Dict[str, List[Result]] = {}
+        # Collecting results by StudentType D -> [ConstraintResult]
+        results_by_student_type: Dict[str, List[ConstraintResult]] = {}
         for stud_type, stud_type_results in groupby(
                 evaluation.results, key=lambda r: r.student_element_type):
             results_by_student_type[stud_type] = list(stud_type_results)
         evaluation.results_by_student_type = results_by_student_type
 
-        # Collecting results by RuleId E -> [Result]
-        results_by_rule: Dict[str, List[Result]] = {}
-        results_categories_by_rules: Dict[str, Dict[ResultCategory, List[Result]]] = {}
+        # Collecting results by RuleId E -> [ConstraintResult]
+        results_by_rule: Dict[str, List[ConstraintResult]] = {}
+        results_categories_by_rules: Dict[str, Dict[ConstraintResultCategory, List[ConstraintResult]]] = {}
         for rule_id, rule_results in groupby(evaluation.results, key=lambda r: r.rule_id):
             rule_results = list(rule_results)
             results_by_rule[rule_id] = rule_results
 
-            # Collecting results by ResultCategory E -> (F -> [Result])
-            rule_results_by_category: Dict[ResultCategory, List[Result]] = {}
+            # Collecting results by ConstraintResultCategory E -> (F -> [ConstraintResult])
+            rule_results_by_category: Dict[ConstraintResultCategory, List[ConstraintResult]] = {}
             for cat, res in groupby(rule_results, key=lambda r: r.result_category):
                 rule_results_by_category[cat] = list(res)
             results_categories_by_rules[rule_id] = rule_results_by_category
         evaluation.results_by_rule = results_by_rule
         evaluation.results_categories_by_rules = results_categories_by_rules
 
-        # Collecting results by ResultCategory F -> [Result]
-        results_by_category: Dict[ResultCategory, List[Result]] = {}
+        # Collecting results by ConstraintResultCategory F -> [ConstraintResult]
+        results_by_category: Dict[ConstraintResultCategory, List[ConstraintResult]] = {}
         for category, category_results in groupby(evaluation.results, key=lambda r: r.result_category):
             results_by_category[category] = list(category_results)
         evaluation.results_by_category = results_by_category
 
-        # Collecting results by ExpertElement (A, B) -> [Result]
-        results_by_expert_element: Dict[ExpertElement, List[Result]] = {}
+        # Collecting results by ExpertElement (A, B) -> [ConstraintResult]
+        results_by_expert_element: Dict[ExpertElement, List[ConstraintResult]] = {}
         for exp, exp_results in groupby(evaluation.results, key=lambda r: (
                 r.expert_element_label, r.expert_element_type)):
             results_by_expert_element[ExpertElement(*exp)] = list(exp_results)
         evaluation.results_by_expert_element = results_by_expert_element
 
-        # Collecting results by StudentElement (C, D) -> [Result]
-        results_by_student_element: Dict[StudentElement, List[Result]] = {}
+        # Collecting results by StudentElement (C, D) -> [ConstraintResult]
+        results_by_student_element: Dict[StudentElement, List[ConstraintResult]] = {}
         for stud, stud_results in groupby(evaluation.results, key=lambda r: (
                 r.student_element_label, r.student_element_type)):
             results_by_student_element[StudentElement(*stud)] = list(stud_results)
         evaluation.results_by_student_element = results_by_student_element
 
-        # Collecting results by StudentElement (B, C) -> [Result]
-        results_by_type_match: Dict[TypeMatch, List[Result]] = {}
+        # Collecting results by StudentElement (B, C) -> [ConstraintResult]
+        results_by_type_match: Dict[TypeMatch, List[ConstraintResult]] = {}
         for type_match, type_match_results in groupby(evaluation.results, key=lambda r: (
                 r.expert_element_type, r.student_element_type)):
             results_by_type_match[TypeMatch(*type_match)] = list(type_match_results)
         evaluation.results_by_type_match = results_by_type_match
 
-        # Collecting results by ElementMatch (A, B, C, D) -> [Result]
-        results_by_mmu: Dict[ElementMatch, List[Result]] = {}
+        # Collecting results by ElementMatch (A, B, C, D) -> [ConstraintResult]
+        results_by_mmu: Dict[ElementMatch, List[ConstraintResult]] = {}
         for element_match, element_match_results in groupby(
                 evaluation.results, key=lambda r: (
                         r.expert_element_label, r.expert_element_type,
