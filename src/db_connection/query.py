@@ -6,7 +6,7 @@ This is the module that contains the ``Query``.
 """
 
 from dataclasses import dataclass
-from typing import Any, List, Union
+from typing import Any, List, Mapping, Union
 
 from db_connection import sqlite_convert
 from db_connection.db_column import DbColumn, get_column_names
@@ -60,7 +60,7 @@ class Query:
         resolved_query: str = self._base_query
 
         if len(self._filters) > 0:
-            resolved_query += f" WHERE {'AND '.join([f.resolve() for f in self._filters])}"
+            resolved_query += f" WHERE {' AND '.join([f.resolve() for f in self._filters])}"
         if self._limit is not None and isinstance(self._limit, int):
             resolved_query += f" LIMIT {self._limit}"
         if self._offset is not None and isinstance(self._offset, int):
@@ -101,11 +101,11 @@ class INSERTQuery(Query):
         insert_query += f"{', '.join(column_names)}) "
         insert_query += "VALUES "
 
-        for dataclass_item in values:
+        for item in values:
 
             item_values: List[Any] = []
             for column_name in column_names:
-                item_value = dataclass_item.__dict__[column_name]
+                item_value = item.__dict__[column_name]
                 item_values.append(conversion_function(item_value))
 
             insert_query += f"({', '.join(item_values)}),"
@@ -130,4 +130,20 @@ class SELECTQuery(Query):
                             f"FROM {db_table.table_name}"
         super(SELECTQuery, self).__init__(db_table, select_query)
 
-# TODO: Add delete Query
+
+class UPDATEQuery(Query):
+    """This is a database ``UPDATE``."""
+
+    def __init__(self, db_table: DbTable, item: dataclass, conversion_function: callable = sqlite_convert):
+        """Create a new UPDATE Query."""
+
+        col_names: List[str] = get_column_names(db_table.columns)
+        updates: Mapping[str, str] = {
+            col_name: conversion_function(item.__dict__[col_name])
+            for col_name in col_names
+        }
+        update_query: str = f"UPDATE {db_table.table_name} SET " + \
+                            f"{', '.join([f'{key} = {value}' for key, value in updates.items()])}"
+        super(UPDATEQuery, self).__init__(db_table, update_query)
+
+        # TODO: Add delete Query

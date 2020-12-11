@@ -9,7 +9,7 @@ from typing import Any
 from uuid import UUID
 
 from data_types.evaluation import EvaluationType
-from data_types.result import ResultCategory
+from data_types.constraintresult import ConstraintResultCategory
 
 DB_PATH: str = "../res/inloomqt-res/database.db"
 VERBOSITY = 5
@@ -31,7 +31,7 @@ def sqlite_convert(item: Any) -> str:
         return f"\"{str(item)}\""
 
     # Converting Enums
-    elif isinstance(item, ResultCategory):
+    elif isinstance(item, ConstraintResultCategory):
         return f"\"{item.value}\""
     elif isinstance(item, EvaluationType):
         return f"\"{item.value}\""
