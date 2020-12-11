@@ -7,12 +7,23 @@ This is the module containing the XMLAdapter.
 
 import os
 import xml.etree.ElementTree as XML
+from dataclasses import dataclass
 from typing import List
 from uuid import uuid4
 from warnings import warn
 
+from data_types.constraintresult import ConstraintResult, ConstraintResultCategory
 from data_types.evaluation import Evaluation, EvaluationType
-from data_types.result import Result, ResultCategory
+
+
+@dataclass
+class XMLAdapterResult:
+    """This is an XMLAdapterResult"""
+
+    evaluation: Evaluation
+    meta_model_type: str
+    mcs_id: str
+    mcs_version: str
 
 
 class XMLAdapter:
@@ -75,7 +86,7 @@ class XMLAdapter:
     meta_model_type: str
     mcs_id: str
     mcs_version: str
-    results: List[Result]
+    results: List[ConstraintResult]
     student_points: float
     max_points: float
 
@@ -199,13 +210,13 @@ class XMLAdapter:
 
         # Converting the found result data
         for xml_result in xml_results:
-            self.results.append(Result(
+            self.results.append(ConstraintResult(
                 expert_element_label=str(xml_result.find(self.EXP_OBJ_TAG).text),
                 student_element_label=str(xml_result.find(self.STUD_OBJ_TAG).text),
                 expert_element_type=str(xml_result.find(self.EXP_TYPE_TAG).text),
                 student_element_type=str(xml_result.find(self.STUD_TYPE_TAG).text),
                 rule_id=str(xml_result.find(self.RULE_TAG).text),
-                result_category=ResultCategory[str(xml_result.find(self.CATEGORY_TAG).text)],
+                result_category=ConstraintResultCategory[str(xml_result.find(self.CATEGORY_TAG).text)],
                 points=float(xml_result.find(self.RESULT_POINTS_TAG).text),
                 feedback_message=str(xml_result.find(self.MESSAGE_TAG).text)
             ))
@@ -217,7 +228,7 @@ class XMLAdapter:
             xml_path: str,
             eval_type: EvaluationType = EvaluationType.AUTOMATIC,
             evaluator: str = 'INLOOM'
-    ) -> Evaluation:
+    ) -> XMLAdapterResult:
         """Create an ``Evaluation`` from the contents of the xml supplied."""
 
         xml_adapter = XMLAdapter(xml_path)
@@ -227,15 +238,19 @@ class XMLAdapter:
         for result in xml_adapter.results:
             result.evaluation_id = evaluation_id
 
-        return Evaluation(
-            type=eval_type,
-            evaluator=evaluator,
-            student_model_id=xml_adapter.stud_model_id,
-            expert_model_id=xml_adapter.exp_model_id,
-            results=xml_adapter.results,
-            total_points=xml_adapter.student_points,
-            max_points=xml_adapter.max_points,
-            evaluation_id=evaluation_id,
+        return XMLAdapterResult(
+            evaluation=Evaluation(
+                type=eval_type,
+                evaluator=evaluator,
+                student_model_id=xml_adapter.stud_model_id,
+                expert_model_id=xml_adapter.exp_model_id,
+                results=xml_adapter.results,
+                total_points=xml_adapter.student_points,
+                max_points=xml_adapter.max_points,
+                evaluation_id=evaluation_id),
+            meta_model_type=xml_adapter.meta_model_type,
+            mcs_id=xml_adapter.mcs_id,
+            mcs_version=xml_adapter.mcs_version
         )
 
     @staticmethod
@@ -243,17 +258,17 @@ class XMLAdapter:
             directory_path: str,
             eval_type: EvaluationType = EvaluationType.AUTOMATIC,
             evaluator: str = 'INLOOM'
-    ) -> List[Evaluation]:
+    ) -> List[XMLAdapterResult]:
         """Create a list of ``Evaluations`` from all valid XML files in a directory."""
 
-        evaluations: List[Evaluation] = []
+        results: List[XMLAdapterResult] = []
 
         for file in os.listdir(directory_path):
             if not file.endswith('.xml'):
                 warn(f'Found file: "{file}" is skipped since it\'s no .xml file!')
 
             try:
-                evaluations.append(XMLAdapter.eval_from_xml(
+                results.append(XMLAdapter.eval_from_xml(
                     xml_path=os.path.join(directory_path, file),
                     eval_type=eval_type,
                     evaluator=evaluator
@@ -261,4 +276,4 @@ class XMLAdapter:
             except (KeyError, XML.ParseError):
                 warn(f'Found file: "{file}" seems to be invalid!')
 
-        return evaluations
+        return results
