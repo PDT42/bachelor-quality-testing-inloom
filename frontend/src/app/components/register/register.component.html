@@ -1,0 +1,81 @@
+<div class="container">
+  <div class="title-container">
+    <span class="title">Register</span>
+  </div>
+  <mat-tab-group>
+    <mat-tab label="TestDataSets">
+      <div class="interactions">
+        <div class="option-list">
+          <div [routerLink]="'/eval/man/register'" class="option-list-item">
+            <span class="option-list-item-text">
+              Register a new TestDataSet
+            </span>
+          </div>
+        </div>
+      </div>
+      <mat-divider class="divider"></mat-divider>
+      <h4 class="subtitle">TestDataSets on Record:</h4>
+      <p class="description">
+        "These are the TestDataSets registered in the application database. Each
+        TestDataSet is based on one student solution. A student solution is
+        unique, just like each TestDataSet is unique. For each student solution
+        there can exist multiple manual and automatic evaluations, which is why
+        each TestDataSet holds a list of both: ManEvals and AutoEvals. When
+        "running" the test case, each of the ManEvals is considered, while only
+        the AutoEval, that was recorded last is processed."
+      </p>
+      <div class="box">
+        <app-listtestdatasets></app-listtestdatasets>
+      </div>
+    </mat-tab>
+    <mat-tab label="Exercises">
+      <div class="interactions">
+        <div class="option-list">
+          <div [routerLink]="'/exercise/register'" class="option-list-item">
+            <span class="option-list-item-text">
+              Register new Exercise
+            </span>
+          </div>
+        </div>
+      </div>
+      <mat-divider class="divider"></mat-divider>
+      <h4 class="subtitle">Exercises on Record:</h4>
+      <p class="description">
+        "These are the exercises recorded in the application database.
+        Each of the student solutions (rather obviously) aims to solve
+        a given task, for which there is at least one optimal solution.
+        When grading the student solution, the evaluator compares it to
+        an expert solution and awards points, if the required features
+        are part of the student solution. For one task, there can exist
+        multiple expert/optimal solutions, since modelling is not an
+        exact science."
+      </p>
+      <div class="box">
+        <app-list-exercises></app-list-exercises>
+      </div>
+    </mat-tab>
+    <mat-tab label="Evaluators">
+      <div class="interactions">
+        <div class="option-list">
+          <div [routerLink]="'/evaluator/register'" class="option-list-item">
+            <span class="option-list-item-text">
+              Register new Evaluator
+            </span>
+          </div>
+        </div>
+      </div>
+      <mat-divider class="divider"></mat-divider>
+      <h4 class="subtitle">Registered Evaluators:</h4>
+      <p class="description">
+        "Every evaluator has his/her/their own style. Some grade more
+        harshly, some are more lenient. Some have good, some, bad days.
+        Thus, the manual evaluations of two different evaluators are
+        not equal and should not be treated as such. These are the
+        evaluators registered in the system."
+      </p>
+      <div class="box">
+        <app-list-evaluators></app-list-evaluators>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</div>

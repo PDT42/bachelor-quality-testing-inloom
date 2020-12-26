@@ -1,0 +1,31 @@
+<div class="container">
+  <span class="title">Register a new Evaluator</span>
+
+  <mat-divider></mat-divider>
+
+  <form [formGroup]="evaluatorForm" class="form">
+      <mat-form-field class="form-row">
+        <mat-label>First Name</mat-label>
+        <input
+          matInput
+          placeholder="Firstname"
+          formControlName="firstnameCtrl"
+          required
+        />
+      </mat-form-field>
+
+      <mat-form-field class="form-row">
+        <mat-label>Last Name</mat-label>
+        <input
+          matInput
+          placeholder="Lastname"
+          formControlName="lastnameCtrl"
+          required
+        />
+      </mat-form-field>
+
+      <div class="button-row">
+        <button mat-raised-button color="primary" (click)="onSubmit()">Save</button>
+      </div>
+  </form>
+</div>

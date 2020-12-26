@@ -1,0 +1,36 @@
+<div class="exercise-list">
+  <div *ngFor="let item of exerciseService.getExercises() | async">
+    <div
+      class="exercise-card"
+      [routerLink]="'/testdataset'"
+      [queryParams]="{ id: item.exercise_id }"
+    >
+      <span class="exercise-card-header">
+        Exercise: {{ item.exercise_id }}
+      </span>
+      <hr />
+      <div class="exercise-card-body">
+        <div class="exercise-literals">
+          <div class="exercise-literal">
+            <span class="exercise-literal-label">
+              Semester:
+            </span>
+            <span class="exercise-literal-value">
+              {{ item.semester }} - {{ item.year }}
+            </span>
+          </div>
+          <div class="exercise-literal">
+            <span class="exercise-literal-label">Meta-Model-Type:</span>
+            <span class="exercise-literal-value">
+              {{ item.meta_model_type }}
+            </span>
+          </div>
+          <div class="exercise-literal">
+            <span class="exercise-literal-label">Exam Type:</span>
+            <span class="exercise-literal-value">{{ item.type }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

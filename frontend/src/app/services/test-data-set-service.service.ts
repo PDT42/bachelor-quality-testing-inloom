@@ -1,28 +1,27 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
-import { TestDataSet } from '../interfaces/test-data-set';
+import { TestDataSet } from '../classes/test-data-set';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TestDataSetService {
   testDataSets: BehaviorSubject<TestDataSet[]>;
-  fetched: Boolean = false;
+  testDataSetsFetched: Boolean = false;
 
   constructor(private http: HttpClient) {
-    console.log("init")
     this.testDataSets = new BehaviorSubject<TestDataSet[]>([]);
   }
 
   getTestDataSet(): Subject<TestDataSet[]> {
-    if (!this.fetched) this.fetchData();
+    if (!this.testDataSetsFetched) this.fetchData();
 
     return this.testDataSets;
   }
 
   fetchData(): void {
-    this.fetched = true;
+    this.testDataSetsFetched = true;
 
     this.http
       .get('http://localhost:3001/testdatasets')

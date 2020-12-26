@@ -1,0 +1,355 @@
+<div class="container">
+  <mat-horizontal-stepper linear class="stepper" #stepper>
+    <!--  -->
+    <!-- Upload Student Solution Part -->
+
+    <mat-step [stepControl]="fileForm" label="Upload the Evaluation PDF">
+      <form [formGroup]="fileForm">
+        <p class="description">
+          Upload an image to use for reference while recording the manuell
+          evaluation in digital form.
+        </p>
+        <mat-divider></mat-divider>
+        <div class="wizard-page">
+          <div class="wizard-page-body">
+            <input
+              type="file"
+              (change)="fileChanged($event.target.files[0])"
+              accept=".pdf"
+            />
+            <div class="wizard-buttons">
+              <button mat-raised-button matStepperNext>Next</button>
+            </div>
+          </div>
+          <div class="pdf-view">
+            <pdf-viewer [src]="evalFile" [render-text]="true"></pdf-viewer>
+          </div>
+        </div>
+      </form>
+    </mat-step>
+
+    <!--  -->
+    <!-- Evaluation Id Part -->
+    <!--  -->
+
+    <mat-step [stepControl]="evalIdentForm" label="Identify the Evaluation">
+      <form [formGroup]="evalIdentForm">
+        <p class="description">
+          Enter the identifying attributes of the student solution.
+        </p>
+
+        <mat-divider></mat-divider>
+
+        <div class="wizard-page">
+          <div class="wizard-page-body">
+            <mat-form-field>
+              <mat-label>Exercise Id</mat-label>
+              <mat-select
+                formControlName="exerciseIdCtrl"
+                (valueChange)="exerciseChanged()"
+                required
+              >
+                <mat-option
+                  *ngFor="
+                    let exercise of exerciseService.getExercises() | async
+                  "
+                  value="{{ exercise.exercise_id }}"
+                >
+                  {{ exercise.exercise_id }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field>
+              <mat-label>Evaluator</mat-label>
+              <mat-select
+                placeholder="Evaluator"
+                formControlName="evaluatorIdCtrl"
+                required
+              >
+                <mat-option
+                  *ngFor="
+                    let evaluator of evaluatorService.getEvaluators() | async
+                  "
+                  value="evaluator.evaluator_id"
+                  >{{ evaluator.first_name }}
+                  {{ evaluator.last_name }}</mat-option
+                >
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field>
+              <mat-label>Student Id</mat-label>
+              <input
+                matInput
+                placeholder="Some student id .."
+                formControlName="studentIdCtrl"
+                required
+              />
+            </mat-form-field>
+
+            <mat-form-field>
+              <mat-label>Expert Solution Id</mat-label>
+              <mat-select
+                matInput
+                formControlName="expertSolIdCtrl"
+                required
+              >
+                <mat-option
+                  *ngFor="let item of expert_solutions"
+                  value="item.expert_solution_id"
+                >
+                  {{ item.expert_solution_id }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <div class="wizard-buttons">
+              <button mat-raised-button matStepperNext>Next</button>
+            </div>
+          </div>
+          <div class="pdf-view">
+            <pdf-viewer [src]="evalFile" [render-text]="true"></pdf-viewer>
+          </div>
+        </div>
+      </form>
+    </mat-step>
+
+    <!--  -->
+    <!-- Metadata Part -->
+    <!--  -->
+
+    <mat-step [stepControl]="metadataForm" label="Specify Metadata">
+      <form [formGroup]="metadataForm">
+        <p class="description">Enter required Meta Data.</p>
+
+        <mat-divider></mat-divider>
+
+        <div class="wizard-page">
+          <div class="wizard-page-body">
+            <mat-form-field>
+              <mat-label>Meta Model Type</mat-label>
+              <input
+                matInput
+                placeholder="Some meta model type .."
+                formControlName="metaModelTypeCtrl"
+                required
+              />
+            </mat-form-field>
+
+            <mat-form-field>
+              <mat-label>Maximum Achievable Points</mat-label>
+              <input
+                matInput
+                placeholder="Maximum points .."
+                formControlName="maxPointsCtrl"
+                required
+              />
+            </mat-form-field>
+
+            <mat-form-field>
+              <mat-label>Points Awarded (Total)</mat-label>
+              <input
+                matInput
+                placeholder="Total points achieved by this solution .."
+                formControlName="totalPointsCtrl"
+                required
+              />
+            </mat-form-field>
+
+            <div class="wizard-buttons">
+              <button mat-raised-button matStepperNext>Next</button>
+            </div>
+          </div>
+
+          <div class="pdf-view">
+            <pdf-viewer [src]="evalFile" [render-text]="true"></pdf-viewer>
+          </div>
+        </div>
+      </form>
+    </mat-step>
+
+    <!--  -->
+    <!-- Results Part -->
+    <!--  -->
+
+    <mat-step [stepControl]="resultsForm" label="Add Results">
+      <form [formGroup]="resultsForm">
+        <p class="description">
+          Describe the feature you grade with a result by providing the listed
+          attributes. Press the Add button and repeat the process, until the sum
+          of points awarded for the results you recorded, matches the total
+          points you entered in the previous step.
+        </p>
+
+        <mat-divider></mat-divider>
+
+        <div class="wizard-page">
+          <div class="wizard-page-body">
+            <mat-form-field>
+              <mat-label>Expert Element Label</mat-label>
+              <input
+                matInput
+                placeholder="Element label in expert solution .."
+                formControlName="expElCtrl"
+                required
+              />
+            </mat-form-field>
+
+            <mat-form-field>
+              <mat-label>Expert Element Type</mat-label>
+              <input
+                matInput
+                placeholder="Element type in expert solution .."
+                formControlName="expTypeCtrl"
+                required
+              />
+            </mat-form-field>
+
+            <mat-form-field>
+              <mat-label>Student Element Label</mat-label>
+              <input
+                matInput
+                placeholder="Element label in student solution .."
+                formControlName="stdElCtrl"
+                required
+              />
+            </mat-form-field>
+
+            <mat-form-field>
+              <mat-label>Student Element Type</mat-label>
+              <input
+                matInput
+                placeholder="Element type in student solution .."
+                formControlName="stdTypeCtrl"
+                required
+              />
+            </mat-form-field>
+
+            <mat-form-field>
+              <mat-label>Graded Feature</mat-label>
+              <input
+                matInput
+                placeholder="Feature graded by this result .."
+                formControlName="featureCtrl"
+                required
+              />
+            </mat-form-field>
+
+            <mat-form-field>
+              <mat-label>Result Category</mat-label>
+              <mat-select formControlName="resCatCtrl" required>
+                <mat-option value="C">CORRECT</mat-option>
+                <mat-option value="E">ERROR</mat-option>
+                <mat-option value="W">WARNING</mat-option>
+                <mat-option value="M">MISING</mat-option>
+                <mat-option value="I">INFO</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field>
+              <mat-label>Awarded Points</mat-label>
+              <input
+                matInput
+                placeholder="Points awarded for this result .."
+                formControlName="pointsCtrl"
+                required
+              />
+            </mat-form-field>
+
+            <mat-form-field>
+              <mat-label>Feedback Message</mat-label>
+              <input
+                matInput
+                placeholder="Some feedback message .."
+                formControlName="feedbackCtrl"
+              />
+            </mat-form-field>
+
+            <div class="wizard-buttons">
+              <div class="result-point-sum">
+                <span class="result-point-sum-label">
+                  {{ result_points_added }} / {{ total_points }}
+                </span>
+              </div>
+
+              <button
+                mat-raised-button
+                type="button"
+                (click)="addResult()"
+                [disabled]="resultsForm.invalid"
+              >
+                Add Result
+              </button>
+
+              <button
+                mat-raised-button
+                type="button"
+                (click)="onSubmit()"
+                color="primary"
+              >
+                Finish
+              </button>
+            </div>
+
+            <mat-divider></mat-divider>
+
+            <div *ngFor="let result of results">
+              <div class="card result-card">
+                <div class="card-body">
+                  <div class="result-card-row">
+                    <div class="result-card-col">
+                      <div
+                        class="result-category-icon"
+                        [style.background]="
+                          result_category_colors[result.result_category]
+                        "
+                      >
+                        <span>{{ result.result_category }}</span>
+                      </div>
+                    </div>
+
+                    <div class="result-card-col" style="width: 40%">
+                      <div class="info-row">
+                        <span class="info-label">Expert Element:</span>
+                        <span class="info-value"
+                          >{{ result.expert_element_type }} -
+                          {{ result.expert_element_label }}</span
+                        >
+                      </div>
+                      <div class="info-row">
+                        <span class="info-label">Graded Feature:</span>
+                        <span class="info-value">{{
+                          result.graded_feature_id
+                        }}</span>
+                      </div>
+                    </div>
+
+                    <div class="result-card-col" style="width: 40%">
+                      <div class="info-row">
+                        <span class="info-label">Student Element:</span>
+                        <span class="info-type"
+                          >{{ result.student_element_type }} -
+                          {{ result.student_element_label }}</span
+                        >
+                      </div>
+
+                      <div class="info-row">
+                        <span class="info-label">Awarded Points:</span>
+                        <span class="info-value">{{ result.points }}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="pdf-view">
+            <pdf-viewer [src]="evalFile" [render-text]="true"></pdf-viewer>
+          </div>
+        </div>
+      </form>
+    </mat-step>
+  </mat-horizontal-stepper>
+</div>

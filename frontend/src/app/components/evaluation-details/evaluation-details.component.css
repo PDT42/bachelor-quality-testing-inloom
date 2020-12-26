@@ -1,0 +1,90 @@
+.info-container {
+  padding: 12px;
+  flex-flow: row nowrap;
+  border-color: rgba(169, 170, 170, 0.616);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+}
+
+.info-container-title {
+  font-size: 18px;
+}
+
+.card {
+  padding: 8px;
+  flex-flow: row nowrap;
+  border: 1px solid;
+  border-color: rgba(169, 170, 170, 0.616);
+  background-color: rgba(105, 103, 103, 0.151);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+}
+
+.card-body {
+  background-color: white;
+  flex-flow: row nowrap;
+  padding: 6px;
+  padding-inline: 12px;
+}
+
+.info-row {
+  display: flex;
+  flex-flow: row nowrap;
+  margin-top: 4px;
+  margin-bottom: 4px;
+  border-bottom: 1px dotted lightgrey;
+}
+
+.info-label {
+  flex-grow: 1;
+  text-align: start;
+  text-justify: top;
+}
+
+.info-value {
+  flex-grow: 1;
+  text-align: end;
+}
+
+.result-container {
+  display: flex;
+  flex-flow: column nowrap;
+}
+
+.result-card {
+  margin-bottom: 12px;
+}
+
+.result-category-icon {
+  display: flex;
+  width: 40px;
+  height: 40px;
+  margin-right: 5px;
+  margin-top: 7px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid;
+  border-radius: 6px;
+  border-color: rgb(71, 71, 71);
+  font-weight: bold;
+}
+
+.subtitle {
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.description {
+  font-weight: lighter;
+  font-style: oblique;
+  font-size: 16px;
+}
+
+.result-card-row {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-around;
+}
+
+.result-card-col {
+  display: flex;
+  flex-flow: column nowrap;
+}

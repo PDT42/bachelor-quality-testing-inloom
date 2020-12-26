@@ -1,0 +1,5 @@
+<form [formGroup]="fileForm" class="form-group">
+  <label for="file">Choose File: </label>
+  <input required type="file" id="file" (change)="handleFileInput($event.target.files.item(0))">
+  <button type="button" (click)="uploadFile()" [disabled]="fileToUpload==null">Upload</button>
+</form>

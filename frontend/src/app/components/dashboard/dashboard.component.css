@@ -1,0 +1,35 @@
+.container{
+  padding: 10px;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.1);
+  display: flex;
+  flex-flow: column nowrap;
+}
+
+.menu-option{
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.1);
+  margin-top: 8px;
+  padding-top: 32px;
+  padding-bottom: 32px;
+  padding-inline: 24px;
+  display: flex;
+  align-content: center;
+  flex-flow: column;
+}
+
+.menu-option:hover{
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.1);
+  cursor: pointer;
+}
+
+.menu-icon {
+  font-size: 60px;
+  width: parent;
+  align-self: center;
+}
+
+.menu-caption {
+  width: parent;
+  font-size: 22px;
+  align-self: center;
+  text-align: center;
+}

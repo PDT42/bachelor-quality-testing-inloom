@@ -1,0 +1,79 @@
+.test-data-set-list {
+}
+
+.test-data-set-card {
+  margin-top: 8px;
+  margin: 8px;
+  padding: 12px;
+  flex-grow: 1;
+  border: 1px solid;
+  border-color: rgba(169, 170, 170, 0.616);
+  background-color: rgba(105, 103, 103, 0.151);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+}
+
+.test-data-set-card:hover {
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.253);
+  cursor: pointer;
+}
+
+.test-data-card-header {
+  font-size: 18px;
+}
+
+.test-data-set-card-body {
+  display: flex;
+  flex-flow: row nowrap;
+}
+
+.test-data-literals {
+  width: 45%;
+  padding: 6px;
+  padding-inline: 12px;
+  background-color: white;
+  box-shadow: 0 2px 4px 0 rgba(46, 45, 45, 0.185);
+}
+
+.test-data-literal {
+  display: flex;
+  flex-flow: row nowrap;
+  margin-top: 4px;
+  margin-bottom: 4px;
+  border-bottom: 1px dotted lightgrey;
+}
+
+.test-data-literal-label {
+  flex-grow: 1;
+}
+
+.test-data-literal-value {
+  flex-grow: 1;
+  text-align: end;
+}
+
+.test-data-evals {
+  flex-grow: 5;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: stretch;
+}
+
+.test-data-eval-container {
+  flex-grow: 1;
+
+  display: flex;
+  flex-flow: row nowrap;
+}
+
+.test-data-eval {
+  width: 44%;
+  background-color: white;
+  margin-left: 3%;
+  padding: 6px;
+  box-shadow: 0 2px 4px 0 rgba(46, 45, 45, 0.185);
+}
+
+.test-data-eval:hover {
+  box-shadow: 0 4px 8px 0 rgba(22, 18, 18, 0.233);
+  cursor: pointer;
+}

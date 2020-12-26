@@ -23,6 +23,7 @@
     "@angular/router": "~11.0.3",
     "config": "^3.3.3",
     "material-design-icons": "^3.0.1",
+    "ng2-pdf-viewer": "^6.3.2",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.2"

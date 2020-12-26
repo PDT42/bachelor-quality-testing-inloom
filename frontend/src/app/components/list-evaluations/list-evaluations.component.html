@@ -1,0 +1,29 @@
+<div class="evaluation-list">
+  <div *ngFor="let item of evaluations">
+    <div
+      class="evaluation-card"
+      [routerLink]="'/eval'"
+      [queryParams]="{ id: item.evaluation_id }"
+    >
+      <div class="evaluation-card-header-container">
+        <span
+          class="evaluation-card-header"
+          *ngIf="item.evaluation_type == 'M'"
+        >
+          ManEval - Evaluator: {{ item.evaluator_id }}
+        </span>
+        <span
+          class="evaluation-card-header"
+          *ngIf="item.evaluation_type == 'A'"
+        >
+          AutoEval - Evaluator: {{ item.evaluator_id }}
+        </span>
+
+        <span class="evaluation-created-time">
+          Created:
+          {{ formatDate(item.created_time) | date: "yyyy-MM-dd HH:mm" }}
+        </span>
+      </div>
+    </div>
+  </div>
+</div>

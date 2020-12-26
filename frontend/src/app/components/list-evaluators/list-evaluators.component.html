@@ -1,0 +1,9 @@
+<div class="evaluator-list">
+  <div *ngFor="let item of evaluatorService.getEvaluators() | async">
+    <div class="evaluator-card">
+      <span class="evaluator-card-header">
+        Evaluator: {{ item.first_name }} {{ item.last_name }}
+      </span>
+    </div>
+  </div>
+</div>

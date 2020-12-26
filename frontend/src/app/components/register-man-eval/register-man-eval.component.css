@@ -1,0 +1,126 @@
+.container {
+  display: flex;
+  flex-flow: column nowrap;
+}
+
+.stepper {
+  flex-grow: 1;
+}
+
+.wizard-page {
+  display: flex;
+  flex-flow: row nowrap;
+  width: parent;
+}
+
+.wizard-page-body {
+  display: flex;
+  flex-flow: column nowrap;
+  flex-grow: 1;
+  width: 50%;
+  padding-right: 8px;
+}
+
+.description {
+  font-weight: lighter;
+  font-style: oblique;
+  font-size: 16px;
+}
+
+.wizard-buttons {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+}
+
+.result-point-sum {
+  justify-self: flex-start;
+}
+
+.result-point-sum-label {
+
+}
+
+.pdf-view {
+  flex-grow: 1;
+  width: 50%;
+  padding-left: 8px;
+}
+
+.mat-divider {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+button {
+  margin-left: 8px;
+}
+
+.card {
+  padding: 8px;
+  flex-flow: row nowrap;
+  border: 1px solid;
+  border-color: rgba(169, 170, 170, 0.616);
+  background-color: rgba(105, 103, 103, 0.151);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+}
+
+.card-body {
+  background-color: white;
+  flex-flow: row nowrap;
+  padding: 6px;
+  padding-inline: 12px;
+}
+
+.result-card {
+  margin-bottom: 12px;
+}
+
+.card-body {
+  background-color: white;
+  flex-flow: row nowrap;
+  padding: 6px;
+  padding-inline: 12px;
+}
+
+.result-card-row {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-around;
+}
+
+.result-card-col {
+  display: flex;
+  flex-flow: column nowrap;
+}
+
+.result-category-icon {
+  display: flex;
+  width: 40px;
+  height: 40px;
+  margin-right: 5px;
+  margin-top: 7px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid;
+  border-radius: 6px;
+  border-color: rgb(71, 71, 71);
+  font-weight: bold;
+}
+
+.info-row {
+  display: flex;
+  flex-flow: row nowrap;
+  margin-top: 4px;
+  margin-bottom: 4px;
+  border-bottom: 1px dotted lightgrey;
+}
+
+.info-label {
+  flex-grow: 1;
+}
+
+.info-value {
+  flex-grow: 1;
+  text-align: end;
+}

@@ -1,0 +1,68 @@
+<div *ngIf="testDataSet != null; else elseBlock">
+  <div class="container">
+    <div class="title-container">
+      <span class="title">{{ testDataSetTitle }}</span>
+    </div>
+    <mat-tab-group>
+      <mat-tab label="TDS Details">
+        <div class="interactions">
+          <div class="option-list">
+            <div [routerLink]="'/eval/man/register'" class="option-list-item">
+              <span class="option-list-item-text"> Add Manual Evaluation </span>
+            </div>
+            <div [routerLink]="'/eval/auto/register'" class="option-list-item">
+              <span class="option-list-item-text">
+                Add Automatic Evaluation
+              </span>
+            </div>
+          </div>
+        </div>
+        <mat-divider class="divider"></mat-divider>
+      </mat-tab>
+      <mat-tab label="ManEvals">
+        <div class="interactions">
+          <div class="option-list">
+            <div [routerLink]="'/eval/man/register'" class="option-list-item">
+              <span class="option-list-item-text"> Add Manual Evaluation </span>
+            </div>
+          </div>
+        </div>
+        <mat-divider class="divider"></mat-divider>
+        <h4 class="subtitle">ManEvals</h4>
+        <p class="description">
+          "These are the manual evaluations (ManEvals) available in this
+          TestDataSet. There may exist multiple manual evaluations of the same
+          student solution, so this TDS holds a list of manual evaluations. When
+          INLOOM QT performs the comparison of manual and automatic evaluations,
+          all of the manual evaluations are taken into consideration, while only
+          the most recent automatic evaluation is used for reference."
+        </p>
+        <app-list-evaluations
+          testDataSetId="{{ testDataSetId }}"
+          evaluationType="M"
+        ></app-list-evaluations>
+      </mat-tab>
+      <mat-tab label="AutoEvals">
+        <div class="interactions">
+          <div class="option-list">
+            <div [routerLink]="'/eval/auto/register'" class="option-list-item">
+              <span class="option-list-item-text"> Add Automatic Evaluation </span>
+            </div>
+          </div>
+        </div>
+        <mat-divider class="divider"></mat-divider>
+        <h4 class="subtitle">ManEvals</h4>
+        <p class="description">
+          "These are the automatic evaluations."
+        </p>
+        <app-list-evaluations
+          testDataSetId="{{ testDataSetId }}"
+          evaluationType="A"
+        ></app-list-evaluations>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>
+<ng-template #elseBlock>
+  <mat-progress-spinner></mat-progress-spinner>
+</ng-template>

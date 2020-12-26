@@ -1,0 +1,38 @@
+<div class="test-data-set-list">
+  <div *ngFor="let item of tdsService.getTestDataSet() | async">
+    <div
+      class="test-data-set-card"
+      [routerLink]="'/testdataset'"
+      [queryParams]="{ id: item.test_data_set_id }"
+    >
+      <span class="test-data-card-header">
+        Exercise: {{ item.exercise_id }} - Student: {{ item.student_id }}
+      </span>
+      <hr />
+      <div class="test-data-set-card-body">
+        <div class="test-data-literals">
+          <div class="test-data-literal">
+            <span class="test-data-literal-label">
+              Employed Expert-Solution:
+            </span>
+            <span class="test-data-literal-value">
+              {{ item.expert_solution_id }}
+            </span>
+          </div>
+          <div class="test-data-literal">
+            <span class="test-data-literal-label">Meta-Model-Type:</span>
+            <span class="test-data-literal-value">
+              {{ item.meta_model_type }}
+            </span>
+          </div>
+          <div class="test-data-literal">
+            <span class="test-data-literal-label">Equivalence Rating:</span>
+            <span class="test-data-literal-value"> nix </span>
+
+            <!-- TODO: Add Rating here  -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
