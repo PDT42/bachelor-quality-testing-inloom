@@ -2,66 +2,46 @@
 :Author: Paul Erlenwein
 :Since: 2020/11/20
 
-This is the module containing the ``Evaluation``.
+This is the module containing the ``Evaluations``.
 """
 
 from dataclasses import dataclass, field
-from enum import Enum
-from typing import Dict, List, Mapping
+from datetime import datetime
+from typing import Any, Dict, List, Union
 from uuid import uuid4
 
-from data_types.constraintresult import ConstraintResult, ConstraintResultCategory
-from data_types.element_match import ElementMatch, ExpertElement, StudentElement
-
-
-class EvaluationType(Enum):
-    """These are the possible Evaluation types."""
-
-    MANUAL = 'M'
-    AUTOMATIC = 'A'
+from data_types.result import Result
 
 
 @dataclass
 class Evaluation:
-    """This is the representation of an Evaluation."""
+    """This is the representation of an AutoEval."""
 
-    type: EvaluationType
-    evaluator: str
-    student_model_id: str
-    expert_model_id: str
+    exercise_id: str
+    expert_solution_id: str
+    student_id: str
 
-    # Results
-    total_points: float
-    max_points: float
-    results: List[ConstraintResult] = field(default_factory=list)
+    evaluation_type: str
 
-    evaluation_id: uuid4 = field(default_factory=uuid4)
+    test_data_set_id: str
 
-    # Collections
-    # TODO: Put this into 'statistics' var?
-    # TODO: Put this into it's own dataclass?
-    results_by_expert_label: Dict[str, List[ConstraintResult]] = None
-    results_by_expert_type: Dict[str, List[ConstraintResult]] = None
-    results_by_student_label: Dict[str, List[ConstraintResult]] = None
-    results_by_student_type: Dict[str, List[ConstraintResult]] = None
-    results_by_rule: Dict[str, List[ConstraintResult]] = None
-    results_by_category: Dict[ConstraintResultCategory, List[ConstraintResult]] = None
-    results_by_expert_element: Dict[ExpertElement, List[ConstraintResult]] = None
-    results_by_student_element: Dict[StudentElement, List[ConstraintResult]] = None
+    meta_model_type: str = None
+    total_points: float = None
+    max_points: float = None
 
-    # Statistics.
-    number_of_mmu: int = None  # Number of unique ElementMatches found
-    flag_count: Mapping[ConstraintResultCategory, int] = None  # How often was each category flag encountered?
-    element_points: Mapping[ElementMatch, int] = None  # Sum of the points/ElementMatch
-    rule_count: Mapping[str, int] = None  # How often was each rule_id encountered?
-    # How often was which rule flagged with which category?
-    categories_by_rule: Mapping[str, Mapping[ConstraintResultCategory, int]] = None
+    file_path: str = None
+
+    results: List[Result] = field(default_factory=list)
+
+    evaluation_id: str = field(default_factory=lambda: str(uuid4()))
+    created_time: int = field(default_factory=lambda: int(datetime.now().timestamp()))
 
     def __hash__(self):
         return self.evaluation_id
 
     def __str__(self):
-        return f"{self.type.value}-Eval-Model-{self.student_model_id}"
+        return f"{self.meta_model_type}-{self.exercise_id}-" + \
+               f"{self.student_id}-{self.expert_solution_id}"
 
     def __repr__(self):
         return self.__str__()
@@ -70,10 +50,105 @@ class Evaluation:
         """Check if ``self`` is ``equal`` to other."""
 
         return True if all([
-            isinstance(other, Evaluation),
-            other.type == self.type,
-            other.evaluator == self.evaluator,
-            other.expert_model_id == self.expert_model_id,
-            other.student_model_id == self.student_model_id,
-            other.max_points == self.max_points  # TODO: Is this necessary?
+            other.exercise_id == self.exercise_id,
+            other.expert_solution_id == self.expert_solution_id,
+            other.student_id == self.student_id,
+            other.meta_model_type == self.meta_model_type,
+            other.evaluation_type == self.evaluation_type
         ]) else False
+
+    @staticmethod
+    def from_child(child: Union['AutoEval', 'ManEval', dataclass]):
+        """Create an Evaluation from an instance of one of its children."""
+
+        return Evaluation(**{
+            key: child.__dict__[key] for key in child.__dataclass_fields__.keys()
+        })
+
+
+class AutoEval(Evaluation):
+    """This is the representation of an AutoEval."""
+
+    mcs_identifier: str
+    mcs_version: str
+
+    def __init__(self, **kwargs):
+        """Create a new ``ManEval``."""
+
+        kwargs.update({'evaluation_type': 'A'})
+
+        self.mcs_identifier = kwargs.pop('mcs_identifier', False)
+        self.mcs_version = kwargs.pop('mcs_version', False)
+        self.constraint_results = kwargs.pop('constraint_results', False)
+
+        super(AutoEval, self).__init__(**kwargs)
+
+    def __str__(self):
+        return f"Auto-Eval-{super().__str__()}"
+
+    def __eq__(self, other):
+        """Check if ``self`` is ``equal`` to other."""
+
+        return True if all([
+            isinstance(other, AutoEval),
+            other.mcs_identifier == self.mcs_identifier,
+            other.mcs_version == self.mcs_version
+        ]) and super().__eq__(other) else False
+
+
+class ManEval(Evaluation):
+    """This is the representation of a manual
+    evaluation of a student model."""
+
+    evaluator_id: str
+
+    def __init__(self, **kwargs):
+        """Create a new ``ManEval``."""
+
+        kwargs.update({'evaluation_type': 'M'})
+
+        self.evaluator_id = kwargs.pop('evaluator_id', False)
+
+        if not self.evaluator_id:
+            raise KeyError('MISSING KEY in result data: \'evaluator_id\'')
+
+        super(ManEval, self).__init__(**kwargs)
+
+    def __hash__(self):
+        return self.evaluation_id
+
+    def __str__(self):
+        return f"Man-Eval-{super().__str__()}"
+
+    def __repr__(self):
+        return self.__str__()
+
+    def __eq__(self, other):
+        """Check if ``self`` is ``equal`` to other."""
+
+        return True if all([
+            isinstance(other, ManEval),
+            other.evaluator_id == self.evaluator_id
+        ]) and super().__eq__(other) else False
+
+    @staticmethod
+    def from_dict(man_eval_dict: Dict[str, Any], test_data_set_id):
+        """Get a new ManEval from a dict."""
+
+        eval_id: str = str(uuid4())
+
+        return ManEval(
+            evaluation_id=eval_id,
+            exercise_id=str(man_eval_dict['exercise_id']),
+            expert_solution_id=str(man_eval_dict['expert_solution_id']),
+            student_id=str(man_eval_dict['student_id']),
+            evaluator_id=str(man_eval_dict['evaluator_id']),
+            evaluation_type=str(man_eval_dict['evaluation_type']),
+            test_data_set_id=test_data_set_id,
+            meta_model_type=str(man_eval_dict['meta_model_type']),
+            total_points=float(man_eval_dict['total_points']),
+            max_points=float(man_eval_dict['max_points']),
+            results=[
+                Result.from_dict(res, eval_id) for res in man_eval_dict['results']
+            ])
+

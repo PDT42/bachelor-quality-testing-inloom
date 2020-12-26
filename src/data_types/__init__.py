@@ -4,4 +4,3 @@
 
 This is the ``data_types`` package.
 """
-
