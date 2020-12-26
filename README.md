@@ -12,11 +12,11 @@
 | 50 | Erstentwurf: Softwareentwurf | Implementierung Reference Data Input | Nein |
 | 51 | Erstentwurf: Softwareentwurf | Implementierung Reference Data Input | Ja |
 | 52 | Erstentwurf: Softwareentwurf | Implementierung TestEngine | Nein |
-| 53 | Erstentwurf: Implementierung | Implementierung TestEngine | Ja |
-| 01 | Erstentwurf: Implementierung | Implementierung Output Visualization | Nein |
-| 02 | Finalisierung: Implementierung | Implementierung TestEngine | Ja |
-| 03 | Erstentwurf: Evaluation | Finalisierung | Nein |
-| 04 | Finalisierung: Evaluation, Review | Finalisierung | Ja |
+| 53 | Erstentwurf: Implementierung | Implementierung TestEngine | Nein |
+| 01 | Erstentwurf: Implementierung | Implementierung Output Visualization | 08.01.2021 |
+| 02 | Finalisierung: Implementierung | Implementierung TestEngine | Nein |
+| 03 | Erstentwurf: AutoEval | Finalisierung | Ja |
+| 04 | Finalisierung: AutoEval, Review | Finalisierung | Nein |
 | 05 | Review | Review | Nein |
 
 [//]: # (LINKS)
