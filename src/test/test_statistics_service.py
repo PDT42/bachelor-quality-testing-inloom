@@ -7,8 +7,9 @@ These are tests for the ``StatisticsService``.
 
 import unittest
 from typing import List
+from uuid import uuid4
 
-from data_types.evaluation import Evaluation
+from data_types.evaluation import AutoEval
 from statistics_service import StatisticsService
 from xml_adapter import XMLAdapter
 
@@ -22,17 +23,16 @@ class TestStatisticsService(unittest.TestCase):
     STUDENT_MODEL_XML: str = f'{BASE_XML_PATH}/OUTPUT_ExSS2018_student1.xml'
 
     # Variables
-    expert_eval: Evaluation
-    student_eval: Evaluation
-    test_evals: List[Evaluation]
+    expert_eval: AutoEval
+    student_eval: AutoEval
 
     def setUp(self):
         """Setup test requirements."""
 
+        test_data_set_id: str = str(uuid4())
+
         self.expert_eval = XMLAdapter.eval_from_xml(self.EXPERT_MODEL_XML).evaluation
         self.student_eval = XMLAdapter.eval_from_xml(self.STUDENT_MODEL_XML).evaluation
-
-        self.test_evals = [res.evaluation for res in XMLAdapter.evals_from_directory(self.BASE_XML_PATH)]
 
     def tearDown(self) -> None:
         """Clean up after tests."""
@@ -44,8 +44,3 @@ class TestStatisticsService(unittest.TestCase):
 
         self.expert_eval = StatisticsService.append_statistic(self.expert_eval)
         self.student_eval = StatisticsService.append_statistic(self.student_eval)
-
-    def test_append_statistics_to_all(self):
-        """Test StatisticsService's Function ``append_statistics_to_all``."""
-
-        self.test_evals = StatisticsService.append_statistics_to_all(self.test_evals)
