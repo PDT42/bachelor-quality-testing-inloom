@@ -4,7 +4,9 @@
 
 This is the module for the ``DbConnection``.
 """
+
 import sqlite3
+import threading
 from abc import abstractmethod
 from typing import Any, List
 
@@ -78,15 +80,19 @@ class SqliteConnection(DbConnection):
         if VERBOSITY > 4:
             print(f"Executing Query on SQLITE: \"{query.resolve()}\"")
 
+        lock = threading.Lock()
         try:
-            self.cursor.execute(query.resolve())
+            lock.acquire()
+            resolved_query: str = query.resolve()
+            self.cursor.execute(resolved_query)
             result = self.cursor.fetchall()
-        except BaseException:  # TODO: Update Exception
+        except BaseException as e:  # TODO: Update Exception
             if VERBOSITY > 1:
                 print('Sqlite Transaction failed!')
             self.reset()
         finally:
             self.commit()
+            lock.release()
 
         return result
 

@@ -6,12 +6,13 @@ This is the module that contains the ``Query``.
 """
 
 from dataclasses import dataclass
-from typing import Any, List, Mapping, Union
+from typing import Any, List, Mapping, Tuple, Union
 
 from db_connection import sqlite_convert
 from db_connection.db_column import DbColumn, get_column_names
 from db_connection.db_table import DbTable
 from db_connection.filter import Filter
+from db_connection.join import Join
 
 
 class Query:
@@ -20,6 +21,7 @@ class Query:
     _db_table: DbTable
     _base_query: str
     _filters: List[Filter]
+    _joins: List[Join]
     _limit: int = None
     _offset: int = None
 
@@ -28,7 +30,14 @@ class Query:
 
         self._db_table = db_table
         self._base_query = base_query
+        self._joins = []
         self._filters = []
+
+    def join(self, new_join: Join):
+        """Add a join operation to the query."""
+
+        self._joins.append(new_join)
+        return self
 
     def where(self, new_filter: Filter):
         """Add a filter to the query."""
@@ -59,6 +68,8 @@ class Query:
 
         resolved_query: str = self._base_query
 
+        for db_join in self._joins:
+            resolved_query += f" {db_join.resolve(self._db_table)}"
         if len(self._filters) > 0:
             resolved_query += f" WHERE {' AND '.join([f.resolve() for f in self._filters])}"
         if self._limit is not None and isinstance(self._limit, int):

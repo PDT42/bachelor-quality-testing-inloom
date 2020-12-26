@@ -6,15 +6,18 @@ This is the module, that contains the ``DbColumn``.
 """
 
 from dataclasses import dataclass
+from datetime import datetime
 from typing import List, Mapping, Union
+from uuid import uuid4
 
-from data_types.evaluation import Evaluation
 from src.db_connection.db_data_types import DbDataType, FLOAT, INTEGER, VARCHAR
 
-COLUMN_DATA_TYPES: Mapping[type, DbDataType] = {
-    str: VARCHAR(),
-    int: INTEGER(),
-    float: FLOAT()
+COLUMN_DATA_TYPES: Mapping[str, DbDataType] = {
+    'str': VARCHAR(),
+    'int': INTEGER(),
+    'float': FLOAT(),
+    'uuid4': VARCHAR(),
+    'datetime': INTEGER()
 }
 
 
@@ -101,10 +104,10 @@ def get_columns_from_dataclass(data_class: dataclass, ignore_fields: List[str] =
         if ignore_fields is not None and key in ignore_fields:
             continue
 
-        column_data_type: DbDataType = COLUMN_DATA_TYPES.get(value)
+        column_data_type: DbDataType = COLUMN_DATA_TYPES.get(value.__name__)
 
         if column_data_type is None:
-            raise KeyError("The specified type key is unknown!")
+            raise KeyError(f"The specified type key ({value}) is unknown!")
 
         columns.append(DbColumn(
             column_name=key.lower(),
