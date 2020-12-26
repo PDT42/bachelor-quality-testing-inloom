@@ -8,7 +8,7 @@ These are tests for the different types used by the DbConnection.
 import unittest
 from typing import List
 
-from data_types.testdataset import TestDataSet
+from data_types.test_data_set import TestDataSet
 from db_connection.db_column import DbColumn, get_columns_from_dataclass
 from db_connection.db_data_types import VARCHAR
 from db_connection.db_table import DbTable
@@ -77,12 +77,12 @@ class TestDbCommon(unittest.TestCase):
 
         columns: List[DbColumn] = get_columns_from_dataclass(
             data_class=test_dataclass,
-            ignore_fields=['man_eval', 'auto_eval']
+            ignore_fields=['man_evals', 'auto_evals']
         )
 
         test_table: DbTable = DbTable.from_dataclass(
             data_class=test_dataclass,
-            ignore_fields=['man_eval', 'auto_eval']
+            ignore_fields=['man_evals', 'auto_evals']
         )
 
         print("Thanks for all the fish!")
