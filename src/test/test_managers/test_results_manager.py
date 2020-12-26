@@ -10,32 +10,35 @@ from copy import deepcopy
 from typing import List
 from uuid import UUID, uuid4
 
-from data_types.evaluation import Evaluation, EvaluationType
-from data_types.constraintresult import ConstraintResult, ConstraintResultCategory
+from data_types.evaluation import AutoEval
+from data_types.result_category import ResultCategory
+from data_types.result import Result
 from db_connection.db_connection import SqliteConnection
-from managers.constraint_results_manager import CResultManager
+from managers.results_manager import ResultManager
 from managers.evaluation_manager import EvalManager
 from managers.testdata_manager import TDManager
 from test.test_db_connection import init_test_sqlite_connection
 
 
 class TestResultsManager(unittest.TestCase):
-    """These are tests for the ``CResultManager``."""
+    """These are tests for the ``ResultManager``."""
 
     # Constants
     BASE_XML_PATH: str = '../../../res/example-data/student-solutions/Aufgabe_1/Ergebnisse'
     EXPERT_MODEL_XML: str = f'{BASE_XML_PATH}/OUTPUT_Expert_OOA_Class_SoSe2018.xml'
     STUDENT_MODEL_XML: str = f'{BASE_XML_PATH}/OUTPUT_ExSS2018_student1.xml'
 
-    TEST_RESULT: ConstraintResult = ConstraintResult(
-        expert_element_label='expert_model_element',
-        student_element_label='student_model_element',
-        expert_element_type='expert_type',
-        student_element_type='student_type',
-        rule_id='R00000',
-        result_category=ConstraintResultCategory.CORRECT,
+    TEST_RESULT: Result = Result(
+        expert_element_label='test_expert_element_label',
+        expert_element_type='test_expert_element_type',
+        student_element_label='test_student_element_label',
+        student_element_type='test_student_element_type',
+        result_type='CONSTRAINT',
+        graded_feature_id='R00000',
+        result_category=ResultCategory.CORRECT,
         points=100.0,
-        feedback_message='You\'re the best!'
+        feedback_message='You\'re the best!',
+        evaluation_id='test_eval_id'
     )
 
     def setUp(self) -> None:
@@ -44,7 +47,7 @@ class TestResultsManager(unittest.TestCase):
         init_test_sqlite_connection()
 
         self.test_db_connection = SqliteConnection.get()
-        self.results_manager = CResultManager.get()
+        self.results_manager = ResultManager()
 
     def tearDown(self) -> None:
         """Clean up after tests."""
@@ -53,7 +56,7 @@ class TestResultsManager(unittest.TestCase):
         SqliteConnection._instance = None
         TDManager._instance = None
         EvalManager._instance = None
-        CResultManager._instance = None
+        ResultManager._instance = None
 
     def test_insert_results(self):
         """Test ResultManagers Function ``insert_results``."""
@@ -83,11 +86,11 @@ class TestResultsManager(unittest.TestCase):
         evaluation_id: UUID = uuid4()
         self.TEST_RESULT.evaluation_id = evaluation_id
 
-        test_results: List[ConstraintResult] = []
+        test_results: List[Result] = []
         for iterator in range(0, 10):
             self.TEST_RESULT.result_id = uuid4()
             test_results.append(deepcopy(self.TEST_RESULT))
         self.results_manager.insert_results(test_results)
 
-        query_result: List[ConstraintResult] = self.results_manager.get_all_for(evaluation_id)
+        query_result: List[Result] = self.results_manager.get_all_for(evaluation_id)
         self.assertEqual(len(query_result), 10)
