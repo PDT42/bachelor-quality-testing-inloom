@@ -7,11 +7,11 @@ This is the module for the ``TDManager``.
 
 from typing import Any, List, Mapping
 
-from data_types.evaluation import Evaluation, EvaluationType
-from data_types.testdataset import TestDataSet
+from data_types.evaluation import AutoEval, Evaluation, ManEval
+from data_types.test_data_set import TestDataSet
 from db_connection.db_column import DbColumn
 from db_connection.db_connection import DbConnection, SqliteConnection
-from db_connection.db_data_types import VARCHAR
+from db_connection.db_data_types import FLOAT, INTEGER, VARCHAR
 from db_connection.db_table import DbTable
 from db_connection.filter import Filter, FilterOperation
 from db_connection.query import CREATEQuery, INSERTQuery, Query, SELECTQuery, UPDATEQuery
@@ -21,21 +21,10 @@ from managers.evaluation_manager import EvalManager
 class TDManager:
     """This is the ``TDManager``."""
 
-    # Make this a Singleton
-    # ~~~~~~~~~~~~~~~~~~~~~
-    _instance: 'TDManager' = None
-
-    @staticmethod
-    def get():
-        """Get the _instance of this singleton."""
-        if not TDManager._instance:
-            TDManager._instance = TDManager()
-        return TDManager._instance
-
-    # ~~~~~~~~~~~~~~~~~~~~~
-
     # Constants
-    STUDENT_MODEL_COL: DbColumn = DbColumn('student_model_id', VARCHAR(), primary_key=True)
+    EXERCISE_ID_COLUMN: DbColumn = DbColumn('exercise_id', VARCHAR())
+    STUDENT_ID_COLUMN: DbColumn = DbColumn('student_id', VARCHAR())
+    EXPERT_SOL_ID_COLUMN: DbColumn = DbColumn('expert_solution_id', VARCHAR())
 
     # Variables
     db_connection: DbConnection
@@ -48,7 +37,44 @@ class TDManager:
         self.db_connection = SqliteConnection.get()
         self._init_database_table()
 
-        self.eval_manager = EvalManager.get()
+        self.eval_manager = EvalManager()
+
+    def get_student_tds(self, student_id: str, exercise_id: str, expert_solution_id: str):
+        """Get the tds for this student- and exercise_id."""
+
+        equals: FilterOperation = FilterOperation.EQUALS
+
+        query: Query = SELECTQuery(self.test_data_set_table) \
+            .where(Filter(self.STUDENT_ID_COLUMN, equals, student_id)) \
+            .where(Filter(self.EXERCISE_ID_COLUMN, equals, exercise_id)) \
+            .where(Filter(self.EXPERT_SOL_ID_COLUMN, equals, expert_solution_id))
+        db_results: List[Mapping[str, Any]] = self.db_connection.execute(query)
+
+        if not db_results:
+            return None
+        elif isinstance(db_results, list) and len(db_results) > 1:
+            raise ValueError("CONSTRAINT ERROR: This TestDataSet was duplicated!")
+
+        return TestDataSet(**db_results[0])
+
+    def get_one_that_equals(self, test_data_set: TestDataSet):
+        """Get a ``TestDataSet`` that would __equals__ ``test_data_set``."""
+
+        equals: FilterOperation = FilterOperation.EQUALS
+
+        # Getting all TestDataSets that equal the one supplied
+        query: Query = SELECTQuery(self.test_data_set_table) \
+            .where(Filter(self.EXERCISE_ID_COLUMN, equals, test_data_set.exercise_id)) \
+            .where(Filter(self.STUDENT_ID_COLUMN, equals, test_data_set.student_id)) \
+            .where(Filter(self.EXPERT_SOL_ID_COLUMN, equals, test_data_set.expert_solution_id))
+        db_results: List[Mapping[str, Any]] = self.db_connection.execute(query)
+
+        if not db_results:
+            return None
+        elif isinstance(db_results, list) and len(db_results) > 1:
+            raise ValueError("CONSTRAINT ERROR: This TestDataSet was duplicated!")
+
+        return TestDataSet(**db_results[0])
 
     def get_all_test_data_sets(self) -> List[TestDataSet]:
         """Get all TestDataSets to which the filters apply."""
@@ -59,10 +85,8 @@ class TDManager:
         test_data_sets: List[TestDataSet] = [TestDataSet(**item) for item in results]
 
         for tds in test_data_sets:
-            if tds.auto_eval_id is not None:
-                tds.auto_eval = self.eval_manager.get_one_by_id(tds.auto_eval_id)
-            elif tds.man_eval_id is not None:
-                tds.man_eval = self.eval_manager.get_one_by_id(tds.man_eval_id)
+            tds.auto_evals = self.eval_manager.get_all_of(tds.test_data_set_id, required_type=AutoEval)
+            tds.man_evals = self.eval_manager.get_all_of(tds.test_data_set_id, required_type=ManEval)
 
         return test_data_sets
 
@@ -72,90 +96,60 @@ class TDManager:
         query: Query = INSERTQuery(self.test_data_set_table, test_data_sets)
         self.db_connection.execute(query)
 
-        for test_data_set in test_data_sets:
-            evaluations: List[Evaluation] = []
-            if test_data_set.auto_eval is not None:
-                evaluations.append(test_data_set.auto_eval)
-            if test_data_set.man_eval is not None:
-                evaluations.append(test_data_set.man_eval)
-
-            if len(evaluations) > 0:
-                self.eval_manager.insert_evaluations(evaluations)
-
     def update_test_data_set(self, test_data_set: TestDataSet):
         """Update a TDS in the database."""
 
+        equals: FilterOperation = FilterOperation.EQUALS
+
         # Check if the test_data_set exists
         query: Query = UPDATEQuery(self.test_data_set_table, test_data_set) \
-            .where(self._create_student_model_filter(test_data_set.student_model_id))
+            .where(Filter(self.EXERCISE_ID_COLUMN, equals, test_data_set.exercise_id)) \
+            .where(Filter(self.STUDENT_ID_COLUMN, equals, test_data_set.student_id)) \
+            .where(Filter(self.EXPERT_SOL_ID_COLUMN, equals, test_data_set.expert_solution_id))
         self.db_connection.execute(query)
 
     def update_insert_test_data_set(self, test_data_set: TestDataSet):
         """Update a TestDataSet in the database, if it does not exist, add it."""
 
-        query: Query = SELECTQuery(self.test_data_set_table, [self.STUDENT_MODEL_COL]) \
-            .where(self._create_student_model_filter(test_data_set.student_model_id))
-        results: List[Mapping[str, Any]] = self.db_connection.execute(query)
+        db_test_data_set: TestDataSet = self.get_one_that_equals(test_data_set)
 
         # The TDS already exists -> update it
-        if len(results) == 1:
+        if db_test_data_set is not None:
             self.update_test_data_set(test_data_set)
-        elif len(results) > 1:
-            raise KeyError('CONSTRAINT ERROR: There was a duplication of TestDataSets!')
         else:
             self.insert_test_data_sets([test_data_set])
 
-    def register_evaluation(
-            self, evaluation: Evaluation,
-            meta_model_type: str,
-            mcs_identifier: str,
-            mcs_version: str
-    ) -> None:
-        """Register an Evaluation in the database."""
+    def register_evaluation(self, evaluation: Evaluation, max_points: float) -> None:
+        """Register an AutoEval in the database."""
 
-        # Getting all test data sets from the database where the
-        # 'student_model_id' equals that of the 'evaluation' supplied.
-        query: Query = SELECTQuery(self.test_data_set_table) \
-            .where(self._create_student_model_filter(evaluation.student_model_id))
-        results: List[Mapping[str, Any]] = self.db_connection.execute(query)
-        test_data_sets: List[TestDataSet] = [TestDataSet(**item) for item in results]
+        # Creating a new TestDataSet
+        test_data_set: TestDataSet = TestDataSet(
+            exercise_id=evaluation.exercise_id,
+            expert_solution_id=evaluation.expert_solution_id,
+            student_id=evaluation.student_id,
+            meta_model_type=evaluation.meta_model_type,
+            max_points=max_points)
 
-        # Check if the evaluation already exists - else store it in the database
-        if self.eval_manager.get_one_that_equals(evaluation) is not None:
-            raise KeyError('CONSTRAINT ERROR: An Evaluation like that already exists in the database!')
-        self.eval_manager.insert_evaluations([evaluation])
+        # Checking if it already exists in the database
+        db_test_data_set: TestDataSet = self.get_one_that_equals(test_data_set)
 
-        # There should never be more than one TD with the same SM_ID
-        if len(test_data_sets) > 1:
-            raise KeyError('CONSTRAINT ERROR: There was a duplication of TestDataSets!')
+        if db_test_data_set is not None and isinstance(db_test_data_set, TestDataSet):
+            test_data_set = db_test_data_set
 
-        # No TestDataSet with the SM_ID was
-        # found and one needs to be created
-        elif len(test_data_sets) < 1:
-
-            # Creating a new TestDataSet
-            test_data_set: TestDataSet = TestDataSet(
-                expert_model_id=evaluation.expert_model_id,
-                student_model_id=evaluation.student_model_id,
-                meta_model_type=meta_model_type,
-                mcs_identifier=mcs_identifier,
-                mcs_version=mcs_version
-            )
-
-        # There is exactly one TDS with the correct SM_ID in the database
-        else:
-            test_data_set: TestDataSet = test_data_sets[0]
+        # Inserting the evaluation into the database
+        self.eval_manager.insert_evaluation(evaluation)
 
         # Checking what kind of evaluation we are registering
-        if evaluation.type is EvaluationType.AUTOMATIC:
+        if isinstance(evaluation, AutoEval):
             test_data_set.auto_eval_id = evaluation.evaluation_id
             test_data_set.auto_eval = evaluation
-        elif evaluation.type is EvaluationType.MANUAL:
+        elif isinstance(evaluation, ManEval):
             test_data_set.man_eval_id = evaluation.evaluation_id
             test_data_set.man_eval = evaluation
         else:
-            raise SystemError("ILLEGAL STATE: There are only auto- and manEvals!")
+            raise SystemError("ILLEGAL STATE: Evaluation must be either AutoEval or ManEval!")
 
+        # Inserting/Updating the test_data_set in the database
         self.update_insert_test_data_set(test_data_set)
 
     def _init_database_table(self):
@@ -164,23 +158,15 @@ class TDManager:
         """
 
         self.test_data_set_table_columns = [
-            DbColumn('expert_model_id', VARCHAR()),
-            self.STUDENT_MODEL_COL,
+            DbColumn('test_data_set_id', VARCHAR(), primary_key=True),
+            DbColumn('exercise_id', VARCHAR(), not_null=True),
+            DbColumn('expert_solution_id', VARCHAR(), not_null=True),
+            DbColumn('student_id', VARCHAR(), not_null=True),
             DbColumn('meta_model_type', VARCHAR()),
-            DbColumn('mcs_identifier', VARCHAR()),
-            DbColumn('mcs_version', VARCHAR()),
-            DbColumn('auto_eval_id', VARCHAR()),
-            DbColumn('man_eval_id', VARCHAR())
+            DbColumn('max_points', FLOAT(), not_null=True),
+            DbColumn('created_time', INTEGER(), not_null=True)
         ]
         self.test_data_set_table = DbTable(
             'inloom_quality_test_data_sets',
             columns=self.test_data_set_table_columns)
         self.db_connection.execute(CREATEQuery(self.test_data_set_table))
-
-    def _create_student_model_filter(self, value: str) -> Filter:
-        """Create a Filter for the student_model_id."""
-
-        return Filter(
-            column=self.STUDENT_MODEL_COL,
-            operation=FilterOperation.EQUALS,
-            value=value)
