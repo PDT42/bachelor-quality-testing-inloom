@@ -6,11 +6,9 @@ These are tests intended for the ``XMLAdapter`` class.
 """
 
 import unittest
-import xml.etree.ElementTree as XML
-from typing import List
+from uuid import uuid4
 
-from data_types.evaluation import Evaluation
-from data_types.constraintresult import ConstraintResult
+from data_types.result import Result
 from xml_adapter import XMLAdapter, XMLAdapterResult
 
 
@@ -52,49 +50,33 @@ class TestXMLAdapter(unittest.TestCase):
     def test_get_required_results_contents(self):
         """Test XMLAdapters Function ``get_required_results_content``."""
 
-        result_xml_string: str = \
-            "<ConstraintResult>" + \
-            "<ExpertObject>r1</ExpertObject>" + \
-            "<ExpertType>Relationship</ExpertType>" + \
-            "<TestObject>r1</TestObject>" + \
-            "<TestType>Relationship</TestType>" + \
-            "<Rule>R080101</Rule>" + \
-            "<Category>CORRECT</Category>" + \
-            "<Points>1.0</Points>" + \
-            "<Msg>A Relationship between Paper and Paper was found (Type: Association).</Msg>" + \
-            "</ConstraintResult>"
-
-        result_root: XML.Element = XML.fromstring(result_xml_string)
-
         expert_element_label: str = 'r1'
         expert_element_type: str = 'Relationship'
         student_element_label: str = 'r1'
         student_element_type: str = 'Relationship'
-        rule_id: str = 'R080101'
         result_category: str = 'CORRECT'
         points: float = 1.0
         feedback_message: str = 'A Relationship between Paper and Paper was found (Type: Association).'
+        result_type: str = 'CONSTRAINT'
+        graded_feature_id: str = 'R080101'
 
         self.expert_adapter._get_required_results_contents()
-        first_adapter_result: ConstraintResult = self.expert_adapter.results[0]
+        first_adapter_result: Result = self.expert_adapter.results[0]
 
         self.assertEqual(first_adapter_result.expert_element_label, expert_element_label)
         self.assertEqual(first_adapter_result.expert_element_type, expert_element_type)
         self.assertEqual(first_adapter_result.student_element_label, student_element_label)
         self.assertEqual(first_adapter_result.student_element_type, student_element_type)
-        self.assertEqual(first_adapter_result.rule_id, rule_id)
         self.assertEqual(first_adapter_result.result_category.name, result_category)
         self.assertEqual(first_adapter_result.points, points)
         self.assertEqual(first_adapter_result.feedback_message, feedback_message)
+        self.assertEqual(first_adapter_result.result_type, result_type)
+        self.assertEqual(first_adapter_result.graded_feature_id, graded_feature_id)
 
     def test_eval_from_xml(self):
         """Test XMLAdapters Function ``eval_from_xml``."""
 
+        test_data_set_id: str = str(uuid4())
+
         exp_auto_eval: XMLAdapterResult = XMLAdapter.eval_from_xml(xml_path=self.EXPERT_MODEL_XML)
         stud_auto_eval: XMLAdapterResult = XMLAdapter.eval_from_xml(xml_path=self.EXPERT_MODEL_XML)
-
-    def test_evals_from_directory(self):
-        """Test XMLAdapters Function ``evals_from_directory``."""
-
-        auto_evals: List[XMLAdapterResult] = XMLAdapter.evals_from_directory(
-            directory_path=self.BASE_XML_PATH)
