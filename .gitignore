@@ -30,6 +30,8 @@ MANIFEST
 # Exclude some Resources
 res/evaluations/manual-evaluations
 res/inloomqt-res/test_database.db
+res/inloomqt-res/database.db
+res/inloomqt-res/*
 res/eval/
 
 node_modules/
