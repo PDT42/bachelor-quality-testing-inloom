@@ -8,22 +8,21 @@ This is the module containing the XMLAdapter.
 import os
 import xml.etree.ElementTree as XML
 from dataclasses import dataclass
-from typing import List
+from typing import Dict, List
 from uuid import uuid4
-from warnings import warn
 
-from data_types.constraintresult import ConstraintResult, ConstraintResultCategory
-from data_types.evaluation import Evaluation, EvaluationType
+from data_types.evaluation import AutoEval, Evaluation
+from data_types.expert_solution import ExpertSolution
+from data_types.result import Result
+from data_types.result_category import ResultCategory
 
 
 @dataclass
 class XMLAdapterResult:
     """This is an XMLAdapterResult"""
 
-    evaluation: Evaluation
-    meta_model_type: str
-    mcs_id: str
-    mcs_version: str
+    evaluation: AutoEval
+    max_points: float
 
 
 class XMLAdapter:
@@ -75,6 +74,8 @@ class XMLAdapter:
     xml_tree: XML.ElementTree
     xml_root: XML.Element
 
+    evaluation_id: str
+
     # INLOOM result xml specifics
     data_node: XML.Element
     results_node: XML.Element
@@ -86,7 +87,7 @@ class XMLAdapter:
     meta_model_type: str
     mcs_id: str
     mcs_version: str
-    results: List[ConstraintResult]
+    results: List[Result]
     student_points: float
     max_points: float
 
@@ -96,6 +97,8 @@ class XMLAdapter:
         # Check if XML file exists
         if not os.path.exists(xml_path):
             raise FileNotFoundError(f"No file could be found at: {xml_path}!")
+
+        self.evaluation_id = str(uuid4())
 
         # Parse XML file
         self.xml_path = xml_path
@@ -210,70 +213,81 @@ class XMLAdapter:
 
         # Converting the found result data
         for xml_result in xml_results:
-            self.results.append(ConstraintResult(
+            expert_label: str = str(xml_result.find(self.EXP_OBJ_TAG).text)
+            expert_type: str = str(xml_result.find(self.EXP_TYPE_TAG).text)
+            expert_element: str = f"{expert_type}-{expert_label}"
+
+            student_label: str = str(xml_result.find(self.EXP_OBJ_TAG).text)
+            student_type: str = str(xml_result.find(self.EXP_TYPE_TAG).text)
+            student_element: str = f"{student_type}-{student_label}"
+
+            self.results.append(Result(
+                evaluation_id=self.evaluation_id,
                 expert_element_label=str(xml_result.find(self.EXP_OBJ_TAG).text),
-                student_element_label=str(xml_result.find(self.STUD_OBJ_TAG).text),
                 expert_element_type=str(xml_result.find(self.EXP_TYPE_TAG).text),
-                student_element_type=str(xml_result.find(self.STUD_TYPE_TAG).text),
-                rule_id=str(xml_result.find(self.RULE_TAG).text),
-                result_category=ConstraintResultCategory[str(xml_result.find(self.CATEGORY_TAG).text)],
+                student_element_label=str(xml_result.find(self.EXP_OBJ_TAG).text),
+                student_element_type=str(xml_result.find(self.EXP_TYPE_TAG).text),
+                result_category=ResultCategory[str(xml_result.find(self.CATEGORY_TAG).text)],
                 points=float(xml_result.find(self.RESULT_POINTS_TAG).text),
-                feedback_message=str(xml_result.find(self.MESSAGE_TAG).text)
-            ))
+                feedback_message=str(xml_result.find(self.MESSAGE_TAG).text),
+                result_type='CONSTRAINT',
+                graded_feature_id=str(xml_result.find(self.RULE_TAG).text)))
 
         return True
 
     @staticmethod
-    def eval_from_xml(
-            xml_path: str,
-            eval_type: EvaluationType = EvaluationType.AUTOMATIC,
-            evaluator: str = 'INLOOM'
-    ) -> XMLAdapterResult:
-        """Create an ``Evaluation`` from the contents of the xml supplied."""
+    def eval_from_xml(xml_path: str) -> XMLAdapterResult:
+        """Create an ``AutoEval`` from the contents of the xml supplied."""
 
         xml_adapter = XMLAdapter(xml_path)
 
-        evaluation_id: uuid4 = uuid4()
-
-        for result in xml_adapter.results:
-            result.evaluation_id = evaluation_id
-
+        # TODO: Ask to change expert test model id
+        stud_model_id: List[str] = xml_adapter.stud_model_id.split('_')
+        if len(stud_model_id) == 2:
+            exercise_id, student_id = stud_model_id
+        elif len(stud_model_id) == 4:
+            exercise_id = f'Ex{stud_model_id[3][0]}S{stud_model_id[3][4:]}'
+            student_id = '_'.join(stud_model_id[:3])
+        else:
+            raise ValueError("The provided test model id does not comply with the naming scheme!")
         return XMLAdapterResult(
-            evaluation=Evaluation(
-                type=eval_type,
-                evaluator=evaluator,
-                student_model_id=xml_adapter.stud_model_id,
-                expert_model_id=xml_adapter.exp_model_id,
+            evaluation=AutoEval(
+                test_data_set_id=None,
+                exercise_id=exercise_id,
+                expert_solution_id=xml_adapter.exp_model_id,
+                student_id=student_id,
                 results=xml_adapter.results,
                 total_points=xml_adapter.student_points,
                 max_points=xml_adapter.max_points,
-                evaluation_id=evaluation_id),
-            meta_model_type=xml_adapter.meta_model_type,
-            mcs_id=xml_adapter.mcs_id,
-            mcs_version=xml_adapter.mcs_version
-        )
+                evaluation_id=xml_adapter.evaluation_id,
+                mcs_identifier=xml_adapter.mcs_id,
+                mcs_version=xml_adapter.mcs_version,
+                meta_model_type=xml_adapter.meta_model_type
+            ), max_points=xml_adapter.max_points)
 
     @staticmethod
-    def evals_from_directory(
-            directory_path: str,
-            eval_type: EvaluationType = EvaluationType.AUTOMATIC,
-            evaluator: str = 'INLOOM'
-    ) -> List[XMLAdapterResult]:
-        """Create a list of ``Evaluations`` from all valid XML files in a directory."""
+    def expert_solution_from_xml(xml_path: str):
+        """Extract the elements of an expert solution from an expert xml."""
 
-        results: List[XMLAdapterResult] = []
+        xml_adapter = XMLAdapter(xml_path)
 
-        for file in os.listdir(directory_path):
-            if not file.endswith('.xml'):
-                warn(f'Found file: "{file}" is skipped since it\'s no .xml file!')
+        exp_model_id: str = xml_adapter.exp_model_id
+        std_model_id: str = xml_adapter.stud_model_id
 
-            try:
-                results.append(XMLAdapter.eval_from_xml(
-                    xml_path=os.path.join(directory_path, file),
-                    eval_type=eval_type,
-                    evaluator=evaluator
-                ))
-            except (KeyError, XML.ParseError):
-                warn(f'Found file: "{file}" seems to be invalid!')
+        if exp_model_id != std_model_id:
+            raise ValueError("INVALID FILE: Please use an evaluation of a valid expert solution for this!")
 
-        return results
+        eval_expert: Evaluation = XMLAdapter.eval_from_xml(xml_path).evaluation
+
+        elements: Dict[str, List[str]] = {}
+        for result in eval_expert.results:
+            if result.expert_element_type not in elements:
+                elements[result.expert_element_type] = []
+            elements[result.expert_element_type].append(
+                result.expert_element_label)
+
+        return ExpertSolution(
+            exercise_id=eval_expert.exercise_id,
+            expert_solution_id=eval_expert.expert_solution_id,
+            file=xml_path, elements=elements
+        ), eval_expert.meta_model_type
