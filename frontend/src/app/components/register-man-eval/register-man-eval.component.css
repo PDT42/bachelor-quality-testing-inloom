@@ -29,12 +29,13 @@
 
 .wizard-buttons {
   display: flex;
+  flex-flow: row nowrap;
   justify-content: flex-end;
   margin-top: 10px;
 }
 
 .result-point-sum {
-  justify-self: flex-start;
+  flex-grow: 1;
 }
 
 .result-point-sum-label {
@@ -80,13 +81,14 @@ button {
   background-color: white;
   flex-flow: row nowrap;
   padding: 6px;
-  padding-inline: 12px;
+  padding-left: 12px;
+  padding-right: 2px;
 }
 
 .result-card-row {
   display: flex;
   flex-flow: row nowrap;
-  justify-content: space-around;
+  justify-content: space-between;
 }
 
 .result-card-col {
@@ -108,6 +110,20 @@ button {
   font-weight: bold;
 }
 
+.points-label {
+  color: rgb(100, 100, 100);
+  font-size: 15px;
+}
+
+.toggle-buttons {
+  display: flex;
+  flex-flow: row nowrap;
+}
+
+.toggle-button {
+  flex-grow: 1;
+}
+
 .info-row {
   display: flex;
   flex-flow: row nowrap;
@@ -123,4 +139,12 @@ button {
 .info-value {
   flex-grow: 1;
   text-align: end;
+}
+
+.remove-result {
+
+}
+
+.remove-result:hover {
+  cursor: pointer;
 }

@@ -6,11 +6,15 @@
 }
 
 .title-container  {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
   margin-bottom: 16px;
   width: parent;
 }
 
 .title {
+  width: 90%;
   font-size: 32px;
 }
 

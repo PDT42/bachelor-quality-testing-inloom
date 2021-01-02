@@ -2,7 +2,7 @@
   <div *ngFor="let item of exerciseService.getExercises() | async">
     <div
       class="exercise-card"
-      [routerLink]="'/testdataset'"
+      [routerLink]="'/exercise'"
       [queryParams]="{ id: item.exercise_id }"
     >
       <span class="exercise-card-header">

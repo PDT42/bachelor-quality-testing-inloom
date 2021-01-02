@@ -27,7 +27,7 @@
 }
 
 .test-data-literals {
-  width: 45%;
+  flex-grow: 1;
   padding: 6px;
   padding-inline: 12px;
   background-color: white;
@@ -49,31 +49,4 @@
 .test-data-literal-value {
   flex-grow: 1;
   text-align: end;
-}
-
-.test-data-evals {
-  flex-grow: 5;
-  display: flex;
-  flex-flow: row nowrap;
-  align-items: stretch;
-}
-
-.test-data-eval-container {
-  flex-grow: 1;
-
-  display: flex;
-  flex-flow: row nowrap;
-}
-
-.test-data-eval {
-  width: 44%;
-  background-color: white;
-  margin-left: 3%;
-  padding: 6px;
-  box-shadow: 0 2px 4px 0 rgba(46, 45, 45, 0.185);
-}
-
-.test-data-eval:hover {
-  box-shadow: 0 4px 8px 0 rgba(22, 18, 18, 0.233);
-  cursor: pointer;
 }

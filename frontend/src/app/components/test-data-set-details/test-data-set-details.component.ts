@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TestDataSet } from '../../classes/test-data-set';
 import { TestDataSetService } from '../../services/test-data-set-service.service';
 
@@ -16,6 +16,7 @@ export class TestDataSetDetailsComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private tdsService: TestDataSetService
   ) {}
 
@@ -25,7 +26,7 @@ export class TestDataSetDetailsComponent implements OnInit {
       this.evaluationType = params['type'];
 
       this.tdsService
-        .getTestDataSet()
+        .getTestDataSets()
         .subscribe((testDataSets: TestDataSet[]) => {
           // Getting the tds this page is supposed
           // to present from the list of available
@@ -44,5 +45,10 @@ export class TestDataSetDetailsComponent implements OnInit {
           }
         });
     });
+  }
+
+  deleteTDS(): void {
+    this.tdsService.deleteTDS(this.testDataSetId);
+    this.router.navigate(['register']);
   }
 }

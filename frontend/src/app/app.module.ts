@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatGridListModule } from '@angular/material/grid-list';
@@ -11,6 +12,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatDividerModule } from '@angular/material/divider';
 import { HttpClientModule } from '@angular/common/http';
 import { MatButtonModule } from '@angular/material/button';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatSelectModule } from '@angular/material/select';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -27,7 +29,6 @@ import { RegisterManEvalComponent } from './components/register-man-eval/registe
 import { EvaluationDetailsComponent } from './components/evaluation-details/evaluation-details.component';
 import { NavigationComponent } from './components/navigation/navigation.component';
 import { RegisterComponent } from './components/register/register.component';
-import { ResultCardComponent } from './components/result-card/result-card.component';
 import { TestDataSetDetailsComponent } from './components/test-data-set-details/test-data-set-details.component';
 import { ListEvaluationsComponent } from './components/list-evaluations/list-evaluations.component';
 import { TestDataSetDashboardComponent } from './components/test-data-set-dashboard/test-data-set-dashboard.component';
@@ -37,6 +38,7 @@ import { ListExercisesComponent } from './components/list-exercises/list-exercis
 import { ExerciseDetailsComponent } from './components/exercise-details/exercise-details.component';
 import { EvaluatorDetailsComponent } from './components/evaluator-details/evaluator-details.component';
 import { RegisterEvaluatorComponent } from './components/register-evaluator/register-evaluator.component';
+import { SingleComparisonComponent } from './components/single-comparison/single-comparison.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +50,6 @@ import { RegisterEvaluatorComponent } from './components/register-evaluator/regi
     RegisterManEvalComponent,
     NavigationComponent,
     RegisterComponent,
-    ResultCardComponent,
     TestDataSetDetailsComponent,
     ListEvaluationsComponent,
     TestDataSetDashboardComponent,
@@ -58,6 +59,7 @@ import { RegisterEvaluatorComponent } from './components/register-evaluator/regi
     ExerciseDetailsComponent,
     EvaluatorDetailsComponent,
     RegisterEvaluatorComponent,
+    SingleComparisonComponent,
   ],
   imports: [
     AppRoutingModule,
@@ -66,7 +68,9 @@ import { RegisterEvaluatorComponent } from './components/register-evaluator/regi
     HttpClientModule,
     MatSliderModule,
     MatToolbarModule,
+    MatIconModule,
     MatCardModule,
+    MatButtonToggleModule,
     MatStepperModule,
     MatGridListModule,
     MatFormFieldModule,

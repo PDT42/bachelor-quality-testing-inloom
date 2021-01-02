@@ -2,7 +2,11 @@
   <div class="container">
     <div class="title-container">
       <span class="title">{{ testDataSetTitle }}</span>
+      <button mat-raised-button color="warn" (click)="deleteTDS()">
+        <mat-icon>delete</mat-icon>
+      </button>
     </div>
+
     <mat-tab-group>
       <mat-tab label="TDS Details">
         <div class="interactions">
@@ -17,8 +21,15 @@
             </div>
           </div>
         </div>
+
         <mat-divider class="divider"></mat-divider>
+
+        <app-single-comparison
+          testDataSetId="{{ testDataSet.test_data_set_id }}"
+          chartTitle="Average ManEval / Latest AutoEval"
+        ></app-single-comparison>
       </mat-tab>
+
       <mat-tab label="ManEvals">
         <div class="interactions">
           <div class="option-list">
@@ -27,7 +38,9 @@
             </div>
           </div>
         </div>
+
         <mat-divider class="divider"></mat-divider>
+
         <h4 class="subtitle">ManEvals</h4>
         <p class="description">
           "These are the manual evaluations (ManEvals) available in this
@@ -42,19 +55,22 @@
           evaluationType="M"
         ></app-list-evaluations>
       </mat-tab>
+
       <mat-tab label="AutoEvals">
         <div class="interactions">
           <div class="option-list">
             <div [routerLink]="'/eval/auto/register'" class="option-list-item">
-              <span class="option-list-item-text"> Add Automatic Evaluation </span>
+              <span class="option-list-item-text">
+                Add Automatic Evaluation
+              </span>
             </div>
           </div>
         </div>
+
         <mat-divider class="divider"></mat-divider>
+
         <h4 class="subtitle">ManEvals</h4>
-        <p class="description">
-          "These are the automatic evaluations."
-        </p>
+        <p class="description">"These are the automatic evaluations."</p>
         <app-list-evaluations
           testDataSetId="{{ testDataSetId }}"
           evaluationType="A"

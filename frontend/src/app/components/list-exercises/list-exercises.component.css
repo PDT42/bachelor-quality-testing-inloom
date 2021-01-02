@@ -27,7 +27,7 @@
 }
 
 .exercise-literals {
-  width: 45%;
+  flex-grow: 1;
   padding: 6px;
   padding-inline: 12px;
   background-color: white;

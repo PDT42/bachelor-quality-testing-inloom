@@ -10,13 +10,14 @@
           class="evaluation-card-header"
           *ngIf="item.evaluation_type == 'M'"
         >
-          ManEval - Evaluator: {{ item.evaluator_id }}
+          ManEval - Evaluator:
+          {{ getEvaluatorName(item.evaluator_id) | async }}
         </span>
         <span
           class="evaluation-card-header"
           *ngIf="item.evaluation_type == 'A'"
         >
-          AutoEval - Evaluator: {{ item.evaluator_id }}
+          AutoEval
         </span>
 
         <span class="evaluation-created-time">

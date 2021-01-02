@@ -46,35 +46,31 @@
               <mat-label>Exercise Id</mat-label>
               <mat-select
                 formControlName="exerciseIdCtrl"
-                (valueChange)="exerciseChanged()"
+                (selectionChange)="exerciseChanged()"
                 required
               >
                 <mat-option
-                  *ngFor="
-                    let exercise of exerciseService.getExercises() | async
-                  "
-                  value="{{ exercise.exercise_id }}"
+                  *ngFor="let ex of exerciseService.getExercises() | async"
+                  value="{{ ex.exercise_id }}"
                 >
-                  {{ exercise.exercise_id }}
+                  {{ ex.exercise_id }}
                 </mat-option>
               </mat-select>
             </mat-form-field>
 
             <mat-form-field>
-              <mat-label>Evaluator</mat-label>
+              <mat-label>Expert Solution Id</mat-label>
               <mat-select
-                placeholder="Evaluator"
-                formControlName="evaluatorIdCtrl"
+                formControlName="expertSolIdCtrl"
+                (selectionChange)="expertSolutionChanged()"
                 required
               >
                 <mat-option
-                  *ngFor="
-                    let evaluator of evaluatorService.getEvaluators() | async
-                  "
-                  value="evaluator.evaluator_id"
-                  >{{ evaluator.first_name }}
-                  {{ evaluator.last_name }}</mat-option
+                  *ngFor="let item of expert_solutions"
+                  value="{{ item.expert_solution_id }}"
                 >
+                  {{ item.expert_solution_id }}
+                </mat-option>
               </mat-select>
             </mat-form-field>
 
@@ -86,22 +82,6 @@
                 formControlName="studentIdCtrl"
                 required
               />
-            </mat-form-field>
-
-            <mat-form-field>
-              <mat-label>Expert Solution Id</mat-label>
-              <mat-select
-                matInput
-                formControlName="expertSolIdCtrl"
-                required
-              >
-                <mat-option
-                  *ngFor="let item of expert_solutions"
-                  value="item.expert_solution_id"
-                >
-                  {{ item.expert_solution_id }}
-                </mat-option>
-              </mat-select>
             </mat-form-field>
 
             <div class="wizard-buttons">
@@ -128,29 +108,29 @@
         <div class="wizard-page">
           <div class="wizard-page-body">
             <mat-form-field>
-              <mat-label>Meta Model Type</mat-label>
-              <input
-                matInput
-                placeholder="Some meta model type .."
-                formControlName="metaModelTypeCtrl"
+              <mat-label>Evaluator</mat-label>
+              <mat-select
+                placeholder="Evaluator"
+                formControlName="evaluatorIdCtrl"
                 required
-              />
-            </mat-form-field>
-
-            <mat-form-field>
-              <mat-label>Maximum Achievable Points</mat-label>
-              <input
-                matInput
-                placeholder="Maximum points .."
-                formControlName="maxPointsCtrl"
-                required
-              />
+              >
+                <mat-option
+                  *ngFor="
+                    let evaluator of evaluatorService.getEvaluators() | async
+                  "
+                  value="{{ evaluator.evaluator_id }}"
+                >
+                  {{ evaluator.first_name }} {{ evaluator.last_name }}
+                </mat-option>
+              </mat-select>
             </mat-form-field>
 
             <mat-form-field>
               <mat-label>Points Awarded (Total)</mat-label>
               <input
                 matInput
+                type="number"
+                (change)="totalPointsChanged()"
                 placeholder="Total points achieved by this solution .."
                 formControlName="totalPointsCtrl"
                 required
@@ -187,23 +167,43 @@
         <div class="wizard-page">
           <div class="wizard-page-body">
             <mat-form-field>
-              <mat-label>Expert Element Label</mat-label>
-              <input
-                matInput
-                placeholder="Element label in expert solution .."
-                formControlName="expElCtrl"
+              <mat-label>Expert Element Type</mat-label>
+              <mat-select
+                formControlName="expTypeCtrl"
+                (selectionChange)="expertTypeChanged()"
                 required
-              />
+              >
+                <mat-option
+                  *ngFor="let type of expert_elements | keyvalue"
+                  value="{{ type.key }}"
+                >
+                  {{ type.key }}
+                </mat-option>
+              </mat-select>
             </mat-form-field>
 
             <mat-form-field>
-              <mat-label>Expert Element Type</mat-label>
-              <input
-                matInput
-                placeholder="Element type in expert solution .."
-                formControlName="expTypeCtrl"
-                required
-              />
+              <mat-label>Expert Element Label</mat-label>
+              <mat-select formControlName="expElCtrl" required>
+                <mat-option
+                  *ngFor="let element of type_elements"
+                  [value]="element"
+                >
+                  {{ element["element_label"] }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field>
+              <mat-label>Student Element Type</mat-label>
+              <mat-select formControlName="stdTypeCtrl" required>
+                <mat-option
+                  *ngFor="let type of expert_elements | keyvalue"
+                  value="{{ type.key }}"
+                >
+                  {{ type.key }}
+                </mat-option>
+              </mat-select>
             </mat-form-field>
 
             <mat-form-field>
@@ -212,16 +212,6 @@
                 matInput
                 placeholder="Element label in student solution .."
                 formControlName="stdElCtrl"
-                required
-              />
-            </mat-form-field>
-
-            <mat-form-field>
-              <mat-label>Student Element Type</mat-label>
-              <input
-                matInput
-                placeholder="Element type in student solution .."
-                formControlName="stdTypeCtrl"
                 required
               />
             </mat-form-field>
@@ -247,15 +237,49 @@
               </mat-select>
             </mat-form-field>
 
-            <mat-form-field>
+            <span class="points-label">Points Awarded</span>
+            <mat-button-toggle-group
+              arialabel="Points Awarded"
+              class="toggle-buttons"
+              required
+              multiple="false"
+              formControlName="pointsCtrl"
+            >
+              <mat-button-toggle type="number" class="toggle-button" value="0">
+                0
+              </mat-button-toggle>
+              <mat-button-toggle
+                type="number"
+                class="toggle-button"
+                value="0.5"
+              >
+                0.5
+              </mat-button-toggle>
+              <mat-button-toggle type="number" class="toggle-button" value="1">
+                1
+              </mat-button-toggle>
+              <mat-button-toggle
+                type="number"
+                class="toggle-button"
+                value="1.5"
+              >
+                1.5
+              </mat-button-toggle>
+              <mat-button-toggle type="number" class="toggle-button" value="2">
+                2
+              </mat-button-toggle>
+            </mat-button-toggle-group>
+
+            <!-- <mat-form-field>
               <mat-label>Awarded Points</mat-label>
               <input
                 matInput
+                type="number"
                 placeholder="Points awarded for this result .."
                 formControlName="pointsCtrl"
                 required
               />
-            </mat-form-field>
+            </mat-form-field> -->
 
             <mat-form-field>
               <mat-label>Feedback Message</mat-label>
@@ -269,7 +293,8 @@
             <div class="wizard-buttons">
               <div class="result-point-sum">
                 <span class="result-point-sum-label">
-                  {{ result_points_added }} / {{ total_points }}
+                  Points (of total): {{ result_points_added }} /
+                  {{ total_points }}
                 </span>
               </div>
 
@@ -312,31 +337,37 @@
                     <div class="result-card-col" style="width: 40%">
                       <div class="info-row">
                         <span class="info-label">Expert Element:</span>
-                        <span class="info-value"
-                          >{{ result.expert_element_type }} -
-                          {{ result.expert_element_label }}</span
-                        >
+                        <span class="info-value">
+                          {{ result.expert_element["element_type"] }} -
+                          {{ result.expert_element["element_label"] }}
+                        </span>
                       </div>
                       <div class="info-row">
                         <span class="info-label">Graded Feature:</span>
-                        <span class="info-value">{{
-                          result.graded_feature_id
-                        }}</span>
+                        <span class="info-value">
+                          {{ result.graded_feature_id }}
+                        </span>
                       </div>
                     </div>
 
                     <div class="result-card-col" style="width: 40%">
                       <div class="info-row">
                         <span class="info-label">Student Element:</span>
-                        <span class="info-type"
-                          >{{ result.student_element_type }} -
-                          {{ result.student_element_label }}</span
-                        >
+                        <span class="info-type">
+                          {{ result.student_element_type }} -
+                          {{ result.student_element_label }}
+                        </span>
                       </div>
 
                       <div class="info-row">
                         <span class="info-label">Awarded Points:</span>
                         <span class="info-value">{{ result.points }}</span>
+                      </div>
+                    </div>
+
+                    <div class="result-card-col">
+                      <div class="remove-result" (click)="removeResult(result)">
+                        <mat-icon>remove_circle_outline</mat-icon>
                       </div>
                     </div>
                   </div>

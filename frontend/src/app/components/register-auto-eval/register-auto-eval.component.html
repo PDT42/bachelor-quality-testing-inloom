@@ -1,3 +1,14 @@
+<div class="title-container">
+  <span class="title"> Register a new Exercise </span>
+</div>
+<mat-divider class="divider"></mat-divider>
+<div class="description-box">
+  <span class="description">
+    To register a new Exercise in the application database, select the result
+    xml file of the evaluation of an expert solution to that exercise and click
+    the upload button.
+  </span>
+</div>
 <form [formGroup]="fileForm" class="form-group">
   <label for="file">Choose File: </label>
   <input required type="file" id="file" (change)="handleFileInput($event.target.files.item(0))">

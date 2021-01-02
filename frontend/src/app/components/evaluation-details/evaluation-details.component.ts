@@ -35,11 +35,14 @@ export class EvaluationDetailsComponent implements OnInit {
           // Getting the eval this page is supposed
           // to present from the list of available
           // Evaluations.
+
           this.evaluation = evaluations
             .filter((e) => e.evaluation_id === this.evaluationId)
             .pop();
+
           // Update the string that is intended to
           // act as this pages title.
+
           if (this.evaluation && this.evaluation.evaluation_type === 'A') {
             this.evaluationTitle =
               'AutoEval - Exercise: ' +
