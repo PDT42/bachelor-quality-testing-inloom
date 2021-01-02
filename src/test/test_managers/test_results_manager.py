@@ -48,6 +48,7 @@ class TestResultsManager(unittest.TestCase):
 
         self.test_db_connection = SqliteConnection.get()
         self.results_manager = ResultManager()
+        self.results_manager.init_database_table()
 
     def tearDown(self) -> None:
         """Clean up after tests."""

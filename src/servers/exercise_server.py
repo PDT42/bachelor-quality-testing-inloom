@@ -77,7 +77,7 @@ class ExerciseServer:
                 expert_solutions.append(_expert_solution)
             exercise.expert_solutions = expert_solutions
 
-        return make_response(jsonify([e.__dict__ for e in exercises]))
+        return make_response(jsonify([e.as_dict() for e in exercises]))
 
     @staticmethod
     def _post_register_expert_evaluation():
@@ -114,9 +114,8 @@ class ExerciseServer:
                 used_in_year=None, used_in_semester=None, exercise_type=None,
                 meta_model_type=meta_model_type,
                 expert_solutions=[expert_solution])
-            ExerciseManager.get().insert_exercise(exercise)
+            ExerciseManager().insert_exercise(exercise)
 
         ExerciseManager().insert_expert_solution(expert_solution)
 
         return make_response()
-

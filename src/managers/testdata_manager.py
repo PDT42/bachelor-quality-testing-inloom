@@ -11,10 +11,10 @@ from data_types.evaluation import AutoEval, Evaluation, ManEval
 from data_types.test_data_set import TestDataSet
 from db_connection.db_column import DbColumn
 from db_connection.db_connection import DbConnection, SqliteConnection
-from db_connection.db_data_types import FLOAT, INTEGER, VARCHAR
+from db_connection.db_data_types import INTEGER, VARCHAR
 from db_connection.db_table import DbTable
 from db_connection.filter import Filter, FilterOperation
-from db_connection.query import CREATEQuery, INSERTQuery, Query, SELECTQuery, UPDATEQuery
+from db_connection.query import CREATEQuery, DELETEQuery, INSERTQuery, Query, SELECTQuery, UPDATEQuery
 from managers.evaluation_manager import EvalManager
 
 
@@ -25,19 +25,31 @@ class TDManager:
     EXERCISE_ID_COLUMN: DbColumn = DbColumn('exercise_id', VARCHAR())
     STUDENT_ID_COLUMN: DbColumn = DbColumn('student_id', VARCHAR())
     EXPERT_SOL_ID_COLUMN: DbColumn = DbColumn('expert_solution_id', VARCHAR())
+    TEST_DATA_SET_ID_COLUMN: DbColumn = DbColumn('test_data_set_id', VARCHAR(), primary_key=True)
 
     # Variables
     db_connection: DbConnection
     test_data_set_table: DbTable
     test_data_set_table_columns: List[DbColumn]
 
+    eval_manager: EvalManager
+
     def __init__(self):
         """Create a new ``TDManager``."""
 
         self.db_connection = SqliteConnection.get()
-        self._init_database_table()
-
         self.eval_manager = EvalManager()
+
+        self.test_data_set_table_columns = [
+            self.TEST_DATA_SET_ID_COLUMN,
+            DbColumn('exercise_id', VARCHAR(), not_null=True),
+            DbColumn('expert_solution_id', VARCHAR(), not_null=True),
+            DbColumn('student_id', VARCHAR(), not_null=True),
+            DbColumn('created_time', INTEGER(), not_null=True)
+        ]
+        self.test_data_set_table = DbTable(
+            'inloom_quality_test_data_sets',
+            columns=self.test_data_set_table_columns)
 
     def get_student_tds(self, student_id: str, exercise_id: str, expert_solution_id: str):
         """Get the tds for this student- and exercise_id."""
@@ -48,6 +60,22 @@ class TDManager:
             .where(Filter(self.STUDENT_ID_COLUMN, equals, student_id)) \
             .where(Filter(self.EXERCISE_ID_COLUMN, equals, exercise_id)) \
             .where(Filter(self.EXPERT_SOL_ID_COLUMN, equals, expert_solution_id))
+        db_results: List[Mapping[str, Any]] = self.db_connection.execute(query)
+
+        if not db_results:
+            return None
+        elif isinstance(db_results, list) and len(db_results) > 1:
+            raise ValueError("CONSTRAINT ERROR: This TestDataSet was duplicated!")
+
+        return TestDataSet(**db_results[0])
+
+    def get_one(self, test_data_set_id: str):
+        """Get one with the supplied id."""
+
+        equals: FilterOperation = FilterOperation.EQUALS
+
+        query: Query = SELECTQuery(self.test_data_set_table) \
+            .where(Filter(self.TEST_DATA_SET_ID_COLUMN, equals, test_data_set_id))
         db_results: List[Mapping[str, Any]] = self.db_connection.execute(query)
 
         if not db_results:
@@ -119,16 +147,28 @@ class TDManager:
         else:
             self.insert_test_data_sets([test_data_set])
 
-    def register_evaluation(self, evaluation: Evaluation, max_points: float) -> None:
+    def delete_test_data_set(self, test_data_set_id: str):
+        """Delete a TestDataSet from the database."""
+
+        db_test_data_set: TestDataSet = self.get_one(test_data_set_id)
+
+        if not db_test_data_set:
+            return
+
+        query: Query = DELETEQuery(self.test_data_set_table)
+        self.db_connection.execute(query)
+
+        for evaluation in db_test_data_set.auto_evals + db_test_data_set.man_evals:
+            self.eval_manager.delete_evaluation(evaluation.evaluation_id)
+
+    def register_evaluation(self, evaluation: Evaluation) -> None:
         """Register an AutoEval in the database."""
 
         # Creating a new TestDataSet
         test_data_set: TestDataSet = TestDataSet(
             exercise_id=evaluation.exercise_id,
             expert_solution_id=evaluation.expert_solution_id,
-            student_id=evaluation.student_id,
-            meta_model_type=evaluation.meta_model_type,
-            max_points=max_points)
+            student_id=evaluation.student_id)
 
         # Checking if it already exists in the database
         db_test_data_set: TestDataSet = self.get_one_that_equals(test_data_set)
@@ -152,21 +192,10 @@ class TDManager:
         # Inserting/Updating the test_data_set in the database
         self.update_insert_test_data_set(test_data_set)
 
-    def _init_database_table(self):
+    def init_database_table(self):
         """Initialize the table required for storing
         ``TestDataSets`` in the database.
         """
 
-        self.test_data_set_table_columns = [
-            DbColumn('test_data_set_id', VARCHAR(), primary_key=True),
-            DbColumn('exercise_id', VARCHAR(), not_null=True),
-            DbColumn('expert_solution_id', VARCHAR(), not_null=True),
-            DbColumn('student_id', VARCHAR(), not_null=True),
-            DbColumn('meta_model_type', VARCHAR()),
-            DbColumn('max_points', FLOAT(), not_null=True),
-            DbColumn('created_time', INTEGER(), not_null=True)
-        ]
-        self.test_data_set_table = DbTable(
-            'inloom_quality_test_data_sets',
-            columns=self.test_data_set_table_columns)
         self.db_connection.execute(CREATEQuery(self.test_data_set_table))
+        self.eval_manager.init_database_tables()

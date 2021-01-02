@@ -11,7 +11,7 @@ from data_types.exercise import Exercise
 from data_types.expert_solution import ExpertSolution
 from db_connection.db_column import DbColumn
 from db_connection.db_connection import DbConnection, SqliteConnection
-from db_connection.db_data_types import INTEGER, VARCHAR
+from db_connection.db_data_types import FLOAT, INTEGER, VARCHAR
 from db_connection.db_table import DbTable
 from db_connection.filter import Filter, FilterOperation
 from db_connection.query import CREATEQuery, INSERTQuery, Query, SELECTQuery
@@ -52,6 +52,7 @@ class ExerciseManager:
             DbColumn('file', VARCHAR(), not_null=True),
             DbColumn('created_time', INTEGER(), not_null=True),
             DbColumn('expert_solution_id', VARCHAR(), primary_key=True),
+            DbColumn('maximum_points', FLOAT(), not_null=True),
             DbColumn(self.EXERCISE_ID_COLUMN.column_name, VARCHAR(), not_null=True)
         ]
 
@@ -126,7 +127,7 @@ class ExerciseManager:
         ]
         return exercise
 
-    def _init_database_tables(self):
+    def init_database_tables(self):
         """Initialize the tables required for storing
         ``Exercises`` and ``ExpertSolutions`` in the database.
         """

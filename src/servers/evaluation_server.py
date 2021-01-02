@@ -6,8 +6,7 @@ This is the module for the ``EvalServer``.
 """
 import json
 import os
-from typing import Any, Dict, List
-from uuid import uuid4
+from typing import Any, Dict
 
 from flask import Flask, jsonify, make_response, request, Response
 from werkzeug.utils import secure_filename
@@ -16,7 +15,7 @@ from data_types.evaluation import Evaluation, ManEval
 from data_types.test_data_set import TestDataSet
 from managers.evaluation_manager import EvalManager
 from managers.testdata_manager import TDManager
-from servers import AUTO_EVAL_FORMATS, AUTO_EVAL_PATH, MAN_EVAL_FORMATS, MAN_EVAL_PATH
+from servers import AUTO_EVAL_FORMATS, AUTO_EVAL_PATH
 from xml_adapter import XMLAdapter, XMLAdapterResult
 
 
@@ -63,7 +62,7 @@ class EvalServer:
 
         app.add_url_rule(
             rule='/eval',
-            endpoint='get-alle-evaluations',
+            endpoint='get-all-evaluations',
             view_func=EvalServer._get_all_evals,
             methods=['GET']
         )
@@ -93,25 +92,22 @@ class EvalServer:
             if not all([student_id, exercise_id, expert_solution_id]):
                 raise KeyError("MISSING KEY ERROR!")
 
-            test_data_set: TestDataSet = TDManager.get().get_student_tds(
+            test_data_set: TestDataSet = TDManager().get_student_tds(
                 expert_solution_id=expert_solution_id,
                 student_id=student_id,
                 exercise_id=exercise_id)
 
             if not test_data_set:
-
                 # TODO: Create new TDS and store it in db
                 test_data_set = TestDataSet(
                     exercise_id=exercise_id,
                     expert_solution_id=expert_solution_id,
-                    student_id=student_id,
-                    meta_model_type=new_eval_data.get('expert_solution_id'),
-                    max_points=new_eval_data.get('max_points'))
+                    student_id=student_id)
 
-                TDManager.get().insert_test_data_sets(test_data_set)
+                TDManager().insert_test_data_sets([test_data_set])
 
             man_eval: ManEval = ManEval.from_dict(new_eval_data, test_data_set.test_data_set_id)
-            EvalManager.get().insert_evaluation(man_eval)
+            EvalManager().insert_evaluation(man_eval)
 
         return Response()
 
@@ -143,7 +139,7 @@ class EvalServer:
         xml_adapter_res: XMLAdapterResult = XMLAdapter.eval_from_xml(auto_eval_file_path)
         auto_eval: Evaluation = xml_adapter_res.evaluation
 
-        test_data_set: TestDataSet = TDManager.get().get_student_tds(
+        test_data_set: TestDataSet = TDManager().get_student_tds(
             expert_solution_id=auto_eval.expert_solution_id,
             student_id=auto_eval.student_id,
             exercise_id=auto_eval.exercise_id)
@@ -152,14 +148,12 @@ class EvalServer:
             test_data_set = TestDataSet(
                 exercise_id=auto_eval.exercise_id,
                 expert_solution_id=auto_eval.expert_solution_id,
-                student_id=auto_eval.student_id,
-                meta_model_type=auto_eval.meta_model_type,
-                max_points=auto_eval.max_points)
-            TDManager.get().insert_test_data_sets(test_data_set)
+                student_id=auto_eval.student_id)
+            TDManager().insert_test_data_sets([test_data_set])
 
         auto_eval.test_data_set_id = test_data_set.test_data_set_id
         auto_eval.file_path = auto_eval_file_path
-        EvalManager.get().insert_evaluation(auto_eval)
+        EvalManager().insert_evaluation(auto_eval)
 
         # Setting the status of the response to 200
         response.status_code = 200
@@ -177,15 +171,15 @@ class EvalServer:
     def _get_eval_by_id(evaluation_id: str):
         """Handle GET requests to [/eval:{evaluation_id}]."""
 
-        evaluation: Evaluation = EvalManager.get()\
+        evaluation: Evaluation = EvalManager() \
             .get_one_by_id(evaluation_id=evaluation_id)
 
-        return make_response(jsonify(evaluation))
+        return make_response(jsonify(evaluation.as_dict()))
 
     @staticmethod
     def _get_all_evals():
         """Handle GET requests to [/eval]."""
 
-        evaluations = EvalManager.get().get_all_evaluations()
+        evaluations = EvalManager().get_all_evaluations()
 
-        return make_response(jsonify([e.__dict__ for e in evaluations]))
+        return make_response(jsonify([e.as_dict() for e in evaluations]))

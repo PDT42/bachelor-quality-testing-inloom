@@ -6,13 +6,15 @@ This is the module containing the XMLAdapter.
 """
 
 import os
+import re
 import xml.etree.ElementTree as XML
+from collections import defaultdict
 from dataclasses import dataclass
-from typing import Dict, List
+from typing import Dict, List, Set, Tuple
 from uuid import uuid4
 
 from data_types.evaluation import AutoEval, Evaluation
-from data_types.expert_solution import ExpertSolution
+from data_types.expert_solution import ExpertElement, ExpertSolution
 from data_types.result import Result
 from data_types.result_category import ResultCategory
 
@@ -22,6 +24,7 @@ class XMLAdapterResult:
     """This is an XMLAdapterResult"""
 
     evaluation: AutoEval
+    meta_model_type: str
     max_points: float
 
 
@@ -32,9 +35,11 @@ class XMLAdapter:
 
     # Constants
     # °°°°°°°°°
-    # TODO: Implement this and _has... functions as *format* class
+
+    # TODO: Implement this using a *format* class?
+    #
     # TODO: Outsource these to a config.ini or a config, that is
-    # TODO: loaded along with the xml files.
+    # TODO: loaded along with the xml files?
 
     ROOT_TAG: str = 'TestResult'
     # \
@@ -213,18 +218,14 @@ class XMLAdapter:
 
         # Converting the found result data
         for xml_result in xml_results:
-            expert_label: str = str(xml_result.find(self.EXP_OBJ_TAG).text)
-            expert_type: str = str(xml_result.find(self.EXP_TYPE_TAG).text)
-            expert_element: str = f"{expert_type}-{expert_label}"
-
-            student_label: str = str(xml_result.find(self.EXP_OBJ_TAG).text)
-            student_type: str = str(xml_result.find(self.EXP_TYPE_TAG).text)
-            student_element: str = f"{student_type}-{student_label}"
+            element_type, element_name, element_label = \
+                self.get_expert_tags(xml_result)
 
             self.results.append(Result(
                 evaluation_id=self.evaluation_id,
-                expert_element_label=str(xml_result.find(self.EXP_OBJ_TAG).text),
-                expert_element_type=str(xml_result.find(self.EXP_TYPE_TAG).text),
+                expert_element_type=element_type,
+                expert_element_name=element_name,
+                expert_element_label=element_label,
                 student_element_label=str(xml_result.find(self.EXP_OBJ_TAG).text),
                 student_element_type=str(xml_result.find(self.EXP_TYPE_TAG).text),
                 result_category=ResultCategory[str(xml_result.find(self.CATEGORY_TAG).text)],
@@ -258,12 +259,12 @@ class XMLAdapter:
                 student_id=student_id,
                 results=xml_adapter.results,
                 total_points=xml_adapter.student_points,
-                max_points=xml_adapter.max_points,
                 evaluation_id=xml_adapter.evaluation_id,
                 mcs_identifier=xml_adapter.mcs_id,
                 mcs_version=xml_adapter.mcs_version,
-                meta_model_type=xml_adapter.meta_model_type
-            ), max_points=xml_adapter.max_points)
+            ), max_points=xml_adapter.max_points,
+            meta_model_type=xml_adapter.meta_model_type
+        )
 
     @staticmethod
     def expert_solution_from_xml(xml_path: str):
@@ -277,17 +278,247 @@ class XMLAdapter:
         if exp_model_id != std_model_id:
             raise ValueError("INVALID FILE: Please use an evaluation of a valid expert solution for this!")
 
-        eval_expert: Evaluation = XMLAdapter.eval_from_xml(xml_path).evaluation
+        xml_adapter_result: XMLAdapterResult = XMLAdapter.eval_from_xml(xml_path)
+        eval_expert: Evaluation = xml_adapter_result.evaluation
+        eval_expert.file_path = xml_path
 
-        elements: Dict[str, List[str]] = {}
+        # Create a mapping of the elements employed in the
+        # expert solution. {element -> [ExpertElement, ..], ..}
+        elements: Dict[str, Set[ExpertElement]] = defaultdict(set)
+
+        # Add a default element
+        elements['Other'].add(ExpertElement('Other', 'Other', 'Other'))
+
         for result in eval_expert.results:
-            if result.expert_element_type not in elements:
-                elements[result.expert_element_type] = []
-            elements[result.expert_element_type].append(
-                result.expert_element_label)
+            elements[result.expert_element_type].add(
+                ExpertElement(
+                    element_type=result.expert_element_type,
+                    element_name=result.expert_element_name,
+                    element_label=result.expert_element_label
+                ))
 
         return ExpertSolution(
             exercise_id=eval_expert.exercise_id,
             expert_solution_id=eval_expert.expert_solution_id,
+            maximum_points=xml_adapter_result.max_points,
             file=xml_path, elements=elements
-        ), eval_expert.meta_model_type
+        ), xml_adapter_result.meta_model_type
+
+    def get_expert_tags(self, xml_result) -> Tuple[str, str, str]:
+        """Get an ``ExpertElement`` from an xml_result."""
+
+        def clean_label_string(dirty_label: str) -> str:
+            for dirty_char in [' ', '\"', '(', ')', ':', '.']:
+                clean_label = dirty_label = dirty_label.replace(dirty_char, '')
+            return clean_label
+
+        element_type: str = str(xml_result.find(self.EXP_TYPE_TAG).text)
+        element_name: str = str(xml_result.find(self.EXP_OBJ_TAG).text)
+        element_label: str = clean_label_string(element_name)
+        feedback_msg: str = str(xml_result.find(self.MESSAGE_TAG).text)
+
+        if element_type == 'Class':
+            # Classes use the classname as the
+            # in the expert object tag
+            pass
+
+        # Extract Data from Property Feedback Messages
+        # °°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°
+
+        elif element_type == 'Property':
+
+            property_name: str = ''
+
+            # Possible feedback message formats:
+            # 1. "Property <property_name> in Class <class_name> .."
+            # 2. "No Property with the name <property_name>"
+            # 3. "<property_name> was found .."
+
+            # Search for property_name in first format
+            if _match := re.search('Property (.+?) in', feedback_msg):
+                property_name = _match.group(1)
+
+            # Search for property_name in second format
+            elif _match := re.search('name (.+?) was', feedback_msg):
+                property_name = _match.group(1)
+
+            # Search for property_name in third format
+            elif _match := re.search('(.+?) was found', feedback_msg):
+                property_name = _match.group(1)
+
+
+
+            if property_name:
+                element_label = property_name
+
+        # Extract Data from Operation Feedback Messages
+        # °°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°
+
+        elif element_type == 'Operation':
+
+            operation_name: str = ''
+
+            # Possible feedback message formats:
+            # 1. "Operation <operation_name> in Class <class_name> was .."
+            # 2. "<operation_name> was found .."
+            # 3. "No Operation with the name <operation_name> was found."
+
+            # Search for operation_name in first format
+            if _match := re.search('Operation (.+?) were', feedback_msg):
+                operation_name = _match.group(1)
+
+            # Search for operation_name in second format
+            elif _match := re.search('name (.+?) was found', feedback_msg):
+                operation_name = _match.group(1)
+
+            if operation_name:
+                element_label = operation_name
+
+        # Extract Data from Enumeration Feedback Messages
+        # °°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°
+
+        elif element_type == 'Enumeration':
+
+            enumeration_name: str = ''
+
+            # Possible feedback message formats:
+            # 1. "Enumeration <enumeration_name> was found .."
+            # 3. "No Enumeration with the name <enumeration_name> was found."
+
+            if _match := re.search('Enumeration (.+?) ', feedback_msg):
+                enumeration_name = _match.group(1)
+
+            if enumeration_name:
+                element_label = enumeration_name
+
+        # Extract Data from LiteralGroup Feedback Messages
+        # °°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°
+
+        elif element_type == 'EnumerationLiterals':
+
+            literal_name: str = ''
+
+            # Possible feedback message formats:
+            # 1. "Operation <operation_name> in Class <class_name> was .."
+            # 2. "<operation_name> was found .."
+            # 3. "No Operation with the name <operation_name> was found."
+
+            if _match := re.search('Enumerationliterals (.+?) ', feedback_msg):
+                literal_name = _match.group(1)
+
+            if literal_name:
+                element_label = literal_name
+
+        # Extract Data from Generalization Feedback Messages
+        # °°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°
+
+        elif element_type == 'Generalization':
+
+            pass
+
+        # Extract Data from Association Feedback Messages
+        # °°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°
+
+        elif element_type == 'Association':
+
+            pass
+
+        # Extract Data from Aggregation Feedback Messages
+        # °°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°
+
+        elif element_type == 'Aggregation':
+
+            pass
+
+        # Extract Data from Composition Feedback Messages
+        # °°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°
+
+        elif element_type == 'Composition':
+
+            pass
+
+        # Extract Data from Relationship Messages
+        # °°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°
+
+        elif element_type == 'Relationship':
+
+            class_name_1: str = ''
+            class_name_2: str = ''
+            relationship_type: str = ''
+
+            # Possible feedback message format:
+            # 1. "An Relationship between <class_name_1> and <class_name_2>
+            #    was found (Type: <relationship_type>) but was not .."
+
+            if _match := re.search('between (.+?) and', feedback_msg):
+                class_name_1 = _match.group(1)
+
+            if _match := re.search('and (.+?) was', feedback_msg):
+                class_name_2 = _match.group(1)
+
+            if _match := re.search('\(Type: (.+?)\)', feedback_msg):
+                relationship_type = _match.group(1)
+
+            if class_name_1 and class_name_2:
+                element_label = f"{class_name_1}-{class_name_2}"
+            if relationship_type:
+                element_label += f"-{relationship_type}"
+
+        # Extract Data from RelationshipEnd Messages
+        # °°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°
+
+        elif element_type == 'RelationshipEnd':
+
+            class_name: str = ''
+
+            if _match := re.search('to Class (.+?) was', feedback_msg):
+                class_name = _match.group(1)
+
+            if class_name:
+                element_label = class_name
+
+        # Extract Data from AssociationClassEnd Messages
+        # °°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°
+
+        elif element_type == 'AssociationClassEnd':
+
+            class_name: str = ''
+
+            # Possible feedback message formats:
+            # 1. "Associationclass <class_name> .."
+
+            if _match := re.search('Associationclass (.+?) was', feedback_msg):
+                class_name = _match.group(1)
+
+            if class_name:
+                element_label = class_name
+
+        # Extract Data from Role Messages
+        # °°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°
+
+        elif element_type == 'Role':
+
+            role_name: str = ''
+
+            # Possible feedback message formats:
+            # 1. "Role <role_id>_<role_name> was .."
+
+            if _match := re.search('Role .*_(.+?) was', feedback_msg):
+                role_name = _match.group(1)
+
+            elif _match := re.search('_(.+?)$', element_name):
+                role_name = _match.group(1)
+
+            if role_name:
+                element_label = role_name
+
+        # Extract Data from None Messages
+        # °°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°
+
+        elif element_type == 'None':
+
+            element_type = 'Other'
+            element_name = 'Other'
+            element_label = 'Other'
+
+        return element_type, element_name, element_label

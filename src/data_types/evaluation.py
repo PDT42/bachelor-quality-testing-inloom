@@ -4,7 +4,7 @@
 
 This is the module containing the ``Evaluations``.
 """
-
+from abc import abstractmethod
 from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Any, Dict, List, Union
@@ -25,9 +25,7 @@ class Evaluation:
 
     test_data_set_id: str
 
-    meta_model_type: str = None
     total_points: float = None
-    max_points: float = None
 
     file_path: str = None
 
@@ -40,7 +38,7 @@ class Evaluation:
         return self.evaluation_id
 
     def __str__(self):
-        return f"{self.meta_model_type}-{self.exercise_id}-" + \
+        return f"{self.evaluation_type}-{self.exercise_id}-" + \
                f"{self.student_id}-{self.expert_solution_id}"
 
     def __repr__(self):
@@ -53,9 +51,14 @@ class Evaluation:
             other.exercise_id == self.exercise_id,
             other.expert_solution_id == self.expert_solution_id,
             other.student_id == self.student_id,
-            other.meta_model_type == self.meta_model_type,
             other.evaluation_type == self.evaluation_type
         ]) else False
+
+    def as_dict(self):
+        _dict: Dict[str, Any] = self.__dict__
+        _dict['results'] = [r.as_dict() for r in self.results]
+
+        return _dict
 
     @staticmethod
     def from_child(child: Union['AutoEval', 'ManEval', dataclass]):
@@ -79,7 +82,6 @@ class AutoEval(Evaluation):
 
         self.mcs_identifier = kwargs.pop('mcs_identifier', False)
         self.mcs_version = kwargs.pop('mcs_version', False)
-        self.constraint_results = kwargs.pop('constraint_results', False)
 
         super(AutoEval, self).__init__(**kwargs)
 
@@ -145,9 +147,7 @@ class ManEval(Evaluation):
             evaluator_id=str(man_eval_dict['evaluator_id']),
             evaluation_type=str(man_eval_dict['evaluation_type']),
             test_data_set_id=test_data_set_id,
-            meta_model_type=str(man_eval_dict['meta_model_type']),
             total_points=float(man_eval_dict['total_points']),
-            max_points=float(man_eval_dict['max_points']),
             results=[
                 Result.from_dict(res, eval_id) for res in man_eval_dict['results']
             ])

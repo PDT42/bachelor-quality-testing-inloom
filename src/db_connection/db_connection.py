@@ -6,8 +6,8 @@ This is the module for the ``DbConnection``.
 """
 
 import sqlite3
-import threading
 from abc import abstractmethod
+from threading import Lock
 from typing import Any, List
 
 from db_connection import DB_PATH, VERBOSITY
@@ -65,6 +65,8 @@ class SqliteConnection(DbConnection):
         self.connection.row_factory = _dict_factory
         self.cursor = self.connection.cursor()
 
+        self.lock = Lock()
+
         SqliteConnection._instance = self
 
         if VERBOSITY > 1:
@@ -80,9 +82,8 @@ class SqliteConnection(DbConnection):
         if VERBOSITY > 4:
             print(f"Executing Query on SQLITE: \"{query.resolve()}\"")
 
-        lock = threading.Lock()
         try:
-            lock.acquire()
+            self.lock.acquire()
             resolved_query: str = query.resolve()
             self.cursor.execute(resolved_query)
             result = self.cursor.fetchall()
@@ -92,7 +93,7 @@ class SqliteConnection(DbConnection):
             self.reset()
         finally:
             self.commit()
-            lock.release()
+            self.lock.release()
 
         return result
 
@@ -107,10 +108,18 @@ class SqliteConnection(DbConnection):
     def reset(self):
         """Reset connection."""
 
-        if self.cursor:
-            self.cursor.execute('ROLLBACK')
-        if self.connection:
-            self.connection.close()
+        self.lock.acquire()
+        try:
+            if self.cursor:
+                self.cursor.execute('ROLLBACK')
+            if self.connection:
+                self.connection.close()
+        except BaseException as e:
+            print('Sqlite Rollback failed!')
+            raise e
+        finally:
+            self.commit()
+            self.lock.release()
 
         self.connection = None
         self._instance = SqliteConnection(self.db_path)

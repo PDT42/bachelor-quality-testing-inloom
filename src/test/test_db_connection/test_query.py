@@ -73,8 +73,6 @@ class TestQuery(unittest.TestCase):
         optimal_test_query += f'exercise_id VARCHAR, '
         optimal_test_query += f'expert_solution_id VARCHAR, '
         optimal_test_query += f'student_id VARCHAR, '
-        optimal_test_query += f'meta_model_type VARCHAR, '
-        optimal_test_query += f'max_points NUMBER, '
         optimal_test_query += f'test_data_set_id VARCHAR, '
         optimal_test_query += f'created_time INTEGER);'
 

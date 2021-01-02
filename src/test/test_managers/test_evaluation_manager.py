@@ -11,8 +11,8 @@ from data_types.evaluation import AutoEval
 from data_types.result import Result
 from data_types.result_category import ResultCategory
 from db_connection.db_connection import SqliteConnection
-from managers.results_manager import ResultManager
 from managers.evaluation_manager import EvalManager
+from managers.results_manager import ResultManager
 from managers.testdata_manager import TDManager
 from test.test_db_connection import init_test_sqlite_connection
 
@@ -26,15 +26,16 @@ class TestEvaluationManager(unittest.TestCase):
     STUDENT_MODEL_XML: str = f'{BASE_XML_PATH}/OUTPUT_ExSS2018_student1.xml'
 
     TEST_AUTO_EVAL: AutoEval = AutoEval(
-        test_data_set_id='test_test_data_set',
         exercise_id='test_exercise_id',
         expert_solution_id='test_expert_model_id',
-        mcs_identifier='test_mcs_id',
-        mcs_version='test_mcs_version',
         student_id='test_student',
-        meta_model_type="test_meta_model",
-        max_points=.0,
-        total_points=.0
+        evaluation_type='A',
+        test_data_set_id='test_test_data_set',
+        total_points=4.20,
+        file_path='test_path',
+        #
+        mcs_identifier='test_mcs_id',
+        mcs_version='test_mcs_version'
     )
 
     TEST_RESULT: Result = Result(
@@ -57,6 +58,8 @@ class TestEvaluationManager(unittest.TestCase):
 
         self.test_db_connection = SqliteConnection.get()
         self.test_eval_manager = EvalManager()
+        self.test_eval_manager.init_database_tables()
+        self.test_eval_manager.results_manager.init_database_table()
 
     def tearDown(self) -> None:
         """Clean up after tests."""
@@ -70,5 +73,5 @@ class TestEvaluationManager(unittest.TestCase):
     def test_insert_evaluations(self):
         """Test EvaluationManagers Function ``insert_evaluation``."""
 
-        self.TEST_AUTO_EVAL.constraint_results = [self.TEST_RESULT]
+        self.TEST_AUTO_EVAL.results = [self.TEST_RESULT]
         self.test_eval_manager.insert_evaluations([self.TEST_AUTO_EVAL])

@@ -28,12 +28,13 @@ class TestExerciseManager(unittest.TestCase):
 
         self.test_db_connection = SqliteConnection.get()
         self.test_exercise_manager = ExerciseManager()
+        self.test_exercise_manager.init_database_tables()
 
         self.create_test_exp_sol = lambda exercise_id, index: ExpertSolution(
-            file='some_file_path',
-            created_time=int(datetime.now().timestamp()),
             expert_solution_id=f'test_expert_solution_{index}',
-            exercise_id=exercise_id)
+            file='some_file_path',
+            exercise_id=exercise_id,
+            maximum_points=99.5)
 
         self.TEST_EXERCISE: Exercise = Exercise(
             exercise_id='test_exercise_id', used_in_year=2020, used_in_semester='WiSe',

@@ -24,10 +24,6 @@ class TestDataSet:
     expert_solution_id: str
     student_id: str
 
-    meta_model_type: str
-
-    max_points: float
-
     auto_evals: List[AutoEval] = field(default_factory=list)
     man_evals: List[ManEval] = field(default_factory=list)
 

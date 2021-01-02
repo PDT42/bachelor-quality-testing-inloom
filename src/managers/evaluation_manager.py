@@ -12,7 +12,7 @@ from db_connection.db_connection import DbConnection, SqliteConnection
 from db_connection.db_data_types import FLOAT, INTEGER, VARCHAR
 from db_connection.db_table import DbTable
 from db_connection.filter import Filter, FilterOperation
-from db_connection.query import CREATEQuery, INSERTQuery, Query, SELECTQuery
+from db_connection.query import CREATEQuery, DELETEQuery, INSERTQuery, Query, SELECTQuery
 from managers.results_manager import ResultManager
 
 
@@ -29,7 +29,6 @@ class EvalManager:
     EXPERT_SOLUTION_ID_COLUMN: DbColumn = DbColumn('expert_solution_id', VARCHAR(), not_null=True)
     STUDENT_ID_COLUMN: DbColumn = DbColumn('student_id', VARCHAR(), not_null=True)
     EVAL_TYPE_COLUMN: DbColumn = DbColumn('evaluation_type', VARCHAR(), not_null=True)
-    META_MODEL_TYPE_COLUMN: DbColumn = DbColumn('meta_model_type', VARCHAR())
     FILE_PATH_COLUMN: DbColumn = DbColumn('file_path', VARCHAR())
     TOTAL_POINTS_COLUMN: DbColumn = DbColumn('total_points', FLOAT(), not_null=True)
     MAX_POINTS_COLUMN: DbColumn = DbColumn('max_points', FLOAT(), not_null=True)
@@ -47,8 +46,43 @@ class EvalManager:
         """Create a new ``EvalManager``."""
 
         self.db_connection = SqliteConnection.get()
-
         self.results_manager = ResultManager()
+
+        eval_table_columns: List[DbColumn] = [
+            self.EXERCISE_ID_COLUMN,
+            self.EXPERT_SOLUTION_ID_COLUMN,
+            self.STUDENT_ID_COLUMN,
+            self.EVAL_TYPE_COLUMN,
+            self.TEST_DATA_SET_ID_COLUMN,
+            self.TOTAL_POINTS_COLUMN,
+            self.FILE_PATH_COLUMN,
+            self.EVALUATION_ID_COLUMN,
+            self.CREATED_TIME_COLUMN
+        ]
+
+        self.eval_table = DbTable(
+            table_name=self.EVAL_TABLE_NAME,
+            columns=eval_table_columns)
+
+        # Init type specific table registry
+        self.eval_tables = {}
+
+        auto_eval_table_columns: List[DbColumn] = [
+            DbColumn('mcs_identifier', VARCHAR()),
+            DbColumn('mcs_version', VARCHAR()),
+            self.EVALUATION_ID_COLUMN]
+
+        self.eval_tables[AutoEval] = DbTable(
+            table_name=self.AUTO_EVAL_TABLE_NAME,
+            columns=auto_eval_table_columns)
+
+        man_eval_table_columns: List[DbColumn] = [
+            DbColumn('evaluator_id', VARCHAR()),
+            self.EVALUATION_ID_COLUMN]
+
+        self.eval_tables[ManEval] = DbTable(
+            table_name=self.MAN_EVAL_TABLE_NAME,
+            columns=man_eval_table_columns)
 
     def insert_evaluation(self, evaluation):
         """Insert one ``Evaluation`` into the database."""
@@ -171,7 +205,7 @@ class EvalManager:
 
         # Appending results to the evaluation
         for evaluation in evaluations:
-            evaluation.results = ResultManager.get() \
+            evaluation.results = ResultManager() \
                 .get_all_for(evaluation.evaluation_id)
 
         return evaluations
@@ -193,53 +227,30 @@ class EvalManager:
 
         return self._get_all_evaluations(query, required_type)
 
-    def _init_database_tables(self):
+    def delete_evaluation(self, evaluation_id: str):
+        """Delete an ``Evaluation`` from the database."""
+
+        equals: FilterOperation = FilterOperation.EQUALS
+
+        query: Query = DELETEQuery(self.eval_table) \
+            .where(Filter(self.EVALUATION_ID_COLUMN, equals, evaluation_id))
+        self.db_connection.execute(query)
+
+        for eval_type in [self.eval_tables]:
+            query: Query = DELETEQuery(self.eval_tables[eval_type]) \
+                .where(Filter(self.EVALUATION_ID_COLUMN, equals, evaluation_id))
+            self.db_connection.execute(query)
+
+    def init_database_tables(self):
         """Initialize the table required for storing
         ``TestDataSets`` in the database.
         """
 
         # Create Table for Evaluations
-        eval_table_columns: List[DbColumn] = [
-            self.TEST_DATA_SET_ID_COLUMN,
-            self.EXERCISE_ID_COLUMN,
-            self.EXPERT_SOLUTION_ID_COLUMN,
-            self.STUDENT_ID_COLUMN,
-            self.EVAL_TYPE_COLUMN,
-            self.META_MODEL_TYPE_COLUMN,
-            self.FILE_PATH_COLUMN,
-            self.TOTAL_POINTS_COLUMN,
-            self.MAX_POINTS_COLUMN,
-            self.EVALUATION_ID_COLUMN,
-            self.CREATED_TIME_COLUMN
-        ]
-
-        self.eval_table = DbTable(
-            table_name=self.EVAL_TABLE_NAME,
-            columns=eval_table_columns)
         self.db_connection.execute(CREATEQuery(self.eval_table))
-
-        # Init type specific table registry
-        self.eval_tables = {}
-
         # Create table for AutoEvals
-        auto_eval_table_columns: List[DbColumn] = [
-            DbColumn('mcs_identifier', VARCHAR()),
-            DbColumn('mcs_version', VARCHAR()),
-            self.EVALUATION_ID_COLUMN
-        ]
-
-        self.eval_tables[AutoEval] = auto_eval_table = DbTable(
-            table_name=self.AUTO_EVAL_TABLE_NAME,
-            columns=auto_eval_table_columns)
-        self.db_connection.execute(CREATEQuery(auto_eval_table))
-
+        self.db_connection.execute(CREATEQuery(self.eval_tables[AutoEval]))
         # Create table for ManEvals
-        man_eval_table_columns: List[DbColumn] = [
-            DbColumn('evaluator_id', VARCHAR()),
-            self.EVALUATION_ID_COLUMN
-        ]
+        self.db_connection.execute(CREATEQuery(self.eval_tables[ManEval]))
 
-        self.eval_tables[ManEval] = man_eval_table = DbTable(
-            table_name=self.MAN_EVAL_TABLE_NAME,
-            columns=man_eval_table_columns)
-        self.db_connection.execute(CREATEQuery(man_eval_table))
+        self.results_manager.init_database_table()

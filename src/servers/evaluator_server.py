@@ -68,7 +68,7 @@ class EvaluatorServer:
 
     @staticmethod
     def _post_register_evaluator():
-        """Process POST casll to [/evaluator/register]."""
+        """Process POST call to [/evaluator/register]."""
 
         if request.method == 'POST':
 

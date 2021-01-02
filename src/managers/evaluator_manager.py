@@ -72,7 +72,7 @@ class EvaluatorManager:
 
         return Evaluator(**db_results[0])
 
-    def _init_database_tables(self):
+    def init_database_tables(self):
         """Initialize the table required for storing
         ``TestDataSets`` in the database.
         """

@@ -6,7 +6,7 @@ This is the module that contains the ``Query``.
 """
 
 from dataclasses import dataclass
-from typing import Any, List, Mapping, Tuple, Union
+from typing import Any, List, Mapping, Union
 
 from db_connection import sqlite_convert
 from db_connection.db_column import DbColumn, get_column_names
@@ -158,3 +158,13 @@ class UPDATEQuery(Query):
         super(UPDATEQuery, self).__init__(db_table, update_query)
 
         # TODO: Add delete Query
+
+
+class DELETEQuery(Query):
+    """This is a database ``DELETE``."""
+
+    def __init__(self, db_table: DbTable):
+        """Create a new DELETE Query."""
+
+        delete_query: str = f"DELETE FROM {db_table.table_name}"
+        super(DELETEQuery, self).__init__(db_table, delete_query)
