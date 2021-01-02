@@ -11,11 +11,11 @@ studentische Lösung, sowie die von Inloom erstellten Evaluationen des studentis
 > können. Es ist wichtig zu untersuchen, welche Daten sich mit welchem Aufwand aus solchen
 > auslesen lassen könnten und ob eine gänzliche Digitalisierung realistisch ist.
 
-# INLOOM Evaluation Format
+# INLOOM AutoEval Format
 ``` XML
 <!ELEMENT TestResult (TestData, Results, ResultPoints)>
 
-<!ELEMENT TestData (RuleModel, TestModel)>
+<!ELEMENT TestData (RuleMode, TestModel)>
 
 <!ELEMENT ExpertModel EMPTY>
 <!ATTLIST ExpertModel id CDATA #REQUIRED>  // Id of the Expert Model used for reference
@@ -33,9 +33,9 @@ studentische Lösung, sowie die von Inloom erstellten Evaluationen des studentis
 <!ATTLIST MCSVersion value CDATA #REQUIRED>
 
 
-<!ELEMENT Results (ConstraintResult)>  // List of Results
+<!ELEMENT Results (CResult)>  // List of Results
 
-<!ELEMENT ConstraintResult (TestObject, RuleObject, RuleSet, Rule, Category, Points, Msg)>  // Container
+<!ELEMENT CResult (TestObject, RuleObject, RuleSet, Rule, Category, Points, Msg)>  // Container
 
 <!ELEMENT ExpertObject (#PCDATA)>  // Name/Label of matched element in expert solution
 <!ELEMENT ExpertType (#PCDATA)>  // Type of element in expert solution
@@ -53,7 +53,7 @@ studentische Lösung, sowie die von Inloom erstellten Evaluationen des studentis
 ```
 
 ## Test Daten Satz
-In dem Gespräch vom 30.10.2020 ist klar geworden, dass eine Evaluation von INLOOMS Bewertungen 
+In dem Gespräch vom 30.10.2020 ist klar geworden, dass eine AutoEval von INLOOMS Bewertungen 
 mittelfristig wohl noch nicht gänzlich auf digitalisierten Optimalkorrekturen wird beruhen 
 könnnen. Desshalb sollte der Daten Satz zum Speichern statistischer Analyse Werte prioritäsiert 
 werden. Ich denke, dass es leicht möglich sein sollte, ein einheitliches Datenformat für beiden 
@@ -91,7 +91,7 @@ verfügbaren Werte wählen möchte.
 
 2. *Anzahl verschiedener gematchter Elemente*
 
-    Die Anzahl der verschiedenen in verschiedenen *ConstraintResult*-s gefundenen *TestElement*s. Anhand 
+    Die Anzahl der verschiedenen in verschiedenen *CResult*-s gefundenen *TestElement*s. Anhand 
     dieses Wertes kann eine Aussage darüber getroffen werden, ob INLOOM und Tutor in ihren 
     Bewertungen eine unterschiedliche Anzahl von Elementen bedacht hat.
 
@@ -115,7 +115,7 @@ verfügbaren Werte wählen möchte.
 5. 
 
 ### Mögliche Datenstruktur für Test Datensätze in der Suite
-Grundsätzlich halte ich es für sinnvoll die in den ConstraintResult XML verwendete Datenstruktur zu 
+Grundsätzlich halte ich es für sinnvoll die in den CResult XML verwendete Datenstruktur zu 
 replizieren und um die erfassten Werte zur statistischen Weiterverwendung hinzuzufügen.
 
 ## Inter Rater Reliability (IRR)

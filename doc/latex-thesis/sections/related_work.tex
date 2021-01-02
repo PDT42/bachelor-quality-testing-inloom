@@ -1,24 +1,261 @@
 \chapter{Related Work}
 \label{ch:related_work}
 
-\section[INLOOM]{INLOOM}
-This work aims to validate the quality of the results the INLOOM Software \cite{1}
-produces. For that reason it is inevitable to take a look into how it evaluates
-student solutions and how it persists the collected information. INLOOM is an
-acronym for \textit{INnteractive Learning center for Object-Oriented Modelling}. 
+\section{INLOOM}
+This work aims to validate the quality of the results, the INLOOM software \cite{1}
+produces. For that reason it is inevitable, to take a look into what the software does and
+how it works.
 
+INLOOM is an acronym for \textit{INnteractive Learning center for Object-Oriented Modelling}. 
 The software, as the name suggests, is intended to be employed in a learning environment.
 It is used to evaluate student solutions to modelling tasks, the students have to work 
-on as part of the mandatory beginner software engineering course at TU Dresden.
+on, as part of the mandatory beginner software engineering course, at TU Dresden and 
+is specifically designed to aid in teaching \textit{Object-oriented analysis} and 
+\textit{Object-oriented design}.
 
-\section[Quality-Testing in existing ITS]{Quality-Testing in existing ITS}
-Due to rising student numbers and the availablity of new interfacing technologies the
-interest, in automatic evaluation of student modelling work, has increased in recent 
-years. Even though: Functioning evaluation tools and methods remain scarce. 
-Starting point for the research into existing ITS, was a collection of such, referenced
-in \cite{1}. Since those influenced decision made during the design of INLOOM, it is
-only natural to also include them 
+INLOOM was originally developed as an extension to the existing INLOOP\cite{5} Software, 
+which allows students to solve programming tasks online and to evaluate their results using
+supplied JUnit testcases. While in evaluating code, the task of judging whether or not 
+the entered solution is correct, is rather easy, for software models the same task becomes 
+way more complex. That is because, for a given modelling task, there may exist multiple
+correct solutions, which makes defining \textit{one} optimal solution, that can be used to 
+compare student solutions against, much harder, if not impossible. Additionally, the comparison
+process itself is much more challenging, than to simply check, whether or not a supplied
+code fragment passes a test or not. This is again due to the fact, that whoever creates a model,
+enjoys a wide range of freedom in solving the supplied task. 
 
-% TODO: How did I perform my research?
+The student solution can for example use a different naming scheme than the expert solution it 
+is compared against, or model a property using aggregation or composition, where the expert 
+solution does not and still be correct.
 
-\section[Supervised Learning]{Supervised Learning}
+INLOOM evaluates supplied EMF (\textit{Eclipse Modelling Framework}) models, by performing
+a number of \textit{constraint tests}. In a first step, a 
+\textit{Constraint-based Test Generator} generates a number of constraint files, from an expert
+solution. Each of those holds constraints INLOOM later applies to the input student model. 
+One constraint file is generated per found element and holds all constraints that are to be 
+applied to this element.
+
+A constraint, in this context, means a feature requirement applied to the student model. If, for
+example, the expert solution to the given modelling task, contains a class called "Student", the 
+student solution is expected to contain an equivalent element. This expectation is expressed by 
+the existence of a constraint, that checks for the presence of the class "Student" in the student
+solution.
+
+By extracting the constraints from an existing UML model automatically, the instructor, who wants
+to create a new task, is not required to have any deeper understanding of how the constraints 
+work or how they are implemented. The instructors work is reduced to supplying an expert solution
+for the modelling task he creates. 
+
+The constraint generation is made possible by the existence of a \textit{Master Constraint-Set},
+which is basically a collection of constraint templates. The \textit{Master Constraint Set} is
+individually compiled per diagram type, since the features, one wishes to check for, will 
+inevitably vary, depending on the input type of UML-model. 
+What constraints are employed, when evaluating a student solution, depends on the type of the 
+model in the student solution and the \textit{Master Constraint-Set}.
+
+For each constraint, INLOOM generates an output, identifying the constraint used and containing 
+information about, if and how the constraint was satisfied by the student solution. The 
+constraint result stores, how many points were awarded for the feature checked by the constraint.
+It also identifies that checked feature, stores which element of the solution was checked and 
+assigns a category flag to the result. Each such category flag relates to a number of points 
+awarded. All the constraint results, thus created for the student solution, are collected in a 
+common output XML file. 
+
+In addition to the constraint results, this XML also contains some meta data, like the 
+identification of the student who produced the evaluated solution, which expert solution it 
+was compared to and the exercise the student tries to solve with the supplied diagram.
+Additionally, the total points achieved, as well as the maximum points that can be achieved,
+are stored in the XML.
+
+\section{Quality-Testing in existing Model Evaluation Systems}
+Due to rising student numbers and the availability of modern interfacing technologies, the
+interest, in the automatic evaluation of student modelling work, has increased in recent 
+years. Even though: Functioning evaluation tools and methods remain scarce \cite{1}.
+
+In this section, the results of a literature research, into concepts for validating the quality
+of evaluations, automatic grading systems produce, are presented. 
+Starting point for the research, was a collection of such systems, referenced in \cite{1}.
+Since the design of the listed systems influenced decisions, made during the design of INLOOM,
+it is only natural to also focus on them in a pre-study, that aims to identify possibilities 
+to validate an alike system. The collection is also rather recent and quite complete, since
+an accompanying research into automatic grading systems and intelligent tutoring systems (ITS), 
+did not turn up any software solutions, that were not listed.
+
+The listing in \cite{1} differentiates between types of evaluation systems. There are the 
+two classes: \textit{System} and \textit{Method} - as well as two classes for the systems 
+input: \textit{Web} and \textit{Tool}. This differentiation will not be made here. The 
+undertaken research showed, that it does not play a major role, in terms of the applied strategy
+for quality validation, of which of the classes the described system is.
+
+The systems were examined with regard to their quality assurance measures. 
+Table ~\ref{table:ExistingSystemsTable} lists the analyzed systems and indicates the kind of 
+quality validation they perform. In some cases the undertaken quality assurance measures were 
+described in a separate paper. In these cases, the system, along with the additional literature 
+is consolidated in one table entry.
+
+In order to avoid repeating the description of a frequently employed concept for quality 
+validation, it is opportune, to list such first. There are three trends, in terms of quality 
+validation in student model evaluation. One of the most common strategies seems to be,  
+not to validate the produced evaluations at all. At least no publication, of a description of 
+the validation process, could be found for six of sixteen, of the examined systems 
+\cite{9, 11, 12, 13, 14} (\textit{No Validation}). This is not to mean, that they do not 
+describe \textit{any} testing process! It is meant to say, that these systems do not describe
+a process to test the \textit{quality} of their results. 
+
+\textit{Quality}, in the context of this paper, can be equated with the confidence an instructor, 
+using a tool to automatically evaluate student solutions, has in that tool. Angry and too happy 
+students indicate a low \textit{quality} and are to be avoided. The tool does a \textit{good job} 
+if it evaluates the student created models \textit{correctly}. It awards points exactly where 
+due. If that is the case, it is very unlikely, that the instructor will hear any grumbling from 
+his students and he can use the tool with a high amount of confidence. If, however, the tool he
+employs, does a \textit{bad job} and for example, does not recognize valid inputs as such or 
+finds errors where there are none, his students will be fast to complain and the instructors 
+confidence in the tool will decrease. 
+
+Maybe not as bad, but also to be avoided, are too happy students. If the tool awards points 
+where none are due, it is not doing a \textit{good job} and the instructor again will not be 
+able to employ it with much confidence. 
+\footnote{This paragraph might appear trivial and unnecessarily prosaic, but it actually took
+me a while to define the term for myself. Quality implies a lot of things, but actually 
+describing what it \textit{is}, turned out to be rather difficult. Quality is a measure between
+perfect and really bad. What is either good or bad however, can depend on any number of 
+arbitrary factors. The metaphor describes my understanding of \textit{quality} accurately 
+and is intended to convey it.}
+
+Seven of the publications describe a validation that is based on a comparison of the grade 
+equivalent of the respective method \cite{6, 15, 16, 17, 18, 19}. Such strategies will be 
+discussed in their own subsection and are combined under the umbrella term 
+\textit{Grade Quotient Strategy}. This kind of quality validation is also described for INLOOM
+in \cite{1}. 
+
+For the rest of the systems no strategy, regarding a validation of their evaluations quality,
+is described. The authors do, however, detail strategies for performing an evaluation, 
+regarding the didactic use of their respective tools \cite{10, 23, 24} 
+(\textit{Didactic Evaluation}). Such an evaluation might be interesting in the future, but is 
+not within the scope of any of the questions this thesis is intended to answer. These 
+approaches were not examined any closer. 
+
+It must be mentioned, that there do exist quite a few more systems for evaluating student 
+created UML models \cite{20, 21, 22}. These are not listed and were not examined closer, because 
+they do not employ a constraint-based approach or at least result in a grade. The research was
+thus limited for the following reason: The data available for quality-testing INLOOM is limited, 
+as will be elaborated in a later section, to the results a constraint-based system \textit{can} 
+produce. A constraint-based approach obviously results in data that details, which constraints
+were met and which were not. 
+
+A superficial analysis of systems, that approach the evaluation differently, was performed. 
+It was found, that evaluation-strategies, that are not constraint-based, or do at least result 
+in a grade, will approach validating the quality of their results, with a completely different 
+focus, than it is required in the context of INLOOM. Any strategy, for evaluating the quality of 
+a fundamentally different result, will ultimately not be applicable, since it is not based on 
+data anything alike the results, INLOOM produces.
+
+\begin{center}
+    \begin{table}
+        \label{table:ExistingSystemsTable}
+        \caption{Quality validation performed in systems for student model evaluation.}
+        \begin{tabular}{c|c|c}
+            \textit{System} & \textit{Source(s)}    & Quality Validation Performed\\
+            \hline
+            INLOOM          & \cite{1}              & Grade Quotient Strategy\\
+            Bian            & \cite{6, 7}           & Grade Quotient Strategy\\
+            Schramm         & \cite{23}             & Didactic Evaluation\\
+            UML GRADER      & \cite{8}              & Grade Quotient Strategy\\
+            Striewe         & \cite{16}             & Grade Quotient Strategy\\
+            Demuth          & \cite{9}              & No Validation\\
+            Baghaei         & \cite{10}             & Didactic Evaluation\\
+            Le              & \cite{24}             & Didactic Evaluation\\
+            CourseMaster    & \cite{11, 26}         & No Evaluation \\
+            Artemis         & \cite{17, 22}         & Grade Quotient Strategy\\
+            Beck            & \cite{12}             & No Evaluation \\
+            Sousa           & \cite{13}             & No Evaluation \\
+            Smith \& Thomas & \cite{18, 27, 28}     & Grade Quotient Strategy\\
+            Prados          & \cite{14}             & No Evaluation\\
+            Tselonis        & \cite{19}             & Grade Quotient Strategy\\
+        \end{tabular}
+    \end{table}
+\end{center}
+
+
+\pagebreak
+\subsection{Grade Quotient Strategy}
+
+A \textit{Grade Quotient Strategy} describes a strategy, that is based on calculating the
+percentage deviation of the automatically generated evaluations result, from a manually 
+created one. The literature agrees, that manual evaluations of student models are - speaking 
+in terms of quality - the \textit{best} evaluations known. Therefore, they are the measure 
+of quality applied to automatic evaluations. 
+Generally, in order to calculate some kind of \textit{Grade Quotient} the authors collect as 
+many real live student solutions, as they can and evaluate them. Once, using their tool 
+(or tools\cite{25}) and once again, manually. Two \textit{grades} are extracted from each 
+student solution this way. The difference between the two can now be expressed by a quotient.
+The quotient is usually presented as a difference-percentage.
+
+An especially mentionable paper, whos authors employed a \textit{Grade Quotient Strategy}, was 
+\cite{25}. An extensive effort to compare different evaluation methodologies is described.
+However, the described validation process is not specialized in validating the results of a
+constraint-based approach. Thus the described process' is designed to be general, since it must 
+consider a mutable evaluation format for both the manual and the automatic evaluation.
+
+
+
+\subsection{Grace Points and Clean Scores}
+
+The literature points out that the ratings of different reviewers can differ significantly.
+\cite{1} describes the concept of \textit{grace points}. Points that should not have been 
+awarded if the instructor had followed the evaluation scheme exactly during the correction.
+It is the instructors prerogative to turn a blind eye, if the students solution is 
+\textit{close enough}. If a constraint-based evaluation tool was to make such a judgement call
+however, it would indicate something is broken. 
+
+Since every evaluator has (.*|their)\footnote{Ha. A regex Joke.} own style and preferences,
+this can lead to a measurable deviation between two manual evaluations of the same student 
+solution, that were created by different reviewers. \textit{Clean scores} and other concepts
+like \textit{moderated human marks}\cite{28} are designed to mitigate the negative effects 
+the described deviations have on the applicability of the manual evaluations as a quality 
+standard. By averaging multiple manual evaluations of the same student solution, an even
+\textit{better} quality standard, the automatic evaluation must measure up against, is created. 
+
+In order to decrease the influence, the differing preferences of evaluators can have on 
+the value of their evaluation, as a benchmark, even further, \cite{28} employs 
+\textit{Inter-Rater-Reliability} statistics.
+
+
+
+\subsection{Inter-Rater-Reliability}
+
+Statistics like Cohens Kappa\cite{29}, Scott's Pi\cite{30}, Fleiss Kappa\cite{31} and 
+Gwets AC1-Statistic \cite{32} are measurements for the alikeness of the work, of two 
+or more evaluators. How many evaluators can be compared at once varies between the
+listed statistics. All of these values originate from a psychological or sociological
+background. They are designed to compare evaluators whos evaluation consists of 
+categorizing a person in a number of categories, based on the answers to arbitrary questions
+and chance observations.
+
+In this kind of scenario, one has to factor in, or rather out, a chance agreement of the
+evaluators, who all have their individual practices, yet have to use the same form. 
+Inter-Rater-Reliability statistics aim to remove the habitual or by chance agreement, which
+results, from the equation. 
+
+\cite{28} employed both Fleiss Kappa and the AC1-Statistic, to compare the results of their
+evaluation tool with manual evaluations. Fleiss Kappa is the more general of the two 
+approaches and most Inter-Rater-Reliability statistics are calculated in an, at least similar, 
+fashion. All Inter-Rater-Reliability statistics have in common, that they are intended to
+compare evaluation processes that happen on a nominal scale. 
+
+
+
+\subsection{Informedness, Markedness}
+
+A popular and very well known technique to validate the results of machine learning algorithms,
+is to calculate \textit{Precision and Recall}. It is commonly used in scenarios, where an 
+algorithm has to make a binary decision. 
+\textit{Precision} specifies for how many of the items, the algorithm chose a certain option for,
+that decision was correct. 
+\textit{Recall} specifies how many of the items, for that a certain option would have been 
+correct, were categorized correctly.
+
+The concept is extended, by \textit{Informedness and Markedness}\cite{33}. Unlike 
+\textit{Precision and Recall} these consider the \textit{true negatives} in the calculation
+of the benchmark and thus factor in the general likelihood of an item, to be of a certain
+category.

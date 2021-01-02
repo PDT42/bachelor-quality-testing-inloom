@@ -34,8 +34,8 @@ Vergleiche meine später zu implementierende Software vornehmen kann.
 | 53 | Erstentwurf: Implementierung | Implementierung TestEngine | Ja |
 | 01 | Erstentwurf: Implementierung | Implementierung Output Visualization | Nein |
 | 02 | Finalisierung: Implementierung | Implementierung TestEngine | Ja |
-| 03 | Erstentwurf: Evaluation | Finalisierung | Nein |
-| 04 | Finalisierung: Evaluation, Review | Finalisierung | Ja |
+| 03 | Erstentwurf: AutoEval | Finalisierung | Nein |
+| 04 | Finalisierung: AutoEval, Review | Finalisierung | Ja |
 | 05 | Review | Review | Nein |
 
 ## Erste Kapitel _Schreiben_

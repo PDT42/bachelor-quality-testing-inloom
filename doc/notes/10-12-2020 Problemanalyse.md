@@ -32,7 +32,7 @@ jetzt auf den "Ist"-Datensatz (studentisches _Modell_) angewendet.
 Für jedes überprüfte Modell wird ein Output XML File generiert, in dem die Resultate aller
 angewendeten Constraints festgehalten werden (Hamann Thesis 3.6.4).
 
-### Format des XML ConstraintResult Files
+### Format des XML CResult Files
 
 
 > Das in der Thesis spezifizierte DTD ist nicht länger aktuell. Ich muss das gleiche auf jeden
@@ -51,8 +51,8 @@ angewendeten Constraints festgehalten werden (Hamann Thesis 3.6.4).
 <!ELEMENT TestModel EMPTY>
 <!ATTLIST TestModel name CDATA #REQUIRED> // Id of the Student Model
 
-<!ELEMENT Results (ConstraintResult)>  // List of Results
-<!ELEMENT ConstraintResult (TestObject, RuleObject, RuleSet, Rule, Category, Points, Msg)>  // Container
+<!ELEMENT Results (CResult)>  // List of Results
+<!ELEMENT CResult (TestObject, RuleObject, RuleSet, Rule, Category, Points, Msg)>  // Container
 <!ELEMENT TestObject (#PCDATA)>  // Name/Label of matched Element in Student Solution
 <!ELEMENT RuleObject (#PCDATA)>  // Name/Label of matched Element in Expert Solution
 <!ELEMENT RuleSet (#PCDATA)>  // Id of Rule/Constraint-Group
@@ -116,7 +116,7 @@ Qualität von INLOOMs Arbeit in Frage.
 > Im letzten Meeting (12.10.2020) wurde die Aufgabe formuliert eine Möglichkeit zu finden
 > die Qualität der durch INLOOM vorgenommenen Bewertung zu Quantifizieren.
 
-[Bian] und [Striewe] verwenden als Referenzwert zur Evaluation der von ihren Systemen 
+[Bian] und [Striewe] verwenden als Referenzwert zur AutoEval der von ihren Systemen 
 produzierten Bewertungen, die endgültige automatisch generierte Note und vergleichen sie mit der 
 Note, die ein händischer Kontrolleur auf das selbe Modell vergeben hat. 
 
@@ -129,7 +129,7 @@ ich keine Alternative, da die Menge der möglichen Fehler die eine studentische 
 könnte nicht im Vorhinein absehbar ist. Es wird also nicht möglich sein, zuzusichern, dass ein 
 automatisches Korrekturverfahren _alle Fehler_ findet, genauso wenig wie zugesichert werden 
 kann, dass _alle korrekten Lösungen_ erkannt werden, wenn nicht im Vorhinein alle möglichen 
-Lösungen bekannt sind und vom Instruktor bedacht werden. Der Maßstab zur Evaluation der 
+Lösungen bekannt sind und vom Instruktor bedacht werden. Der Maßstab zur AutoEval der 
 automatischen Bewertung muss also relativ sein. Als Referenzwert können nur Bewertungen durch 
 Tutoren dienen, weil Diese die _besten_ uns bekannten Bewertungen der vorliegenden Aufgabe sind.
 
@@ -145,7 +145,7 @@ dass die automatische und die händische Bewertung auf dem gleichen Punkteschema
 gleiche Punkte/Punktabzüge für den gleichen Fehler) basiert. Dazu kommt, dass nur wenig Arbeit
 erbracht werden muss, bevor man in der Laage ist, die beiden Bewertungen zu vergleichen. 
 Allerdings ignoriert der Ansatz viele mögliche Fehlerquellen, die im Kontext von INLOOM nicht 
-ignoriert werden sollten, da es ja nicht lediglich um die Evaluation der Bewertung geht, sondern
+ignoriert werden sollten, da es ja nicht lediglich um die AutoEval der Bewertung geht, sondern
 auch darum, wie das Programm zu dieser Bewertung gekommen ist. Der Ansatz kann dazu dienen die
 Frage: ``"Kann ich mich auf die Richtigkeit der Bewertung, die INLOOM vergibt, verlassen?"``
 (__Frage 1__) oberflächlich zu beantworten.
@@ -182,7 +182,7 @@ von INLOOM verantworten kann?"`` (__Frage 3__).
 > An der Beantwortung welcher anderen Fragen könnte der Instruktor noch interessiert sein?
 
 ## Possible Reference Attributes
-Wenn ich mich nicht irre, dann setzt jede Evaluation der Bewertung, die nicht ausschließlich 
+Wenn ich mich nicht irre, dann setzt jede AutoEval der Bewertung, die nicht ausschließlich 
 anhand der resultierenden Note durchgeführt wird voraus, dass ein "korrekter" Datensatz 
 generiert wird, auf den die Tests angewendet werden können. Es müssen also Daten über die 
 _korrekte Auswertung_ erfasst und persistiert werden.
@@ -197,19 +197,19 @@ generierte Bewertung (__autoEval__), direkt mit einander verglichen werden.
 
 Ein solcher Vergleich würde dann anhand einer Auswahl von XML Elements stattfinden: Den 
 "Reference Attributes". Offensichtlich würde der Vergleich vornehmlich anhand der Inhalte von 
-Results, also den einzelnen ConstraintResult-s stattfinden, da jede Stufe darüber auf eine Evaluation 
+Results, also den einzelnen CResult-s stattfinden, da jede Stufe darüber auf eine AutoEval 
 anhand der Note hinauslaufen würde. Es wäre sinnvoll, die Eingabe der manEval auf die gewählten 
 Reference Attributes zu reduzieren.
 
 1. TestObject & RuleObject
 
-    Anhand TestObjects & RuleObject kann überprüft werden, ob INLOOM für dieses ConstraintResult das 
+    Anhand TestObjects & RuleObject kann überprüft werden, ob INLOOM für dieses CResult das 
     korrekte Element gematched hat. Ich denke dieses Element zu checken ist immer sinnvoll, da 
     sich ja schon hier entscheidet, ob eine weitere Betrachtung sinnvoll ist.
 
 2. RuleSet & Rule
 
-    RuleSet und Rule identifizieren das zur Erzeugung des ConstraintResult verwendete Constraint eindeutig.
+    RuleSet und Rule identifizieren das zur Erzeugung des CResult verwendete Constraint eindeutig.
     Diese Information ist relevant um Constraint _Überdeckung_ zu vermeiden. Das Hinzufügen eines
     neuen Constraints könnte dazu führen, dass ein Anderes nicht länger in den gewünschten 
     Fällen zur Anwendung kommt und dem Studenten dadurch falsches Feedback gegeben wird.
@@ -248,11 +248,11 @@ class TestDataSet:
     rule_model: str # Id of the expert solution used for the evaluation
     test_model: str # Id of the student solution used for the evaluation
     possible_points: float # Maximum number of points possible
-    autoEval: Evaluation # Automatically generated Evaluaion
-    manEval: Evaluation # Manually produced Evaluation
+    autoEval: AutoEval # Automatically generated Evaluaion
+    manEval: AutoEval # Manually produced AutoEval
 
 @dataclass
-class Evaluation: 
+class AutoEval: 
     """This is a represention of an evaluation created
     for a student model, by either a person, or the 
     automated system being tested."""
@@ -318,7 +318,7 @@ Enough" erreicht oder schon überschritten hat. Ich denke, dass eine solche Eins
 einem möglichst (breiten|großen|statistisch relevanten) Datensatz beruhen sollte. Das wiederum 
 bedeutet, dass der Aufwand zur Erstellung eines solchen Datensatzes, zur Generierung einer 
 Qualitäts Referenz, möglichst klein sein muss. Es könnte also sinnvoll sein, optimal Bewertungen 
-(optimal ConstraintResult-XML ?) auf zwei verschiedenen Detail Levels zu erstellen. 
+(optimal CResult-XML ?) auf zwei verschiedenen Detail Levels zu erstellen. 
 
 Das _gröbere_ Detail Level würde ausschließlich Attribute enthalten, die mit wenig Aufwand in 
 das Testset einpflegbar sind. Also Attribute, die aus händischen Lösungen abgeschrieben und 
@@ -380,10 +380,10 @@ Formalisierter Bewertungsprozess bedeutet weniger Arbeitsaufwand für die Tutore
 mehr Fairness in der Benotung der Studenten. Die zu benotende studentische Lösung müsste nicht 
 einmal in formalisierter digitaler Form (etwa als Eclipse Output) zur Verfügung stehen. Ein Bild 
 oder Scan der Lösung, würde für die Zwecke des Wizards genügen. Eine spätere digitale 
-Reproduktion der studentischen Lösung im von INLOOM unterstützen Format, würde die Evaluation 
+Reproduktion der studentischen Lösung im von INLOOM unterstützen Format, würde die AutoEval 
 für den Testbetrieb verfügbar machen. Es könnte sogar versucht werden, die Struktur der 
-studentischen Lösung aus der eingegebenen Evaluation abzuleiten. Der Fakt, dass eine solche 
-Rekonstruktion möglich ist, würde beweisen, dass die Evaluation _alles_ bedacht hat. Ein 
+studentischen Lösung aus der eingegebenen AutoEval abzuleiten. Der Fakt, dass eine solche 
+Rekonstruktion möglich ist, würde beweisen, dass die AutoEval _alles_ bedacht hat. Ein 
 Rekonstruktionsversuch, könnte dem Tutor die Bewertung vereinfachen, indem er ihn darauf 
 hinweist, welches notwendige Kriterium er noch nicht bedacht hat.
 
@@ -417,14 +417,14 @@ DerWizard müsste den Tutor durch folgende Bewertungsschritte führen:
     ein "Report missing Constraint"-Feature denkbar, welches der Tutor nutzen kann um auf einen 
     Fehler hinzuweisen, welcher durch keines der verfügbaren Constraints abgedeckt wird. 
 
-3. Zentrales Speichern der Vorgenommenen Evaluation
+3. Zentrales Speichern der Vorgenommenen AutoEval
 
     In diesem Schritt spielt der Tutor nurnoch eine untergeordnete Rolle. Er "submitted" seine 
-    Evaluation der studentischen Lösung. Ich könnte mir ein Git Repo vorstellen, in dem "Todo-" 
+    AutoEval der studentischen Lösung. Ich könnte mir ein Git Repo vorstellen, in dem "Todo-" 
     und "Done-Evaluations" verwaltet werden. Eine Mögliche Reposturktur könnte so aussehen:
     
     ```
-    Evaluation-Repo \
+    AutoEval-Repo \
         |
         | Student-Group-{student_group_id} \
             |
@@ -437,7 +437,7 @@ DerWizard müsste den Tutor durch folgende Bewertungsschritte führen:
                     | ...
                 | Done-Evaluations \
                     |
-                    | Evaluation-S-{student_id}-E-{exercide_id} \
+                    | AutoEval-S-{student_id}-E-{exercide_id} \
                         |
                         | solution-s-{student_id}-e-{exercide_id}.png
                         | evaluation-s-{student_id}-e-{exercide_id}-r-{rater_id}.json

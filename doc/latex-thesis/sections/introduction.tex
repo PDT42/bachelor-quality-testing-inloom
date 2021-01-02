@@ -1,25 +1,22 @@
 \chapter{Introduction}
 \label{ch:introduction}
 
-% TODO: Explain what INLOOM is and does here, or in related work?
-
 \section[Motivation]{Motivation}
-
-2020 was jinxed. The Covid-19 pandemic changed how our lives work.
-It has presented the globalised world with little anticipated challenges
+2020 was jinxed. The Covid-19 pandemic changed how our life's work.
+It has presented the globalized world with little anticipated challenges
 and we can feel its influence almost every aspect of our everyday life. 
 In order to reduce the amount of human contacts as much as possible, every 
-aspect of human interaction was evaluated for its digitizability. However: 
-We were all forced to witness, that our digital infracstructe is most obiously 
-not yet up to the task of enabling us to \textit{live the remote life}.
+aspect of human interaction was evaluated for its digitizeability. 
+However: We were all forced to witness, that our digital infrastructure is most 
+obviously not yet up to the task of enabling us to \textit{live the remote life}.
 
 Most of the fundamental problems were trivialities, like missing webcams or 
 a too slow internet connection. Where such were taken care of, the harder-to-fix
-problems came to light. Problems like inadequately educated overtaxed personnel 
-and missing software solutions, that comply with european digital privacy regulation. 
-Even though at first glance the personnel problems don't seem to matter much to 
-software developers, it are still problems, which can and will, at least in part,
-be resolved by them. \\
+problems came to light \cite{2}. Problems like inadequately educated overtaxed personnel 
+and missing software solutions, that comply with European digital privacy regulation. 
+At first glance the personnel problems don't seem to matter much to software developers,
+it still are problems, which, I firmly believe, can and will, at least in part, be resolved 
+by them. 
 
 I don't want to claim, that the digitization of everyday life was a complete
 failure though. Like me, most office workers were able to migrate to home office 
@@ -27,41 +24,42 @@ without much fuss. Still: Living the life of a remote student for half a year,
 definitely motivates me, to spend some thought on how to make e-teaching a 
 little better. 
 
-Even though it prooved hazardous sometimes, working with existing e-teaching 
+Even though it proved hazardous sometimes, working with existing e-teaching 
 tools made me realize, what huge potential lies within a properly digitized higher
-eduaction. Such would not only help temper the effects emergencies, like the covid
+education. Such would not only help temper the effects emergencies, like the Covid
 pandemic, have on university life, but will also be a powerful tool in futureproofing
-universities for the challenges of rising student numbers in the years to come.
+universities \cite{4} for the challenges of rising student numbers \cite{3} in the 
+years to come.
 
-Intelligent-Tutoring-Systems like INLOOM, and ITS under active developement at TU 
-Dresden will make the increased workload managable for university personnel. 
+Intelligent-Tutoring-Systems like INLOOM, an ITS under active development at TU 
+Dresden will make the increased workload manageable for university personnel. 
 Developers are required to produce software that is as intuitive as possible, provides
 a decent grade of digital security, complies with privacy regulations, handles high 
 traffic without complain and all that, while providing an unquestionably accurate and 
 fair environment for everyone involved. 
 
-Integrating digital resources into the workflow seamlessly, will enable teaching 
-personnel to still be able to focus on the individual student, when the student
-groups they teach become way bigger, than they are today - Which, in the end, could be
-the only way to keep higher education as we know it affordable. By contributing to 
-INLOOM, I contribute to digitizing education.
+Integrating digital resources into their workflow seamlessly, will enable teaching 
+personnel, to still be able to focus on the individual student, when the student
+groups they teach become way bigger, than they are today.
 
 \section[Research Questions]{Research Questions}
 
-The goal of this thesis is finding or developing a concept for validating evaluations,
-INLOOM generates for student created UML-models (autoEval), in order to ensure the correctness
-and fairness of said evaluations. Since not all mistakes, a student could make are predictable,
-it will not be possible to ensure, that the automatic grading INLOOM performs, finds all
-errors a student solution contains. Therefore it will not be achievable to perform an 
-objective evaluation of INLOOMs results. 
-\\
+The goal of this thesis is finding or developing a concept for validating the quality
+of automatically generated evaluations of student created models. The result should be
+the functioning prototype of an application for quality testing INLOOM \cite{1}. 
+Quality testing is necessary, to ensure the correctness and fairness of the evaluations, INLOOM 
+generates for student created solution-models. 
+
+Since not all mistakes, a student could make can be predicted, it will not be possible to ensure, 
+that the automatic grading INLOOM performs, finds all errors a student solution contains. 
+Therefore it will not be achievable to perform an objective evaluation of INLOOMs results. 
+Evaluating model evaluations is an ill-defined problem.
 
 The only remaining option is performing a relative evaluation, a comparison of INLOOMs 
 results with the best evaluation of the same model we know. These best evaluations, 
 in INLOOMs case, are manual ones of the same student solution, created by human tutors 
 (manEval). This in turn means, that the possibilities for validating INLOOMs results, 
 are severely limited by the availability and ascertainability of the underlying data.
-\\
 
 For the purpose of validating INLOOMs evaluations I will aim to answer the following
 research questions:
@@ -70,28 +68,29 @@ research questions:
     \item[\textbf{RQ1}] Which values can be extracted from the manual and automatic evaluations?
     \item[\textbf{RQ2}] What comparative scale is qualified to provide a conclusive impression
     on the quality of the evaluations INLOOM generates? 
-    \item[\textbf{RQ3}] How can the developer/tutor/instructor best be assisted in collecting
+    \item[\textbf{RQ3}] What methodologies are employed by existing ITS to validate their results?
+    \item[\textbf{RQ4}] How can the developer/tutor/instructor best be assisted in collecting
     and preprocessing the evaluation data, required for the quality validation? 
-    \item[\textbf{RQ4}] How can the results of the comparison of man- and autoEval be presented
+    \item[\textbf{RQ5}] How can the results of the comparison of man- and autoEval be presented
     to greatest effect? 
 \end{itemize}
 
 The answer to RQ1 will determine which values are available to facilitate a comparison
 between man- and autoEval. The question is approached with an analysis of the available
 datasets.
-The second reaserch question focusses on what to do with the data, once it is collected.
+The second research question focusses on what to do with the data, once it is collected.
 Assuming, that comparable data can be extracted from both man- and autoEval (so basically
 that RQ1 can be answered successfully), a way to combine the found relative differences
 between the two evaluations, into a conclusive quality score, is still required.
 Answering the question will be approached by performing a literature survey, concerning the
-quality validation methodologie, of existing ITS and automatic grading methods.
+quality validation methodologies of existing ITS and automatic grading methods.
 Under any envisionable circumstances, it will be necessary, to digitize manEvals a tutor
 created for student solutions. This digitization process entails a high amount of overhead 
-for the creation of testcasess, that should be reduced as much as possible. Research Question
+for the creation of testcases, that should be reduced as much as possible. Research Question
 three (RQ3), aims to resolve this problem and will be tackled by an analysis of the test-creation
 process, which will determine the, most workload intensive, steps of the process. These steps 
 can then be considered in the design of the software solution proposed in this thesis.
 Lastly it remains to be determined how to best present or visualize the results of the meta 
-evaluation (the evaluation of the evalutions) to the developer/tutor/instructor.
+evaluation (the evaluation of the evaluations) to the developer/tutor/instructor.
 This is the reason why RQ4 is listed among the research questions. Answering it, will depend
 greatly on the answer to RQ2.

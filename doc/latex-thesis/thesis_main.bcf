@@ -2353,8 +2353,71 @@
     <bcf:datasource type="file" datatype="bibtex" glob="false">bibliography.bib</bcf:datasource>
   </bcf:bibdata>
   <bcf:section number="0">
-    <bcf:citekey order="1">1</bcf:citekey>
-    <bcf:citekey order="2">1</bcf:citekey>
+    <bcf:citekey order="1">2</bcf:citekey>
+    <bcf:citekey order="2">4</bcf:citekey>
+    <bcf:citekey order="3">3</bcf:citekey>
+    <bcf:citekey order="4">1</bcf:citekey>
+    <bcf:citekey order="5">1</bcf:citekey>
+    <bcf:citekey order="6">5</bcf:citekey>
+    <bcf:citekey order="7">1</bcf:citekey>
+    <bcf:citekey order="8">1</bcf:citekey>
+    <bcf:citekey order="9">1</bcf:citekey>
+    <bcf:citekey order="10">9</bcf:citekey>
+    <bcf:citekey order="10">11</bcf:citekey>
+    <bcf:citekey order="10">12</bcf:citekey>
+    <bcf:citekey order="10">13</bcf:citekey>
+    <bcf:citekey order="10">14</bcf:citekey>
+    <bcf:citekey order="11">6</bcf:citekey>
+    <bcf:citekey order="11">15</bcf:citekey>
+    <bcf:citekey order="11">16</bcf:citekey>
+    <bcf:citekey order="11">17</bcf:citekey>
+    <bcf:citekey order="11">18</bcf:citekey>
+    <bcf:citekey order="11">19</bcf:citekey>
+    <bcf:citekey order="12">1</bcf:citekey>
+    <bcf:citekey order="13">10</bcf:citekey>
+    <bcf:citekey order="13">23</bcf:citekey>
+    <bcf:citekey order="13">24</bcf:citekey>
+    <bcf:citekey order="14">20</bcf:citekey>
+    <bcf:citekey order="14">21</bcf:citekey>
+    <bcf:citekey order="14">22</bcf:citekey>
+    <bcf:citekey order="15">1</bcf:citekey>
+    <bcf:citekey order="16">6</bcf:citekey>
+    <bcf:citekey order="16">7</bcf:citekey>
+    <bcf:citekey order="17">23</bcf:citekey>
+    <bcf:citekey order="18">8</bcf:citekey>
+    <bcf:citekey order="19">16</bcf:citekey>
+    <bcf:citekey order="20">9</bcf:citekey>
+    <bcf:citekey order="21">10</bcf:citekey>
+    <bcf:citekey order="22">24</bcf:citekey>
+    <bcf:citekey order="23">11</bcf:citekey>
+    <bcf:citekey order="23">26</bcf:citekey>
+    <bcf:citekey order="24">17</bcf:citekey>
+    <bcf:citekey order="24">22</bcf:citekey>
+    <bcf:citekey order="25">12</bcf:citekey>
+    <bcf:citekey order="26">13</bcf:citekey>
+    <bcf:citekey order="27">18</bcf:citekey>
+    <bcf:citekey order="27">27</bcf:citekey>
+    <bcf:citekey order="27">28</bcf:citekey>
+    <bcf:citekey order="28">14</bcf:citekey>
+    <bcf:citekey order="29">19</bcf:citekey>
+    <bcf:citekey order="30">25</bcf:citekey>
+    <bcf:citekey order="31">25</bcf:citekey>
+    <bcf:citekey order="32">1</bcf:citekey>
+    <bcf:citekey order="33">28</bcf:citekey>
+    <bcf:citekey order="34">28</bcf:citekey>
+    <bcf:citekey order="35">29</bcf:citekey>
+    <bcf:citekey order="36">30</bcf:citekey>
+    <bcf:citekey order="37">31</bcf:citekey>
+    <bcf:citekey order="38">32</bcf:citekey>
+    <bcf:citekey order="39">28</bcf:citekey>
+    <bcf:citekey order="40">33</bcf:citekey>
+    <bcf:citekey order="41">1</bcf:citekey>
+    <bcf:citekey order="42">1</bcf:citekey>
+    <bcf:citekey order="43">1</bcf:citekey>
+    <bcf:citekey order="44">1</bcf:citekey>
+    <bcf:citekey order="45">1</bcf:citekey>
+    <bcf:citekey order="46">28</bcf:citekey>
+    <bcf:citekey order="47">28</bcf:citekey>
   </bcf:section>
   <!-- SORTING TEMPLATES -->
   <bcf:sortingtemplate name="nty">
@@ -2386,4 +2449,13 @@
     </bcf:sort>
   </bcf:sortingtemplate>
   <!-- DATALISTS -->
+  <bcf:datalist section="0"
+                name="nty/global//global/global"
+                type="entry"
+                sortingtemplatename="nty"
+                sortingnamekeytemplatename="global"
+                labelprefix=""
+                uniquenametemplatename="global"
+                labelalphanametemplatename="global">
+  </bcf:datalist>
 </bcf:controlfile>
