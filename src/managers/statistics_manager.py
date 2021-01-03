@@ -122,11 +122,15 @@ class StatisticsManager:
         }
 
         # Calculate TDS Level Statistics
-        grade_quotients: Mapping[str, float] = {
+        grade_quotients: Dict[str, float] = {
             e.evaluation_id: (latest_auto_eval.total_points / e.total_points)
             for e in man_evals
         }
+
+        # Calculate average grade
         average_man_grade: float = mean([e.total_points for e in man_evals])
+        grade_quotients['average-man-eval'] = \
+            latest_auto_eval.total_points / average_man_grade
 
         # Getting stats on the latest auto eval
         latest_auto_eval_stats: Mapping = self \
