@@ -178,6 +178,7 @@ facility.
 
 
 \subsection{Data Driven Data Structure}
+\label{DataDrivenDataStructure}
 
 There are some elements, automatic and manual evaluations obviously have in common. Others are
 more oblique and some transformation is required, before they can be assumed present in both. 
@@ -242,6 +243,7 @@ The following model results from combining all of these required features.
 
 
 \subsection{Digitizing Manual Evaluations}
+\label{DigitizingManualEvaluations}
 
 The need to digitize the manual evaluations before being able to compare them automatically
 to the evaluations INLOOM produces, means a huge overhead for the testing process. 
@@ -386,6 +388,7 @@ results on.
 
 
 \subsection{Categories of Comparison}
+\label{CategoriesOfComparison}
 
 The main category of comparison, of the two evaluations will, as previously stated, be a regular
 grade quotient. For each student solution, by the application identified using a key that 
@@ -401,15 +404,15 @@ that are feasible on the available datasets.
 In order to enable the user, to quickly identify sources of error, the application will group
 found results by element type and sum up the points awarded to each group 
 (\textit{points-per-element-type}). This way the user gets an easy grasp of where discrepancies
-in the grade quotient originate. The comparison of the points-per-element-type rating can, just 
-as the grade quotient, be expressed by a quotient per element type.
+in the grade quotient originate. The comparison of the points-per-element-type rating, just 
+as the grade quotient, can be expressed by a quotient per element type.
 
 Evaluations will be grouped by evaluator and expert solution id. The grade quotient and 
 points-per-element-type rating will be average over all evaluations within a group. 
 The evaluator and expert solution id are obvious candidates for a comparison on this level 
 of detail. 
 
-As is expressed by the perceived need to employ IRR, evaluations by different reviewers can 
+As is expressed by the perceived need to employ IRR \cite{28}, evaluations by different reviewers can 
 differ significantly. The application must take this into consideration and give the user the 
 means to check for any negative effects using manual evaluations by multiple evaluators might 
 have on the quality of the systems results. This is remedied by calculating an per evaluator
@@ -419,5 +422,102 @@ By calculating an average value for the evaluations of a specific expert solutio
 can examine INLOOMs results for error trends, that arise from the structure of a specific 
 expert solution. 
 
-\section{Summary}
 
+
+\subsection{Visualizing Validation Results}
+
+Visualizations are unquestionably one of the most effective ways of presenting data. 
+For visualizing the results of the validation, the proposed software is supposed to
+perform, several types of visualization are available for presenting results on each
+level of detail. 
+
+The Grade Quotient is the most comprehensive of the values calculated by the proposed 
+software. Presenting it is the main task of the software's frontend. For that reason
+it should be presented to the user as often as possible. However, visualizing the 
+Grade Quotient is only interesting in contexts, where there is more than one grade
+quotient available. Visualizing a single quotient would not gain anything.
+Individual Grade Quotients will therefore be presented to the user as they are. 
+
+Multiple grade quotients are available when grouping test data sets. This, as described
+in \ref{CategoriesOfComparison}, will be done using the evaluator id and the expert solution
+id as keys. In these cases multiple grade quotients have to be presented. 
+
+The purpose of this kind of presentation is identifying unusual elements in the groups. 
+Bar charts are suitable for this use case. Since quotients are being visualized, the range
+of possible values is limited and the individual values can easily be compared without any
+further need for preprocessing the data. A visualization of the values in form of a bar chart
+will enable easy comparison between elements of the groups and thus help identify unusual
+elements.
+
+Since the software is able to store multiple manual and automatic evaluations for one 
+student solution, it might be interesting to evaluate the development of the quality of 
+INLOOMs evaluations for one student solution, over a number of automatic evaluations. 
+Since one TestDataSet only ever references evaluations, that were created using the 
+same expert solution, each automatic evaluation available in the TestDataSet will represent
+one \textit{generation} of INLOOM. Since the quality of the ratings should be prevented 
+from deteriorating over time, the quality history should be made available to the user 
+of the software. Using a line chart is appropriate for this task.
+
+The last evaluation whose results remain to be presented is the comparison on the result
+level called \textit{points-per-element-type}. Since the results of this validation are
+not very complex, but consist only of a number of points, awarded for a specific
+element type, by one of the compared evaluations, a simple bar chart is again suitable 
+for their visualization. To enable easy comparison between the points awarded to a type
+by the automatic and manual evaluation, the points can be presented as adjacent bars. 
+This will allow to compare the two evaluations to one another while also being able to
+assess the relative relevance of the inspected element type for the final score.
+
+
+
+\section{Summary}
+In this section the requirements collected are summarized. For each requirement, it is checked
+whether the proposed design is capable of satisfying it. 
+
+\begin{itemize}
+    \item[\textbf{RQ1}] The software must be able to automatically test the \textit{quality} 
+    of the results INLOOM generates.
+
+    \textbf{Result:} The software will be able to automatically validate the quality of 
+    INLOOMs result files, employing a strategy, that is an extension of the 
+
+    \textit{Grade Quotient Strategies} described in the literature.
+    \item[\textbf{RQ2}] It must be possible to present the results of the performed validation
+    in an easily comprehensible way, to quickly gain insight about the current state of affairs.
+
+    \textbf{Result:} The software will visualize the results of the validations it performs
+    using bar charts and line charts as well as usual lists and detail views of the stored 
+    data.
+
+    \item[\textbf{RQ3}] All tests must be performed using the data available.
+
+    \begin{itemize}
+
+        \item[\textbf{RQ3.1}] The software must employ a data structure, that is able to hold
+        information collected on automatic and manual evaluations and enables comparing the two.
+
+        \textbf{Result:} Based on a data-driven approach, such a data structure was derived from 
+        the structures of the data available for quality testing.
+
+        \item[\textbf{RQ3.2}] The software must be able to persist multiple evaluations for the 
+        same student solution. 
+        
+        \textbf{Result:} The data structure described in \ref{DataDrivenDataStructure} is up 
+        to this requirement.
+
+        \item[\textbf{RQ3.3}] The data collected by the proposed application must be easily 
+        accessible to programmatic analysis, one might wish to perform on it in the future.
+
+        \textbf{Result:} This requirement will be trivially tackled by storing all collected 
+        data in an independent database and providing all required interfacing functionalities.
+
+    \end{itemize}
+
+    \item[\textbf{RQ4}] The software must include a UI facility to digitize manually created 
+    evaluations of student solutions. 
+
+    \textbf{Result:} The software will incorporate an adequate facility, as was described in
+    \ref{DigitizingManualEvaluations}.
+
+    \item[\textbf{L1}] The system requires manual and automatic evaluations as input, that were
+    created, using the same grading scheme.
+\end{itemize}
