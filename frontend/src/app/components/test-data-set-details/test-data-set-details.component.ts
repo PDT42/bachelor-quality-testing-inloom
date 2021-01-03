@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { stat } from 'fs';
+import { Observable } from 'rxjs';
+import { ExerciseService } from 'src/app/services/exercise.service';
+import { StatisticsService } from 'src/app/services/statistics.service';
 import { TestDataSet } from '../../classes/test-data-set';
 import { TestDataSetService } from '../../services/test-data-set-service.service';
 
@@ -10,41 +14,55 @@ import { TestDataSetService } from '../../services/test-data-set-service.service
 })
 export class TestDataSetDetailsComponent implements OnInit {
   testDataSetId: string;
-  evaluationType: string;
-  testDataSet: TestDataSet;
-  testDataSetTitle: string;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private tdsService: TestDataSetService
+    private tdsService: TestDataSetService,
+    public statisticsService: StatisticsService,
+    public exerciseService: ExerciseService
   ) {}
 
   ngOnInit(): void {
     this.route.queryParams.subscribe((params) => {
       this.testDataSetId = params['id'];
-      this.evaluationType = params['type'];
+    });
+  }
 
+  getTestDataSet(): Observable<TestDataSet> {
+    let testDataSet$: Observable<TestDataSet> = new Observable((sub) => {
       this.tdsService
         .getTestDataSets()
         .subscribe((testDataSets: TestDataSet[]) => {
-          // Getting the tds this page is supposed
-          // to present from the list of available
-          // TestDataSets.
-          this.testDataSet = testDataSets
-            .filter((tds) => tds.test_data_set_id === this.testDataSetId)
-            .pop();
-          // Update the string that is intended to
-          // act as this pages title.
-          if (this.testDataSet) {
-            this.testDataSetTitle =
-              'TDS - Exercise: ' +
-              this.testDataSet.exercise_id +
-              ' - Student: ' +
-              this.testDataSet.student_id;
+          if (this.testDataSetId) {
+            sub.next(
+              testDataSets
+                .filter(
+                  (testDataSet: TestDataSet) =>
+                    testDataSet.test_data_set_id === this.testDataSetId
+                )
+                .pop()
+            );
           }
         });
     });
+    return testDataSet$;
+  }
+
+  getTestDataSetTitle(): Observable<string> {
+    let testDataSetTitle$: Observable<string> = new Observable((sub) => {
+      this.getTestDataSet().subscribe((testDataSet: TestDataSet) => {
+        if (testDataSet) {
+          sub.next(
+            'TDS - Exercise: ' +
+              testDataSet.exercise_id +
+              ' - Student: ' +
+              testDataSet.student_id
+          );
+        }
+      });
+    });
+    return testDataSetTitle$;
   }
 
   deleteTDS(): void {

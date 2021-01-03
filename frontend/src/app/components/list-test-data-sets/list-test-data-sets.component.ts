@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { StatisticsService } from 'src/app/services/statistics.service';
 import { TestDataSetService } from '../../services/test-data-set-service.service';
 
 @Component({
@@ -8,7 +9,10 @@ import { TestDataSetService } from '../../services/test-data-set-service.service
 })
 export class ListTestTataSetsComponent implements OnInit {
 
-  constructor(public tdsService: TestDataSetService) {}
+  constructor(
+    public tdsService: TestDataSetService,
+    public statisticsService: StatisticsService
+    ) {}
 
   ngOnInit(): void {}
 }

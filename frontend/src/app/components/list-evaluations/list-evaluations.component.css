@@ -33,3 +33,33 @@
   font-size: 12px;
   color: rgb(104, 98, 98);
 }
+
+.evaluation-card-body {
+  display: flex;
+  flex-flow: row nowrap;
+}
+
+.evaluation-literals {
+  flex-grow: 1;
+  padding: 6px;
+  padding-inline: 12px;
+  background-color: white;
+  box-shadow: 0 2px 4px 0 rgba(46, 45, 45, 0.185);
+}
+
+.evaluation-literal {
+  display: flex;
+  flex-flow: row nowrap;
+  margin-top: 4px;
+  margin-bottom: 4px;
+  border-bottom: 1px dotted lightgrey;
+}
+
+.evaluation-literal-label {
+  flex-grow: 1;
+}
+
+.evaluation-literal-value {
+  flex-grow: 1;
+  text-align: end;
+}
