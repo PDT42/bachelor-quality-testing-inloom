@@ -346,8 +346,6 @@ class XMLAdapter:
             elif _match := re.search('(.+?) was found', feedback_msg):
                 property_name = _match.group(1)
 
-
-
             if property_name:
                 element_label = property_name
 
@@ -412,30 +410,30 @@ class XMLAdapter:
         # Extract Data from Generalization Feedback Messages
         # °°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°
 
-        elif element_type == 'Generalization':
-
-            pass
+        # elif element_type == 'Generalization':
+        #
+        #     pass
 
         # Extract Data from Association Feedback Messages
         # °°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°
 
-        elif element_type == 'Association':
-
-            pass
+        # elif element_type == 'Association':
+        #
+        #     pass
 
         # Extract Data from Aggregation Feedback Messages
         # °°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°
 
-        elif element_type == 'Aggregation':
-
-            pass
+        # elif element_type == 'Aggregation':
+        #
+        #     pass
 
         # Extract Data from Composition Feedback Messages
         # °°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°
 
-        elif element_type == 'Composition':
-
-            pass
+        # elif element_type == 'Composition':
+        #
+        #     pass
 
         # Extract Data from Relationship Messages
         # °°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°
