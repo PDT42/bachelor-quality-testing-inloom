@@ -14,7 +14,7 @@ from data_types.evaluation import AutoEval
 from data_types.result_category import ResultCategory
 from data_types.result import Result
 from db_connection.db_connection import SqliteConnection
-from managers.results_manager import ResultManager
+from managers.result_manager import ResultManager
 from managers.evaluation_manager import EvalManager
 from managers.testdata_manager import TDManager
 from test.test_db_connection import init_test_sqlite_connection
@@ -31,6 +31,7 @@ class TestResultsManager(unittest.TestCase):
     TEST_RESULT: Result = Result(
         expert_element_label='test_expert_element_label',
         expert_element_type='test_expert_element_type',
+        expert_element_name='test_expert_element_name',
         student_element_label='test_student_element_label',
         student_element_type='test_student_element_type',
         result_type='CONSTRAINT',

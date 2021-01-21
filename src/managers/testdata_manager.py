@@ -48,8 +48,7 @@ class TDManager:
             DbColumn('created_time', INTEGER(), not_null=True)
         ]
         self.test_data_set_table = DbTable(
-            'inloom_quality_test_data_sets',
-            columns=self.test_data_set_table_columns)
+            'test_data_sets', columns=self.test_data_set_table_columns)
 
     def get_student_tds(self, student_id: str, exercise_id: str, expert_solution_id: str):
         """Get the tds for this student- and exercise_id."""

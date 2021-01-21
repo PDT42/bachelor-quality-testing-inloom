@@ -13,7 +13,7 @@ from data_types.result_category import ResultCategory
 from data_types.test_data_set import TestDataSet
 from db_connection.db_connection import SqliteConnection
 from managers.evaluation_manager import EvalManager
-from managers.results_manager import ResultManager
+from managers.result_manager import ResultManager
 from managers.testdata_manager import TDManager
 from test.test_db_connection import init_test_sqlite_connection
 
@@ -52,6 +52,7 @@ class TestTDManager(unittest.TestCase):
         return Result(
             expert_element_label='test_expert_element_label',
             expert_element_type='test_expert_element_type',
+            expert_element_name='test_expert_element_name',
             student_element_label='test_student_element_label',
             student_element_type='test_student_element_type',
             result_type='CONSTRAINT',

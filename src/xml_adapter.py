@@ -187,6 +187,7 @@ class XMLAdapter:
         ``xml_tree`` and store em in the appropriate
         adapter fields.
         """
+
         test_points_node: XML.Element = self.points_node.find(self.STUD_POINTS_TAG)
         if test_points_node is None:
             return False
@@ -387,7 +388,11 @@ class XMLAdapter:
                 enumeration_name = _match.group(1)
 
             if enumeration_name:
-                element_label = enumeration_name
+
+                # Adding label used by auto eval
+                element_label = f"({element_label}) "
+
+                element_label += enumeration_name
 
         # Extract Data from LiteralGroup Feedback Messages
         # °°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°
@@ -405,7 +410,11 @@ class XMLAdapter:
                 literal_name = _match.group(1)
 
             if literal_name:
-                element_label = literal_name
+
+                # Adding label used by auto eval
+                element_label = f"({element_label}) "
+
+                element_label += literal_name
 
         # Extract Data from Generalization Feedback Messages
         # °°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°
@@ -458,7 +467,11 @@ class XMLAdapter:
                 relationship_type = _match.group(1)
 
             if class_name_1 and class_name_2:
-                element_label = f"{class_name_1}-{class_name_2}"
+
+                # Adding label used by auto eval
+                element_label = f"({element_label}) "
+
+                element_label += f"{class_name_1}-{class_name_2}"
             if relationship_type:
                 element_label += f"-{relationship_type}"
 
@@ -473,7 +486,11 @@ class XMLAdapter:
                 class_name = _match.group(1)
 
             if class_name:
-                element_label = class_name
+
+                # Adding label used by auto eval
+                element_label = f"({element_label}) "
+
+                element_label += class_name
 
         # Extract Data from AssociationClassEnd Messages
         # °°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°
@@ -489,7 +506,11 @@ class XMLAdapter:
                 class_name = _match.group(1)
 
             if class_name:
-                element_label = class_name
+
+                # Adding label used by auto eval
+                element_label = f"({element_label}) "
+
+                element_label += class_name
 
         # Extract Data from Role Messages
         # °°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°
@@ -508,7 +529,11 @@ class XMLAdapter:
                 role_name = _match.group(1)
 
             if role_name:
-                element_label = role_name
+
+                # Adding label used by auto eval
+                element_label = f"({element_label}) "
+
+                element_label += role_name
 
         # Extract Data from None Messages
         # °°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°

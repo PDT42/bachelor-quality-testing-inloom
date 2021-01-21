@@ -6,6 +6,7 @@ This is the module containing the CResult datatype.
 """
 
 from dataclasses import dataclass, field
+from datetime import datetime
 from typing import Any, Dict
 from uuid import uuid4
 
@@ -32,6 +33,7 @@ class Result:
     result_type: str  # Either CONSTRAINT, MANUAL TODO: Enum? Remove?
     graded_feature_id: str
 
+    created_time: int = field(default_factory=lambda: int(datetime.now().timestamp()))
     result_id: str = field(default_factory=lambda: str(uuid4()))
 
     def __hash__(self):

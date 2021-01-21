@@ -50,7 +50,7 @@ class TestXMLAdapter(unittest.TestCase):
     def test_get_required_results_contents(self):
         """Test XMLAdapters Function ``get_required_results_content``."""
 
-        expert_element_label: str = 'r1'
+        expert_element_name: str = 'r1'
         expert_element_type: str = 'Relationship'
         student_element_label: str = 'r1'
         student_element_type: str = 'Relationship'
@@ -63,7 +63,7 @@ class TestXMLAdapter(unittest.TestCase):
         self.expert_adapter._get_required_results_contents()
         first_adapter_result: Result = self.expert_adapter.results[0]
 
-        self.assertEqual(first_adapter_result.expert_element_label, expert_element_label)
+        self.assertEqual(first_adapter_result.expert_element_name, expert_element_name)
         self.assertEqual(first_adapter_result.expert_element_type, expert_element_type)
         self.assertEqual(first_adapter_result.student_element_label, student_element_label)
         self.assertEqual(first_adapter_result.student_element_type, student_element_type)

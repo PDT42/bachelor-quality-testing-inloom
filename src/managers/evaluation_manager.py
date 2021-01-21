@@ -13,7 +13,7 @@ from db_connection.db_data_types import FLOAT, INTEGER, VARCHAR
 from db_connection.db_table import DbTable
 from db_connection.filter import Filter, FilterOperation
 from db_connection.query import CREATEQuery, DELETEQuery, INSERTQuery, Query, SELECTQuery
-from managers.results_manager import ResultManager
+from managers.result_manager import ResultManager
 
 
 class EvalManager:
@@ -21,8 +21,8 @@ class EvalManager:
 
     # Constants
     EVAL_TABLE_NAME: str = 'evaluations'
-    MAN_EVAL_TABLE_NAME: str = 'manual_evaluations'
-    AUTO_EVAL_TABLE_NAME: str = 'automatic_evaluations'
+    MAN_EVAL_TABLE_NAME: str = 'man_evals'
+    AUTO_EVAL_TABLE_NAME: str = 'auto_evals'
 
     TEST_DATA_SET_ID_COLUMN: DbColumn = DbColumn('test_data_set_id', VARCHAR(), not_null=True)
     EXERCISE_ID_COLUMN: DbColumn = DbColumn('exercise_id', VARCHAR(), not_null=True)
