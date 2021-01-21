@@ -64,7 +64,7 @@ export class RegisterManEvalComponent implements OnInit {
       expTypeCtrl: ['', Validators.required],
       stdElCtrl: ['', Validators.required],
       stdTypeCtrl: ['', Validators.required],
-      featureCtrl: ['', Validators.required],
+      featureCtrl: [null],
       resCatCtrl: ['', Validators.required],
       pointsCtrl: ['', Validators.required],
       feedbackCtrl: [''],
@@ -108,17 +108,24 @@ export class RegisterManEvalComponent implements OnInit {
       .pop().elements;
   }
 
+  expertLabelChanged(event: any): void {
+    this.resultsForm
+      .get('stdElCtrl')
+      .setValue(event.element_label);
+  }
+
   totalPointsChanged(): void {
     this.total_points = this.metadataForm.get('totalPointsCtrl').value;
   }
 
-  expertTypeChanged(): void {
+  expertTypeChanged(event: any): void {
     let selected_type = this.resultsForm.get('expTypeCtrl').value;
     this.type_elements = this.expert_elements[selected_type];
+    this.resultsForm.get('stdTypeCtrl')
+    .setValue(event.value);
   }
 
   addResult() {
-
     let new_result: Result = {
       expert_element: this.resultsForm.get('expElCtrl').value,
       student_element_type: this.resultsForm.get('stdTypeCtrl').value,
@@ -147,6 +154,7 @@ export class RegisterManEvalComponent implements OnInit {
     if (_index > -1) {
       this.results.splice(_index, 1);
     }
+    this.total_points -= result.points;
   }
 
   onSubmit() {
@@ -165,7 +173,6 @@ export class RegisterManEvalComponent implements OnInit {
       created_time: null,
     };
 
-    this.tdsService.fetchData();
     this.evalService.registerEvaluation(manEval);
     this.router.navigate(['/register']);
   }

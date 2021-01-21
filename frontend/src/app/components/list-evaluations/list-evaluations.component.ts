@@ -8,7 +8,7 @@ import { TestDataSet } from 'src/app/classes/test-data-set';
 import { EvaluationService } from 'src/app/services/evaluation.service';
 import { EvaluatorService } from 'src/app/services/evaluator.service';
 import { ExerciseService } from 'src/app/services/exercise.service';
-import { StatisticsService } from 'src/app/services/statistics.service';
+import { MetaEvalService } from 'src/app/services/metaeval.service';
 
 @Component({
   selector: 'app-list-evaluations',
@@ -28,7 +28,7 @@ export class ListEvaluationsComponent implements OnInit {
     public evalService: EvaluationService,
     public evaluatorService: EvaluatorService,
     public exerciseService: ExerciseService,
-    public statisticsService: StatisticsService
+    public metaEvalService: MetaEvalService
   ) {}
 
   ngOnInit(): void {}

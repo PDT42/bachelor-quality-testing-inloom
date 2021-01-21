@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
-import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { TestDataSet } from '../classes/test-data-set';
 
 @Injectable({
@@ -15,10 +14,39 @@ export class TestDataSetService {
     this.testDataSets = new BehaviorSubject<TestDataSet[]>([]);
   }
 
-  getTestDataSets(): Subject<TestDataSet[]> {
+  getTestDataSets(): BehaviorSubject<TestDataSet[]> {
     if (!this.testDataSetsFetched) this.fetchData();
 
     return this.testDataSets;
+  }
+
+  getTestDataSetsOfExercise(exerciseId: string): Observable<TestDataSet[]> {
+    let testDataSets$: Observable<TestDataSet[]> = new Observable((sub) => {
+      this.getTestDataSets().subscribe((testDataSets: TestDataSet[]) => {
+        sub.next(
+          testDataSets.filter(
+            (tds: TestDataSet) => tds.exercise_id === exerciseId
+          )
+        );
+      });
+    });
+    return testDataSets$;
+  }
+
+  getTestDataSet(testDataSetId: string): Observable<TestDataSet> {
+    let testDataSet$: Observable<TestDataSet> = new Observable((sub) => {
+      this.getTestDataSets().subscribe((testDataSets: TestDataSet[]) => {
+        sub.next(
+          testDataSets
+            .filter(
+              (testDataSet: TestDataSet) =>
+                testDataSet.test_data_set_id === testDataSetId
+            )
+            .pop()
+        );
+      });
+    });
+    return testDataSet$;
   }
 
   fetchData(): void {

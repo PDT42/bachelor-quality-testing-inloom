@@ -31,7 +31,6 @@ import { NavigationComponent } from './components/navigation/navigation.componen
 import { RegisterComponent } from './components/register/register.component';
 import { TestDataSetDetailsComponent } from './components/test-data-set-details/test-data-set-details.component';
 import { ListEvaluationsComponent } from './components/list-evaluations/list-evaluations.component';
-import { TestDataSetDashboardComponent } from './components/test-data-set-dashboard/test-data-set-dashboard.component';
 import { RegisterExerciseComponent } from './components/register-exercise/register-exercise.component';
 import { ListEvaluatorsComponent } from './components/list-evaluators/list-evaluators.component';
 import { ListExercisesComponent } from './components/list-exercises/list-exercises.component';
@@ -39,6 +38,7 @@ import { ExerciseDetailsComponent } from './components/exercise-details/exercise
 import { EvaluatorDetailsComponent } from './components/evaluator-details/evaluator-details.component';
 import { RegisterEvaluatorComponent } from './components/register-evaluator/register-evaluator.component';
 import { SingleComparisonComponent } from './components/single-comparison/single-comparison.component';
+import { MultipleComparisonComponent } from './multiple-comparison/multiple-comparison.component';
 
 @NgModule({
   declarations: [
@@ -52,7 +52,6 @@ import { SingleComparisonComponent } from './components/single-comparison/single
     RegisterComponent,
     TestDataSetDetailsComponent,
     ListEvaluationsComponent,
-    TestDataSetDashboardComponent,
     RegisterExerciseComponent,
     ListEvaluatorsComponent,
     ListExercisesComponent,
@@ -60,6 +59,7 @@ import { SingleComparisonComponent } from './components/single-comparison/single
     EvaluatorDetailsComponent,
     RegisterEvaluatorComponent,
     SingleComparisonComponent,
+    MultipleComparisonComponent,
   ],
   imports: [
     AppRoutingModule,

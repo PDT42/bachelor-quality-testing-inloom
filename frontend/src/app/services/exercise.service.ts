@@ -37,6 +37,19 @@ export class ExerciseService {
     return this.exercises;
   }
 
+  getExercise(exerciseId: string): Observable<Exercise> {
+    let exercise$: Observable<Exercise> = new Observable((sub) => {
+      this.getExercises().subscribe((exercises: Exercise[]) => {
+          sub.next(
+            exercises
+              .filter((ex: Exercise) => ex.exercise_id === exerciseId)
+              .pop()
+          );
+      });
+    });
+    return exercise$;
+  }
+
   getExpertSolution(expertSolutionId: string): Observable<ExpertSolution> {
     let expertSolution$: Observable<ExpertSolution> = new Observable((sub) => {
       this.getExpertSolutions()

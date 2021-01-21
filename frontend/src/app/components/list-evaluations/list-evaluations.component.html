@@ -39,17 +39,29 @@
                   ) | async
                 ).maximum_points
               }}
+              ({{
+                (item.total_points /
+                  (
+                    exerciseService.getExpertSolution(
+                      this.testDataSet.expert_solution_id
+                    ) | async
+                  ).maximum_points) *
+                  100 | number: "2.1-1"
+              }}
+              %)
             </span>
           </div>
           <div class="evaluation-literal" *ngIf="item.evaluation_type == 'M'">
             <span class="evaluation-literal-label"> Grade Quotient </span>
             <span class="evaluation-literal-value">
               {{
-                statisticsService.getGradeQuotient(
+                (metaEvalService.getGradeQuotient(
                   this.testDataSet.test_data_set_id,
                   item.evaluation_id
-                ) | async | number:'1.1-3'
-              }}
+                )
+                  | async) * 100
+                  | number: "2.1-1"
+              }} %
             </span>
           </div>
         </div>

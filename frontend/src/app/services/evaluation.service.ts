@@ -2,6 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Evaluation } from '../classes/evaluation';
+import { MetaEvalService } from './metaeval.service';
+import { TestDataSetService } from './test-data-set-service.service';
 
 @Injectable({
   providedIn: 'root',
@@ -10,7 +12,11 @@ export class EvaluationService {
   evaluations: BehaviorSubject<Evaluation[]>;
   evaluationsFetched: Boolean = false;
 
-  constructor(private http: HttpClient) {
+  constructor(
+    private http: HttpClient,
+    private tdsService: TestDataSetService,
+    private metaEvalService: MetaEvalService
+  ) {
     this.evaluations = new BehaviorSubject<Evaluation[]>([]);
     this.fetchEvaluations();
   }
@@ -35,6 +41,8 @@ export class EvaluationService {
         .post('http://localhost:3001/eval/register/man', evaluation)
         .subscribe((result) => {
           this.fetchEvaluations();
+          this.tdsService.fetchData();
+          this.metaEvalService.fetchTDSMetaEvals();
           return result;
         });
     }

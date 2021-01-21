@@ -62,14 +62,14 @@
   font-size: 16px;
 }
 
-.testdatasets {
-  flex-grow: 1;
-}
-
-.test-data-set-card-body {
+.test-data-set-data {
   display: flex;
   flex-flow: row nowrap;
   margin-inline: 4px;
+  padding: 8px;
+  border-color: rgba(169, 170, 170, 0.616);
+  background-color: rgba(105, 103, 103, 0.151);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
 }
 
 .test-data-set-literals {

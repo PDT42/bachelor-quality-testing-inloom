@@ -25,30 +25,29 @@
         the AutoEval, that was recorded last is processed."
       </p>
       <div class="box">
-        <app-listtestdatasets></app-listtestdatasets>
+        <app-listtestdatasets
+          [testDataSets$]="tdsService.getTestDataSets()"
+        ></app-listtestdatasets>
       </div>
     </mat-tab>
     <mat-tab label="Exercises">
       <div class="interactions">
         <div class="option-list">
           <div [routerLink]="'/exercise/register'" class="option-list-item">
-            <span class="option-list-item-text">
-              Register new Exercise
-            </span>
+            <span class="option-list-item-text"> Register new Exercise </span>
           </div>
         </div>
       </div>
       <mat-divider class="divider"></mat-divider>
       <h4 class="subtitle">Exercises on Record:</h4>
       <p class="description">
-        "These are the exercises recorded in the application database.
-        Each of the student solutions (rather obviously) aims to solve
-        a given task, for which there is at least one optimal solution.
-        When grading the student solution, the evaluator compares it to
-        an expert solution and awards points, if the required features
-        are part of the student solution. For one task, there can exist
-        multiple expert/optimal solutions, since modelling is not an
-        exact science."
+        "These are the exercises recorded in the application database. Each of
+        the student solutions (rather obviously) aims to solve a given task, for
+        which there is at least one optimal solution. When grading the student
+        solution, the evaluator compares it to an expert solution and awards
+        points, if the required features are part of the student solution. For
+        one task, there can exist multiple expert/optimal solutions, since
+        modelling is not an exact science."
       </p>
       <div class="box">
         <app-list-exercises></app-list-exercises>
@@ -58,20 +57,17 @@
       <div class="interactions">
         <div class="option-list">
           <div [routerLink]="'/evaluator/register'" class="option-list-item">
-            <span class="option-list-item-text">
-              Register new Evaluator
-            </span>
+            <span class="option-list-item-text"> Register new Evaluator </span>
           </div>
         </div>
       </div>
       <mat-divider class="divider"></mat-divider>
       <h4 class="subtitle">Registered Evaluators:</h4>
       <p class="description">
-        "Every evaluator has his/her/their own style. Some grade more
-        harshly, some are more lenient. Some have good, some, bad days.
-        Thus, the manual evaluations of two different evaluators are
-        not equal and should not be treated as such. These are the
-        evaluators registered in the system."
+        "Every evaluator has his/her/their own style. Some grade more harshly,
+        some are more lenient. Some have good, some, bad days. Thus, the manual
+        evaluations of two different evaluators are not equal and should not be
+        treated as such. These are the evaluators registered in the system."
       </p>
       <div class="box">
         <app-list-evaluators></app-list-evaluators>

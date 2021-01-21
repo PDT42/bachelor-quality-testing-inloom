@@ -1,1 +1,49 @@
-<p>exercise-details works!</p>
+<div *ngIf="exerciseService.getExercise(exerciseId) | async; else elseBlock">
+  <div class="container">
+    <div class="title-container">
+      <span class="title">{{
+        (exerciseService.getExercise(exerciseId) | async).exercise_id
+      }}</span>
+    </div>
+
+    <div class="interactions">
+      <div class="option-list">
+        <div [routerLink]="'/exercise/register'" class="option-list-item">
+          <span class="option-list-item-text"> Add Expert Solution </span>
+        </div>
+      </div>
+    </div>
+
+    <mat-divider class="divider"></mat-divider>
+
+    <div class="exercise-data">
+      <div class="exercise-literals">
+        <div class="exercise-literal">
+          <span class="exercise-literal-label"> TestDataSets available </span>
+          <span class="exercise-literal-value">{{
+            (tdsService.getTestDataSetsOfExercise(exerciseId) | async).length
+          }}</span>
+        </div>
+      </div>
+    </div>
+
+    <mat-divider class="divider"></mat-divider>
+
+    <!-- Adding Multi Comparison Chart -->
+
+    <app-multiple-comparison
+      exerciseId="{{ exerciseId }}"
+    ></app-multiple-comparison>
+
+    <mat-divider class="divider"></mat-divider>
+
+    <!-- Adding List of TestDataSets -->
+
+    <app-listtestdatasets
+      [testDataSets$]="tdsService.getTestDataSetsOfExercise(exerciseId)"
+    ></app-listtestdatasets>
+  </div>
+</div>
+<ng-template #elseBlock>
+  <mat-spinner></mat-spinner>
+</ng-template>

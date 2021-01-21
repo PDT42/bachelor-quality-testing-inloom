@@ -3,7 +3,7 @@
     <!--  -->
     <!-- Upload Student Solution Part -->
 
-    <mat-step [stepControl]="fileForm" label="Upload the Evaluation PDF">
+    <mat-step [stepControl]="fileForm" label="Upload Evaluation PDF">
       <form [formGroup]="fileForm">
         <p class="description">
           Upload an image to use for reference while recording the manuell
@@ -99,7 +99,7 @@
     <!-- Metadata Part -->
     <!--  -->
 
-    <mat-step [stepControl]="metadataForm" label="Specify Metadata">
+    <mat-step [stepControl]="metadataForm" label="Supply Metadata">
       <form [formGroup]="metadataForm">
         <p class="description">Enter required Meta Data.</p>
 
@@ -170,7 +170,7 @@
               <mat-label>Expert Element Type</mat-label>
               <mat-select
                 formControlName="expTypeCtrl"
-                (selectionChange)="expertTypeChanged()"
+                (selectionChange)="expertTypeChanged($event)"
                 required
               >
                 <mat-option
@@ -184,7 +184,7 @@
 
             <mat-form-field>
               <mat-label>Expert Element Label</mat-label>
-              <mat-select formControlName="expElCtrl" required>
+              <mat-select (valueChange)="expertLabelChanged($event)" formControlName="expElCtrl" required>
                 <mat-option
                   *ngFor="let element of type_elements"
                   [value]="element"
@@ -222,7 +222,6 @@
                 matInput
                 placeholder="Feature graded by this result .."
                 formControlName="featureCtrl"
-                required
               />
             </mat-form-field>
 
@@ -232,7 +231,7 @@
                 <mat-option value="C">CORRECT</mat-option>
                 <mat-option value="E">ERROR</mat-option>
                 <mat-option value="W">WARNING</mat-option>
-                <mat-option value="M">MISING</mat-option>
+                <mat-option value="M">MISSING</mat-option>
                 <mat-option value="I">INFO</mat-option>
               </mat-select>
             </mat-form-field>

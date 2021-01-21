@@ -1,133 +1,183 @@
-<div class="container">
-  <div class="title-container">
-    <span class="title">{{ getTestDataSetTitle() | async }}</span>
-    <button mat-raised-button color="warn" (click)="deleteTDS()">
-      <mat-icon>delete</mat-icon>
-    </button>
-  </div>
+<div *ngIf="tdsService.getTestDataSet(testDataSetId) | async; else elseBlock">
+  <div class="container">
+    <div class="title-container">
+      <span class="title">{{ getTestDataSetTitle() | async }}</span>
+      <button mat-raised-button color="warn" (click)="deleteTDS()">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
 
-  <mat-tab-group>
-    <mat-tab label="TDS Details">
-      <div class="interactions">
-        <div class="option-list">
-          <div [routerLink]="'/eval/man/register'" class="option-list-item">
-            <span class="option-list-item-text"> Add Manual Evaluation </span>
-          </div>
-          <div [routerLink]="'/eval/auto/register'" class="option-list-item">
-            <span class="option-list-item-text">
-              Add Automatic Evaluation
-            </span>
+    <mat-tab-group>
+      <mat-tab label="TDS Details">
+        <div class="interactions">
+          <div class="option-list">
+            <div [routerLink]="'/eval/man/register'" class="option-list-item">
+              <span class="option-list-item-text"> Add Manual Evaluation </span>
+            </div>
+            <div [routerLink]="'/eval/auto/register'" class="option-list-item">
+              <span class="option-list-item-text">
+                Add Automatic Evaluation
+              </span>
+            </div>
           </div>
         </div>
-      </div>
 
-      <mat-divider class="divider"></mat-divider>
+        <mat-divider class="divider"></mat-divider>
 
-      <div class="test-data-set-card-body">
-        <div class="test-data-set-literals">
-          <div class="test-data-set-literal">
-            <span class="test-data-set-literal-label">
-              Employed Expert Solution
-            </span>
-            <span class="test-data-set-literal-value">
-              {{
-                (exerciseService.getExpertSolution(
-                  (getTestDataSet() | async).expert_solution_id
-                ) | async).expert_solution_id
-              }}
-            </span>
-          </div>
+        <div class="test-data-set-data">
+          <div class="test-data-set-literals">
+            <div class="test-data-set-literal">
+              <span class="test-data-set-literal-label">
+                Employed Expert Solution
+              </span>
+              <span class="test-data-set-literal-value">
+                {{
+                  (
+                    exerciseService.getExpertSolution(
+                      (tdsService.getTestDataSet(testDataSetId) | async)
+                        .expert_solution_id
+                    ) | async
+                  ).expert_solution_id
+                }}
+              </span>
+            </div>
 
-          <div class="test-data-set-literal">
-            <span class="test-data-set-literal-label">
-              Average ManEval Points
-            </span>
-            <span class="test-data-set-literal-value">
-              {{
-                statisticsService.getAverageManGrade(this.testDataSetId) | async
-              }}
-              /
-              {{
-                (
-                  exerciseService.getExpertSolution(
-                    (getTestDataSet() | async).expert_solution_id
+            <div class="test-data-set-literal">
+              <span class="test-data-set-literal-label">
+                Average ManEval Points
+              </span>
+              <span class="test-data-set-literal-value">
+                {{
+                  metaEvalService.getKPIValue(
+                    this.testDataSetId,
+                    "average-man-total-points"
                   ) | async
-                ).maximum_points
-              }}
-            </span>
-          </div>
+                }}
+                /
+                {{
+                  (
+                    exerciseService.getExpertSolution(
+                      (tdsService.getTestDataSet(testDataSetId) | async)
+                        .expert_solution_id
+                    ) | async
+                  ).maximum_points
+                }}
+                ({{
+                  (metaEvalService.getKPIValue(
+                    this.testDataSetId,
+                    "average-man-grade"
+                  )
+                    | async) * 100
+                    | number: "2.1-1"
+                }}
+                %)
+              </span>
+            </div>
 
-          <div class="test-data-set-literal">
-            <span class="test-data-set-literal-label">
-              Average Grade Quotient
-            </span>
-            <span class="test-data-set-literal-value">
-              {{
-                statisticsService.getGradeQuotient(
-                  this.testDataSetId,
-                  "average-man-eval"
-                )
-                  | async
-                  | number: "1.1-3"
-              }}
-            </span>
+            <div class="test-data-set-literal">
+              <span class="test-data-set-literal-label">
+                Latest AutoEval Points
+              </span>
+              <span class="test-data-set-literal-value">
+                {{
+                  metaEvalService.getKPIValue(
+                    this.testDataSetId,
+                    "latest-auto-total-points"
+                  ) | async
+                }}
+                /
+                {{
+                  (
+                    exerciseService.getExpertSolution(
+                      (tdsService.getTestDataSet(testDataSetId) | async)
+                        .expert_solution_id
+                    ) | async
+                  ).maximum_points
+                }}
+                ({{
+                  (metaEvalService.getKPIValue(
+                    this.testDataSetId,
+                    "latest-auto-grade"
+                  ) | async) * 100 | number: "2.1-1"
+                }} %)
+              </span>
+            </div>
+
+            <div class="test-data-set-literal">
+              <span class="test-data-set-literal-label">
+                Average Grade Quotient
+              </span>
+              <span class="test-data-set-literal-value">
+                {{
+                  (metaEvalService.getGradeQuotient(
+                    this.testDataSetId,
+                    "average-man-eval"
+                  )
+                    | async) * 100
+                    | number: "2.1-1"
+                }} %
+              </span>
+            </div>
           </div>
         </div>
-      </div>
 
-      <mat-divider class="divider"></mat-divider>
+        <mat-divider class="divider"></mat-divider>
 
-      <app-single-comparison
-        testDataSetId="{{ testDataSetId }}"
-        chartTitle="Average ManEval / Latest AutoEval"
-      ></app-single-comparison>
-    </mat-tab>
+        <app-single-comparison
+          testDataSetId="{{ testDataSetId }}"
+          chartTitle="Average ManEval / Latest AutoEval"
+        ></app-single-comparison>
+      </mat-tab>
 
-    <mat-tab label="ManEvals">
-      <div class="interactions">
-        <div class="option-list">
-          <div [routerLink]="'/eval/man/register'" class="option-list-item">
-            <span class="option-list-item-text"> Add Manual Evaluation </span>
+      <mat-tab label="ManEvals">
+        <div class="interactions">
+          <div class="option-list">
+            <div [routerLink]="'/eval/man/register'" class="option-list-item">
+              <span class="option-list-item-text"> Add Manual Evaluation </span>
+            </div>
           </div>
         </div>
-      </div>
 
-      <mat-divider class="divider"></mat-divider>
+        <mat-divider class="divider"></mat-divider>
 
-      <h4 class="subtitle">ManEvals</h4>
-      <p class="description">
-        "These are the manual evaluations (ManEvals) available in this
-        TestDataSet. There may exist multiple manual evaluations of the same
-        student solution, so this TDS holds a list of manual evaluations. When
-        INLOOM QT performs the comparison of manual and automatic evaluations,
-        all of the manual evaluations are taken into consideration, while only
-        the most recent automatic evaluation is used for reference."
-      </p>
-      <app-list-evaluations
-        [testDataSet]="getTestDataSet() | async"
-        evaluationType="M"
-      ></app-list-evaluations>
-    </mat-tab>
+        <h4 class="subtitle">ManEvals</h4>
+        <p class="description">
+          "These are the manual evaluations (ManEvals) available in this
+          TestDataSet. There may exist multiple manual evaluations of the same
+          student solution, so this TDS holds a list of manual evaluations. When
+          INLOOM QT performs the comparison of manual and automatic evaluations,
+          all of the manual evaluations are taken into consideration, while only
+          the most recent automatic evaluation is used for reference."
+        </p>
+        <app-list-evaluations
+          [testDataSet]="tdsService.getTestDataSet(testDataSetId) | async"
+          evaluationType="M"
+        ></app-list-evaluations>
+      </mat-tab>
 
-    <mat-tab label="AutoEvals">
-      <div class="interactions">
-        <div class="option-list">
-          <div [routerLink]="'/eval/auto/register'" class="option-list-item">
-            <span class="option-list-item-text">
-              Add Automatic Evaluation
-            </span>
+      <mat-tab label="AutoEvals">
+        <div class="interactions">
+          <div class="option-list">
+            <div [routerLink]="'/eval/auto/register'" class="option-list-item">
+              <span class="option-list-item-text">
+                Add Automatic Evaluation
+              </span>
+            </div>
           </div>
         </div>
-      </div>
 
-      <mat-divider class="divider"></mat-divider>
+        <mat-divider class="divider"></mat-divider>
 
-      <h4 class="subtitle">ManEvals</h4>
-      <p class="description">"These are the automatic evaluations."</p>
-      <app-list-evaluations
-        [testDataSet]="getTestDataSet() | async"
-        evaluationType="A"
-      ></app-list-evaluations>
-    </mat-tab>
-  </mat-tab-group>
+        <h4 class="subtitle">AutoEvals</h4>
+        <p class="description">"These are the automatic evaluations."</p>
+        <app-list-evaluations
+          [testDataSet]="tdsService.getTestDataSet(testDataSetId) | async"
+          evaluationType="A"
+        ></app-list-evaluations>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
 </div>
+<ng-template #elseBlock>
+  <mat-spinner></mat-spinner>
+</ng-template>

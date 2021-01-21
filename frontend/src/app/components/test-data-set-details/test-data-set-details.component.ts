@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { stat } from 'fs';
 import { Observable } from 'rxjs';
 import { ExerciseService } from 'src/app/services/exercise.service';
-import { StatisticsService } from 'src/app/services/statistics.service';
+import { MetaEvalService } from 'src/app/services/metaeval.service';
 import { TestDataSet } from '../../classes/test-data-set';
 import { TestDataSetService } from '../../services/test-data-set-service.service';
 
@@ -18,8 +17,8 @@ export class TestDataSetDetailsComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private tdsService: TestDataSetService,
-    public statisticsService: StatisticsService,
+    public tdsService: TestDataSetService,
+    public metaEvalService: MetaEvalService,
     public exerciseService: ExerciseService
   ) {}
 
@@ -29,38 +28,20 @@ export class TestDataSetDetailsComponent implements OnInit {
     });
   }
 
-  getTestDataSet(): Observable<TestDataSet> {
-    let testDataSet$: Observable<TestDataSet> = new Observable((sub) => {
+  getTestDataSetTitle(): Observable<string> {
+    let testDataSetTitle$: Observable<string> = new Observable((sub) => {
       this.tdsService
-        .getTestDataSets()
-        .subscribe((testDataSets: TestDataSet[]) => {
-          if (this.testDataSetId) {
+        .getTestDataSet(this.testDataSetId)
+        .subscribe((testDataSet: TestDataSet) => {
+          if (testDataSet) {
             sub.next(
-              testDataSets
-                .filter(
-                  (testDataSet: TestDataSet) =>
-                    testDataSet.test_data_set_id === this.testDataSetId
-                )
-                .pop()
+              'TDS - Exercise: ' +
+                testDataSet.exercise_id +
+                ' - Student: ' +
+                testDataSet.student_id
             );
           }
         });
-    });
-    return testDataSet$;
-  }
-
-  getTestDataSetTitle(): Observable<string> {
-    let testDataSetTitle$: Observable<string> = new Observable((sub) => {
-      this.getTestDataSet().subscribe((testDataSet: TestDataSet) => {
-        if (testDataSet) {
-          sub.next(
-            'TDS - Exercise: ' +
-              testDataSet.exercise_id +
-              ' - Student: ' +
-              testDataSet.student_id
-          );
-        }
-      });
     });
     return testDataSetTitle$;
   }
