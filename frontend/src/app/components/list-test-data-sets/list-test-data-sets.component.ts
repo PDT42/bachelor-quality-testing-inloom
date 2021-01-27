@@ -19,7 +19,7 @@ export class ListTestTataSetsComponent implements OnInit {
   getPtDifferenceColor(testDataSetId: string): Observable<string> {
     let color$: Observable<string> = new Observable((sub) => {
       this.metaEvalService
-        .getEvaluationPctDiff(testDataSetId, 'avg-man-eval')
+        .getComparisonPctDiff(testDataSetId, 'latest-auto-eval' + 'avg-man-eval')
         .subscribe((pctDiff: number) => {
           if (pctDiff < 5) {
             sub.next('#358f17');

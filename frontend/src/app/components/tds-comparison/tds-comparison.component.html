@@ -70,7 +70,7 @@
       <span class="test-data-set-literal-label"> Grade Quotient </span>
       <span class="test-data-set-literal-value">
         {{
-          (metaEvalService.getGradeQuotient(this.testDataSetId, this.manEvalKey)
+          (metaEvalService.getComparisonGradeQuotient(this.testDataSetId, this.autoEvalKey + this.manEvalKey)
             | async) * 100 | number: "2.1-1"
         }}
         %
@@ -81,11 +81,11 @@
       <span class="test-data-set-literal-label">Point Difference</span>
       <span class="test-data-set-literal-value">
         {{
-          metaEvalService.getEvaluationPtDiff(testDataSetId, this.manEvalKey)
+          metaEvalService.getComparisonPtDiff(testDataSetId, this.autoEvalKey + this.manEvalKey)
             | async
         }}
         ({{
-          metaEvalService.getEvaluationPctDiff(testDataSetId, this.manEvalKey)
+          metaEvalService.getComparisonPctDiff(testDataSetId, this.autoEvalKey + this.manEvalKey)
             | async
             | number: "1.1-1"
         }}

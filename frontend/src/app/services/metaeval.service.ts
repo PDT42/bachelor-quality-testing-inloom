@@ -128,19 +128,19 @@ export class MetaEvalService {
     return metaEvals$;
   }
 
-  /*
-  Get the TDS level grade quotient of an evaluation.
-  */
-  getGradeQuotient(testDataSetId: string, comparisonId: string): Observable<number> {
-    let avgGradeQuotient$: Observable<number> = new Observable((sub) => {
-      this.getTDSMetaEval(testDataSetId).subscribe((metaEvals: Object) => {
-        if (metaEvals['grade-quotients']) {
-          sub.next(metaEvals['grade-quotients'][comparisonId]);
+  getEvaluationTotalPoints(
+    testDataSetId: string,
+    evalId: string
+  ): Observable<number> {
+    let totalPoints$: Observable<number> = new Observable((sub) => {
+      this.getTDSMetaEval(testDataSetId).subscribe((metaEval: Object) => {
+        if (metaEval['eval-stats']) {
+          sub.next(metaEval['eval-stats'][evalId]['total-points']);
         }
       });
     });
 
-    return avgGradeQuotient$;
+    return totalPoints$;
   }
 
   getEvaluationGrade(
@@ -158,14 +158,29 @@ export class MetaEvalService {
     return evalGrade$;
   }
 
-  getEvaluationPtDiff(
+  /*
+  Get the TDS level grade quotient of an evaluation.
+  */
+  getComparisonGradeQuotient(testDataSetId: string, comparisonId: string): Observable<number> {
+    let avgGradeQuotient$: Observable<number> = new Observable((sub) => {
+      this.getTDSMetaEval(testDataSetId).subscribe((metaEval: Object) => {
+        if (metaEval['comparison-stats']) {
+          sub.next(metaEval['comparison-stats']['grade-quotients'][comparisonId]);
+        }
+      });
+    });
+
+    return avgGradeQuotient$;
+  }
+
+  getComparisonPtDiff(
     testDataSetId: string,
-    evalId: string
+    comparisonId: string
   ): Observable<number> {
     let ptDiff$: Observable<number> = new Observable((sub) => {
       this.getTDSMetaEval(testDataSetId).subscribe((metaEval: Object) => {
-        if (metaEval['eval-stats']) {
-          sub.next(metaEval['point-differences'][evalId]);
+        if (metaEval['comparison-stats']) {
+          sub.next(metaEval['comparison-stats']['point-diffs'][comparisonId]);
         }
       });
     });
@@ -173,34 +188,19 @@ export class MetaEvalService {
     return ptDiff$;
   }
 
-  getEvaluationPctDiff(
+  getComparisonPctDiff(
     testDataSetId: string,
-    evalId: string
+    comparisonId: string
   ): Observable<number> {
     let pctDiff$: Observable<number> = new Observable((sub) => {
       this.getTDSMetaEval(testDataSetId).subscribe((metaEval: Object) => {
-        if (metaEval['eval-stats']) {
-          sub.next(metaEval['percentage-differences'][evalId]);
+        if (metaEval['comparison-stats']) {
+          sub.next(metaEval['comparison-stats']['point-pct-diffs'][comparisonId]);
         }
       });
     });
 
     return pctDiff$;
-  }
-
-  getEvaluationTotalPoints(
-    testDataSetId: string,
-    evalId: string
-  ): Observable<number> {
-    let totalPoints$: Observable<number> = new Observable((sub) => {
-      this.getTDSMetaEval(testDataSetId).subscribe((metaEval: Object) => {
-        if (metaEval['eval-stats']) {
-          sub.next(metaEval['eval-stats'][evalId]['total-points']);
-        }
-      });
-    });
-
-    return totalPoints$;
   }
 
   refreshTDSMetaEvalCache(): void {

@@ -17,9 +17,9 @@
         >
           <span class="quotient-indicator-value">
             {{
-              metaEvalService.getEvaluationPctDiff(
+              metaEvalService.getComparisonPctDiff(
                 item.test_data_set_id,
-                "avg-man-eval"
+                "latest-auto-eval" + "avg-man-eval"
               )
                 | async
                 | number: "1.1-1"
@@ -46,9 +46,9 @@
             </span>
             <span class="test-data-literal-value">
               {{
-                (metaEvalService.getGradeQuotient(
+                (metaEvalService.getComparisonGradeQuotient(
                   item.test_data_set_id,
-                  "avg-man-eval"
+                  "latest-auto-eval" + "avg-man-eval"
                 ) | async) * 100 | number: "2.1-1"
               }}
               %
