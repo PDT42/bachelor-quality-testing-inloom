@@ -1,0 +1,105 @@
+<div class="test-data-set-data">
+  <div class="test-data-set-literals">
+    <div class="test-data-set-literal">
+      <span class="test-data-set-literal-label">
+        Employed Expert Solution
+      </span>
+      <span class="test-data-set-literal-value">
+        {{
+          (tdsService.getTestDataSet(testDataSetId) | async).expert_solution_id
+        }}
+      </span>
+    </div>
+
+    <div class="test-data-set-literal">
+      <span class="test-data-set-literal-label"> ManEval Points </span>
+      <span class="test-data-set-literal-value">
+        {{
+          metaEvalService.getEvaluationTotalPoints(
+            this.testDataSetId,
+            this.manEvalKey
+          ) | async
+        }}
+        /
+        {{
+          (
+            exerciseService.getExpertSolution(
+              (tdsService.getTestDataSet(testDataSetId) | async)
+                .expert_solution_id
+            ) | async
+          ).maximum_points
+        }}
+        (
+        {{
+          metaEvalService.getEvaluationGrade(testDataSetId, this.manEvalKey)
+            | async
+            | number: "2.1-1"
+        }}
+        %)
+      </span>
+    </div>
+
+    <div class="test-data-set-literal">
+      <span class="test-data-set-literal-label"> AutoEval Points </span>
+      <span class="test-data-set-literal-value">
+        {{
+          metaEvalService.getEvaluationTotalPoints(
+            this.testDataSetId,
+            this.autoEvalKey
+          ) | async
+        }}
+        /
+        {{
+          (
+            exerciseService.getExpertSolution(
+              (tdsService.getTestDataSet(testDataSetId) | async)
+                .expert_solution_id
+            ) | async
+          ).maximum_points
+        }}
+        ({{
+          metaEvalService.getEvaluationGrade(testDataSetId, this.autoEvalKey)
+            | async
+            | number: "2.1-1"
+        }}
+        %)
+      </span>
+    </div>
+
+    <div class="test-data-set-literal">
+      <span class="test-data-set-literal-label"> Grade Quotient </span>
+      <span class="test-data-set-literal-value">
+        {{
+          (metaEvalService.getGradeQuotient(this.testDataSetId, this.manEvalKey)
+            | async) * 100 | number: "2.1-1"
+        }}
+        %
+      </span>
+    </div>
+
+    <div class="test-data-set-literal">
+      <span class="test-data-set-literal-label">Point Difference</span>
+      <span class="test-data-set-literal-value">
+        {{
+          metaEvalService.getEvaluationPtDiff(testDataSetId, this.manEvalKey)
+            | async
+        }}
+        ({{
+          metaEvalService.getEvaluationPctDiff(testDataSetId, this.manEvalKey)
+            | async
+            | number: "1.1-1"
+        }}
+        %)
+      </span>
+    </div>
+  </div>
+</div>
+
+<mat-divider class="divider"></mat-divider>
+
+<!-- Chart -->
+<app-single-comparison
+  [metaEval$]="metaEvalService.getTDSMetaEval(testDataSetId)"
+  manEvalKey="{{ manEvalKey }}"
+  autoEvalKey="{{ autoEvalKey }}"
+></app-single-comparison>

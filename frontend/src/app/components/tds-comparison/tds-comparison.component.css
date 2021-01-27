@@ -1,0 +1,36 @@
+.test-data-set-data {
+  margin-top: 16px;
+  display: flex;
+  flex-flow: row nowrap;
+  margin-inline: 4px;
+  padding: 8px;
+  border: 1px solid;
+  border-color: rgba(169, 170, 170, 0.616);
+  background-color: rgba(105, 103, 103, 0.151);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+}
+
+.test-data-set-literals {
+  flex-grow: 1;
+  padding: 6px;
+  padding-inline: 12px;
+  background-color: white;
+  box-shadow: 0 2px 4px 0 rgba(46, 45, 45, 0.185);
+}
+
+.test-data-set-literal {
+  display: flex;
+  flex-flow: row nowrap;
+  margin-top: 4px;
+  margin-bottom: 4px;
+  border-bottom: 1px dotted lightgrey;
+}
+
+.test-data-set-literal-label {
+  flex-grow: 1;
+}
+
+.test-data-set-literal-value {
+  flex-grow: 1;
+  text-align: end;
+}

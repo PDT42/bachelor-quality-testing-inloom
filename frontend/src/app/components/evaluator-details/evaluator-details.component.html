@@ -1,1 +1,61 @@
-<p>evaluator-details works!</p>
+<div *ngIf="evaluatorService.getEvaluator(evaluatorId) | async; else elseBlock">
+  <div class="container">
+    <div class="title-container">
+      <span class="title">{{
+        evaluatorService.getEvaluatorName(evaluatorId) | async
+      }}</span>
+    </div>
+
+    <mat-divider class="divider"></mat-divider>
+
+    <div class="evaluator-data">
+      <div class="evaluator-literals">
+        <div class="evaluator-literal">
+          <span class="evaluator-literal-label"> First Name </span>
+          <span class="evaluator-literal-value">{{
+            (evaluatorService.getEvaluator(evaluatorId) | async).first_name
+          }}</span>
+        </div>
+
+        <div class="evaluator-literal">
+          <span class="evaluator-literal-label"> Last Name </span>
+          <span class="evaluator-literal-value">{{
+            (evaluatorService.getEvaluator(evaluatorId) | async).last_name
+          }}</span>
+        </div>
+
+        <div class="evaluator-literal">
+          <span class="evaluator-literal-label"> Evaluations submitted </span>
+          <span class="evaluator-literal-value">{{
+            (evaluationService.getEvaluationsOfEvaluator(evaluatorId) | async)
+              .length
+          }}</span>
+        </div>
+      </div>
+    </div>
+
+    <mat-divider class="divider"></mat-divider>
+
+    <!-- Multi Comparison Chart -->
+
+    <app-multiple-comparison
+      [metaEvals$]="metaEvalService.getEvaluationsMetaEvals(evaluationService.getEvaluationsOfEvaluator(evaluatorId) |async)"
+      [testDataSets$]="tdsService.getTestDataSetsOfEvaluations(evaluationService.getEvaluationsOfEvaluator(evaluatorId) |async)"
+      [averageMode]="false"
+      [evaluations]="evaluationService.getEvaluationsOfEvaluator(evaluatorId) |async"
+    ></app-multiple-comparison>
+
+    <mat-divider class="divider"></mat-divider>
+
+    <!-- List of Evaluations -->
+
+    <app-list-evaluations
+      [evaluations]="
+        evaluationService.getEvaluationsOfEvaluator(evaluatorId) | async
+      "
+    ></app-list-evaluations>
+  </div>
+</div>
+<ng-template #elseBlock>
+  <mat-spinner></mat-spinner>
+</ng-template>

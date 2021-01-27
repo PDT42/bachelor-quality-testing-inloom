@@ -10,6 +10,7 @@ import { RegisterComponent } from './components/register/register.component';
 import { TestDataSetDetailsComponent } from './components/test-data-set-details/test-data-set-details.component';
 import { RegisterEvaluatorComponent } from './components/register-evaluator/register-evaluator.component';
 import { ExerciseDetailsComponent } from './components/exercise-details/exercise-details.component';
+import { EvaluatorDetailsComponent } from './components/evaluator-details/evaluator-details.component';
 
 const routes: Routes = [
   { path: '', component: DashboardComponent },
@@ -18,6 +19,7 @@ const routes: Routes = [
   { path: 'testdataset/list', component: ListTestTataSetsComponent },
   { path: 'exercise', component: ExerciseDetailsComponent },
   { path: 'exercise/register', component: RegisterExerciseComponent },
+  { path: 'evaluator', component: EvaluatorDetailsComponent },
   { path: 'evaluator/register', component: RegisterEvaluatorComponent },
   { path: 'eval', component: EvaluationDetailsComponent },
   { path: 'eval/man/register', component: RegisterManEvalComponent },
@@ -25,7 +27,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, {onSameUrlNavigation: 'reload'})],
+  imports: [RouterModule.forRoot(routes, { onSameUrlNavigation: 'reload' })],
   exports: [RouterModule],
 })
 export class AppRoutingModule {}

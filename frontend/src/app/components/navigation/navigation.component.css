@@ -1,0 +1,19 @@
+.title {
+  font-size: 32px;
+  font-weight: normal;
+  margin-right: 4px;
+}
+
+.title::first-letter {
+  font-weight: bold;
+  color: rgb(187, 196, 194);
+}
+
+.menu-icon {
+  font-size: 44px;
+  width: parent;
+  align-self: center;
+  margin-right: 16px;
+  color: rgb(187, 196, 194);
+}
+

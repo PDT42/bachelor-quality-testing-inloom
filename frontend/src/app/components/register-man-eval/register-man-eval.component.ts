@@ -10,6 +10,7 @@ import { Evaluation } from '../../classes/evaluation';
 import { Result } from '../../classes/result';
 import { EvaluationService } from '../../services/evaluation.service';
 import { EvaluatorService } from '../../services/evaluator.service';
+import { FileUploadService } from 'src/app/services/file-upload.service';
 
 @Component({
   selector: 'app-register-man-eval',
@@ -22,6 +23,7 @@ export class RegisterManEvalComponent implements OnInit {
   metadataForm: FormGroup;
   resultsForm: FormGroup;
   evalFile: File;
+  uploadEvalFile: File;
   results: Result[];
   total_points: number = 0.0;
   result_points_added: number = 0.0;
@@ -40,25 +42,29 @@ export class RegisterManEvalComponent implements OnInit {
   constructor(
     private _formBuilder: FormBuilder,
     private evalService: EvaluationService,
-    private tdsService: TestDataSetService,
+    private fileUploadService: FileUploadService,
     public exerciseService: ExerciseService,
     public evaluatorService: EvaluatorService,
     private router: Router
   ) {}
 
   ngOnInit(): void {
+    // Define fields of first wiz page
     this.fileForm = this._formBuilder.group({
       fileCtrl: [null],
     });
+    // Define fields of second wiz page
     this.evalIdentForm = this._formBuilder.group({
       exerciseIdCtrl: ['', Validators.required],
       studentIdCtrl: ['', Validators.required],
       expertSolIdCtrl: ['', Validators.required],
     });
+    // Define fields of third wiz page
     this.metadataForm = this._formBuilder.group({
       evaluatorIdCtrl: ['', Validators.required],
       totalPointsCtrl: ['', Validators.required],
     });
+    // Define fields of last wiz page
     this.resultsForm = this._formBuilder.group({
       expElCtrl: ['', Validators.required],
       expTypeCtrl: ['', Validators.required],
@@ -69,13 +75,17 @@ export class RegisterManEvalComponent implements OnInit {
       pointsCtrl: ['', Validators.required],
       feedbackCtrl: [''],
     });
-    this.results = [];
+    this.results = []; // List of individual ```Results``
   }
 
+  /*
+  Load the supplied PDF file for view on side.
+  */
   fileChanged(file: File): void {
     let fileReader = new FileReader();
 
     if (file) {
+      this.uploadEvalFile = file;
       fileReader.onload = (e: any) => {
         this.fileForm.patchValue({ fileCtrl: fileReader.result });
         this.evalFile = e.target.result;
@@ -85,6 +95,10 @@ export class RegisterManEvalComponent implements OnInit {
     }
   }
 
+  /*
+  Update the available ``ExpertSolutions``
+  depending on the selected ``Exercise``.
+  */
   exerciseChanged(): void {
     this.expert_solutions = [];
     this.exerciseService.getExercises().subscribe((result) => {
@@ -101,6 +115,10 @@ export class RegisterManEvalComponent implements OnInit {
     });
   }
 
+  /*
+  Update the available expert elements depending
+  on the selected ``ExpertSolution``.
+  */
   expertSolutionChanged(): void {
     let expert_sol_id = this.evalIdentForm.get('expertSolIdCtrl').value;
     this.expert_elements = this.expert_solutions
@@ -109,9 +127,7 @@ export class RegisterManEvalComponent implements OnInit {
   }
 
   expertLabelChanged(event: any): void {
-    this.resultsForm
-      .get('stdElCtrl')
-      .setValue(event.element_label);
+    this.resultsForm.get('stdElCtrl').setValue(event.element_label);
   }
 
   totalPointsChanged(): void {
@@ -121,10 +137,15 @@ export class RegisterManEvalComponent implements OnInit {
   expertTypeChanged(event: any): void {
     let selected_type = this.resultsForm.get('expTypeCtrl').value;
     this.type_elements = this.expert_elements[selected_type];
-    this.resultsForm.get('stdTypeCtrl')
-    .setValue(event.value);
+    this.resultsForm.get('stdTypeCtrl').setValue(event.value);
   }
 
+  /*
+  Add a result to the results list of this component.
+  This will update the list view in the frontend and
+  reset the form so data on the next Result can be
+  entered. The value of total points is updated.
+  */
   addResult() {
     let new_result: Result = {
       expert_element: this.resultsForm.get('expElCtrl').value,
@@ -149,12 +170,15 @@ export class RegisterManEvalComponent implements OnInit {
     this.resultsForm.reset();
   }
 
+  /*
+  Remove a Result from the list of added Results.
+  */
   removeResult(result: Result): void {
     let _index = this.results.indexOf(result);
     if (_index > -1) {
       this.results.splice(_index, 1);
     }
-    this.total_points -= result.points;
+    this.result_points_added -= result.points;
   }
 
   onSubmit() {
@@ -173,7 +197,14 @@ export class RegisterManEvalComponent implements OnInit {
       created_time: null,
     };
 
-    this.evalService.registerEvaluation(manEval);
+    if (this.evalFile) {
+      // Upload the evaluation PDF if one was supplied
+      this.fileUploadService.postManEvalFile(this.uploadEvalFile).subscribe(() => {
+        this.evalService.registerEvaluation(manEval);
+      });
+    } else {
+      this.evalService.registerEvaluation(manEval);
+    }
     this.router.navigate(['/register']);
   }
 }

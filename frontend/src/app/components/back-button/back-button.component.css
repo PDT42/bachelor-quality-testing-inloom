@@ -1,0 +1,9 @@
+.button-container {
+  padding: 32px;
+}
+
+.menu-icon {
+  font-size: 28px;
+  width: parent;
+  align-self: center;
+}

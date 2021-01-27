@@ -184,7 +184,11 @@
 
             <mat-form-field>
               <mat-label>Expert Element Label</mat-label>
-              <mat-select (valueChange)="expertLabelChanged($event)" formControlName="expElCtrl" required>
+              <mat-select
+                (valueChange)="expertLabelChanged($event)"
+                formControlName="expElCtrl"
+                required
+              >
                 <mat-option
                   *ngFor="let element of type_elements"
                   [value]="element"
@@ -269,17 +273,6 @@
               </mat-button-toggle>
             </mat-button-toggle-group>
 
-            <!-- <mat-form-field>
-              <mat-label>Awarded Points</mat-label>
-              <input
-                matInput
-                type="number"
-                placeholder="Points awarded for this result .."
-                formControlName="pointsCtrl"
-                required
-              />
-            </mat-form-field> -->
-
             <mat-form-field>
               <mat-label>Feedback Message</mat-label>
               <input
@@ -292,8 +285,8 @@
             <div class="wizard-buttons">
               <div class="result-point-sum">
                 <span class="result-point-sum-label">
-                  Points (of total): {{ result_points_added }} /
-                  {{ total_points }}
+                  Points (of total):
+                  {{ result_points_added }} / {{ total_points }}
                 </span>
               </div>
 

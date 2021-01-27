@@ -9,12 +9,31 @@
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-between;
-  margin-bottom: 16px;
+  align-items: center;
+  margin-bottom: 8px;
   width: parent;
 }
 
+.avg-avg-indicator {
+  display: flex;
+  flex-flow: column nowrap;
+  padding: 8px;
+  border: solid 1px rgba(169, 170, 170, 0.616);
+  border-radius: 6px;
+}
+
+.avg-avg-indicator-value {
+  font-size: 24px;
+  text-align: center;
+}
+
+.avg-avg-indicator-label {
+  font-size: 11px;
+  text-align: center;
+}
+
 .title {
-  width: 90%;
+  display: inline-block;
   font-size: 32px;
 }
 
@@ -47,8 +66,8 @@
 }
 
 .divider {
-  margin-top: 16px;
-  margin-bottom: 16px;
+  margin-top: 8px;
+  margin-bottom: 8px;
 }
 
 .subtitle {

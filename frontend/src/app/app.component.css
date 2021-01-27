@@ -1,5 +1,7 @@
 .dashboard-container {
-  padding-top: 35px;
   padding-left: 50px;
   padding-right: 50px;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: stretch;
 }

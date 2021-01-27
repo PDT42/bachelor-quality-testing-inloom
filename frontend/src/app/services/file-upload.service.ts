@@ -16,4 +16,11 @@ export class FileUploadService {
     formData.append('file', fileToUpload, fileToUpload.name);
     return this.http.post('http://127.0.0.1:3001/eval/register/auto', formData);
   }
+
+  postManEvalFile(fileToUpload: File): Observable<any> {
+    const formData: FormData = new FormData();
+
+    formData.append('file', fileToUpload, fileToUpload.name);
+    return this.http.post('http://127.0.0.1:3001/eval/upload/man', formData);
+  }
 }

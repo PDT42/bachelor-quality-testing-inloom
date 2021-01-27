@@ -38,7 +38,10 @@ import { ExerciseDetailsComponent } from './components/exercise-details/exercise
 import { EvaluatorDetailsComponent } from './components/evaluator-details/evaluator-details.component';
 import { RegisterEvaluatorComponent } from './components/register-evaluator/register-evaluator.component';
 import { SingleComparisonComponent } from './components/single-comparison/single-comparison.component';
-import { MultipleComparisonComponent } from './multiple-comparison/multiple-comparison.component';
+import { MultipleComparisonComponent } from './components/multiple-comparison/multiple-comparison.component';
+import { TdsComparisonComponent } from './components/tds-comparison/tds-comparison.component';
+import { CategoryByElementComponent } from './components/category-by-element/category-by-element.component';
+import { BackButtonComponent } from './components/back-button/back-button.component';
 
 @NgModule({
   declarations: [
@@ -60,6 +63,9 @@ import { MultipleComparisonComponent } from './multiple-comparison/multiple-comp
     RegisterEvaluatorComponent,
     SingleComparisonComponent,
     MultipleComparisonComponent,
+    TdsComparisonComponent,
+    CategoryByElementComponent,
+    BackButtonComponent,
   ],
   imports: [
     AppRoutingModule,

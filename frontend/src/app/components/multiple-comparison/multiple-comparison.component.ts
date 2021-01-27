@@ -1,8 +1,11 @@
+import { stringify } from '@angular/compiler/src/util';
 import { Component, Input, OnInit } from '@angular/core';
 import * as d3 from 'd3';
-import { TestDataSet } from '../classes/test-data-set';
-import { MetaEvalService } from '../services/metaeval.service';
-import { TestDataSetService } from '../services/test-data-set-service.service';
+import { Observable } from 'rxjs';
+import { Evaluation } from 'src/app/classes/evaluation';
+import { TestDataSet } from '../../classes/test-data-set';
+import { MetaEvalService } from '../../services/metaeval.service';
+import { TestDataSetService } from '../../services/test-data-set-service.service';
 
 @Component({
   selector: 'app-multiple-comparison',
@@ -11,35 +14,37 @@ import { TestDataSetService } from '../services/test-data-set-service.service';
 })
 export class MultipleComparisonComponent implements OnInit {
   @Input()
-  exerciseId: string;
+  metaEvals$: Observable<Map<string, Object>>;
 
-  exerciseTestDataSets: TestDataSet[];
+  @Input()
+  testDataSets$: Observable<TestDataSet[]>;
 
-  constructor(
-    public metaEvalService: MetaEvalService,
-    private tdsService: TestDataSetService
-  ) {}
+  @Input()
+  averageMode: boolean;
+
+  @Input()
+  evaluations: Evaluation[];
+
+  constructor(public metaEvalService: MetaEvalService) {}
 
   ngOnInit(): void {
-    this.tdsService
-      .getTestDataSetsOfExercise(this.exerciseId)
-      .subscribe((testDataSets: TestDataSet[]) => {
-        this.exerciseTestDataSets = testDataSets;
-      });
+    if (!this.averageMode && !this.evaluations) {
+      throw new Error(
+        'Cannot use individual mode without individual Evaluations!'
+      );
+    }
   }
 
   ngAfterViewInit(): void {
-    this.metaEvalService
-      .getExerciseMetaEvals(this.exerciseId)
-      .subscribe((exerciseMetaEvals: Map<string, Object>) => {
-        // if the query has a body
-        if (
-          Array.from(exerciseMetaEvals.keys()).length ==
-          this.exerciseTestDataSets.length
-        ) {
-          this.createGradesPerTestDataSetChart(exerciseMetaEvals);
-        }
-      });
+    this.testDataSets$.subscribe((testDataSets: TestDataSet[]) => {
+      if (testDataSets.length > 0) {
+        this.metaEvals$.subscribe((metaEvals: Map<string, Object>) => {
+          if (metaEvals.size == testDataSets.length) {
+            this.createGradesPerTestDataSetChart(metaEvals);
+          }
+        });
+      }
+    });
   }
 
   createGradesPerTestDataSetChart(tdsMetaEvals: Map<string, Object>) {
@@ -55,19 +60,50 @@ export class MultipleComparisonComponent implements OnInit {
       const SVG_WIDTH = ROOT_WIDTH - 3 * MARGIN_HORIZONTAL;
       const SVG_HEIGHT = ROOT_HEIGHT - 2 * MARGIN_VERTICAL;
 
-      let xItems = Array.from(tdsMetaEvals.entries()).map(
-        ([_, tdsMetaEvals]) => tdsMetaEvals['student-id']
-      );
-
+      let xItems: Array<string> = [];
       let studentGrades: Map<string, Object[]> = new Map();
 
       // Get the relevant grades from the meta eval
-      Array.from(tdsMetaEvals.entries()).map(([_, tdsMetaEval]) => {
-        studentGrades.set(tdsMetaEval['student-id'], [
-          { evalType: 'A', grade: tdsMetaEval['latest-auto-grade'] },
-          { evalType: 'M', grade: tdsMetaEval['average-man-grade'] },
-        ]);
-      });
+      if (this.averageMode) {
+        Array.from(tdsMetaEvals.entries()).map(([_, tdsMetaEval]) => {
+          xItems.push(tdsMetaEval['student-id']);
+          studentGrades.set(tdsMetaEval['student-id'], [
+            {
+              evalType: 'A',
+              grade: tdsMetaEval['eval-stats']['latest-auto-eval']['grade'],
+            },
+            {
+              evalType: 'M',
+              grade: tdsMetaEval['eval-stats']['avg-man-eval']['grade'],
+            },
+          ]);
+        });
+      } else {
+        Array.from(tdsMetaEvals.entries()).map(([_, tdsMetaEval]) => {
+          Object.entries(tdsMetaEval['eval-stats']).map(([key, value]) => {
+            if (!['avg-man-eval', 'latest-auto-eval'].includes(key) && value['type'] != 'A') {
+              let studentId: string = tdsMetaEval['student-id'];
+              let created: Date = new Date(value['created'] * 1000);
+
+              xItems.push(studentId + " - " + created.toDateString());
+              studentGrades.set(
+                studentId + " - " + created.toDateString(),
+                [
+                  {
+                    evalType: 'A',
+                    grade:
+                      tdsMetaEval['eval-stats']['latest-auto-eval']['grade'],
+                  },
+                  {
+                    evalType: 'M',
+                    grade: value['grade'],
+                  },
+                ]
+              );
+            }
+          });
+        });
+      }
 
       // Define a color scale for the
       // two possible bar colors.
@@ -138,10 +174,10 @@ export class MultipleComparisonComponent implements OnInit {
           return xSubScale(studentGrade['evalType']);
         })
         .attr('y', (studentGrade) => {
-          return yScale(studentGrade['grade'] * 100);
+          return yScale(studentGrade['grade']);
         })
         .attr('height', (studentGrade) => {
-          return SVG_HEIGHT - yScale(studentGrade['grade'] * 100);
+          return SVG_HEIGHT - yScale(studentGrade['grade']);
         })
         .attr('width', xSubScale.bandwidth())
         .attr('fill', (studentGrade): string => {

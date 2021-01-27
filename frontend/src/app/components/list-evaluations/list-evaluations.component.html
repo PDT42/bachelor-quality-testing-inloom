@@ -1,28 +1,30 @@
 <div class="evaluation-list">
-  <div *ngFor="let item of getEvaluations() | async">
+  <div *ngFor="let evaluation of evaluations">
     <div
       class="evaluation-card"
       [routerLink]="'/eval'"
-      [queryParams]="{ id: item.evaluation_id }"
+      [queryParams]="{ id: evaluation.evaluation_id }"
     >
       <div class="evaluation-card-header-container">
         <span
           class="evaluation-card-header"
-          *ngIf="item.evaluation_type == 'M'"
+          *ngIf="evaluation.evaluation_type == 'M'"
         >
           ManEval - Evaluator:
-          {{ getEvaluatorName(item.evaluator_id) | async }}
+          {{
+            evaluatorService.getEvaluatorName(evaluation.evaluator_id) | async
+          }}
         </span>
         <span
           class="evaluation-card-header"
-          *ngIf="item.evaluation_type == 'A'"
+          *ngIf="evaluation.evaluation_type == 'A'"
         >
           AutoEval
         </span>
 
         <span class="evaluation-created-time">
           Created:
-          {{ formatDate(item.created_time) | date: "yyyy-MM-dd HH:mm" }}
+          {{ formatDate(evaluation.created_time) | date: "yyyy-MM-dd HH:mm" }}
         </span>
       </div>
       <hr />
@@ -31,37 +33,20 @@
           <div class="evaluation-literal">
             <span class="evaluation-literal-label"> Points achieved </span>
             <span class="evaluation-literal-value">
-              {{ item.total_points }} /
+              {{ evaluation.total_points }} /
               {{
                 (
                   exerciseService.getExpertSolution(
-                    this.testDataSet.expert_solution_id
+                    evaluation.expert_solution_id
                   ) | async
                 ).maximum_points
               }}
               ({{
-                (item.total_points /
-                  (
-                    exerciseService.getExpertSolution(
-                      this.testDataSet.expert_solution_id
-                    ) | async
-                  ).maximum_points) *
-                  100 | number: "2.1-1"
+                metaEvalService.getEvaluationGrade(evaluation.test_data_set_id, evaluation.evaluation_id)
+                  | async
+                  | number: "2.1-1"
               }}
               %)
-            </span>
-          </div>
-          <div class="evaluation-literal" *ngIf="item.evaluation_type == 'M'">
-            <span class="evaluation-literal-label"> Grade Quotient </span>
-            <span class="evaluation-literal-value">
-              {{
-                (metaEvalService.getGradeQuotient(
-                  this.testDataSet.test_data_set_id,
-                  item.evaluation_id
-                )
-                  | async) * 100
-                  | number: "2.1-1"
-              }} %
             </span>
           </div>
         </div>

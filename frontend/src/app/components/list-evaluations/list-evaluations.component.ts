@@ -17,12 +17,7 @@ import { MetaEvalService } from 'src/app/services/metaeval.service';
 })
 export class ListEvaluationsComponent implements OnInit {
   @Input()
-  testDataSet: TestDataSet;
-
-  @Input()
-  evaluationType: string;
-
-  evaluations: Evaluation[];
+  evaluations: Evaluation[]
 
   constructor(
     public evalService: EvaluationService,
@@ -33,38 +28,6 @@ export class ListEvaluationsComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  getEvaluations(): Observable<Evaluation[]> {
-    let evaluations$: Observable<Evaluation[]> = new Observable((sub) => {
-      this.evalService
-        .getEvaluations()
-        .subscribe((evaluations: Evaluation[]) => {
-          if (this.testDataSet) {
-            sub.next(
-              evaluations
-                .filter(
-                  (e: Evaluation) =>
-                    e.test_data_set_id === this.testDataSet.test_data_set_id
-                )
-                .filter(
-                  (e: Evaluation) => e.evaluation_type === this.evaluationType
-                )
-            );
-          }
-        });
-    });
-    return evaluations$;
-  }
-
-  getEvaluation(evaluationId: string): Observable<Evaluation> {
-    let evaluation$: Observable<Evaluation> = new Observable((sub) => {
-      this.getEvaluations().subscribe((evaluations: Evaluation[]) => {
-        sub.next(
-          evaluations.filter((e) => e.evaluation_id === evaluationId).pop()
-        );
-      });
-    });
-    return evaluation$;
-  }
 
   getEvaluator(evaluatorId: string): Observable<Evaluator> {
     let evaluator$: Observable<Evaluator> = new Observable((sub) => {
@@ -77,15 +40,6 @@ export class ListEvaluationsComponent implements OnInit {
         });
     });
     return evaluator$;
-  }
-
-  getEvaluatorName(evaluatorId: string): Observable<string> {
-    let evaluatorName$: Observable<string> = new Observable((sub) => {
-      this.getEvaluator(evaluatorId).subscribe((evaluator: Evaluator) => {
-        sub.next(evaluator.first_name + ' ' + evaluator.last_name);
-      });
-    });
-    return evaluatorName$;
   }
 
   formatDate(created_time: number) {

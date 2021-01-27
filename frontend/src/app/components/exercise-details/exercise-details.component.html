@@ -4,7 +4,23 @@
       <span class="title">{{
         (exerciseService.getExercise(exerciseId) | async).exercise_id
       }}</span>
+      <div
+        class="avg-avg-indicator"
+        [style.backgroundColor]="getPctDifferenceColor(exerciseId) | async"
+      >
+        <span class="avg-avg-indicator-value">
+          {{
+            metaEvalService.getExerciseAveragePctDiff(exerciseId)
+              | async
+              | number: "1.1-1"
+          }}
+          %
+        </span>
+        <span class="avg-avg-indicator-label">Average Pt. Diff.</span>
+      </div>
     </div>
+
+    <mat-divider class="divider"></mat-divider>
 
     <div class="interactions">
       <div class="option-list">
@@ -32,7 +48,9 @@
     <!-- Adding Multi Comparison Chart -->
 
     <app-multiple-comparison
-      exerciseId="{{ exerciseId }}"
+      [metaEvals$]="metaEvalService.getExerciseMetaEvals(exerciseId)"
+      [testDataSets$]="tdsService.getTestDataSetsOfExercise(exerciseId)"
+      [averageMode]="true"
     ></app-multiple-comparison>
 
     <mat-divider class="divider"></mat-divider>

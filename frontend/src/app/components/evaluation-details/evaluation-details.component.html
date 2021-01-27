@@ -1,6 +1,11 @@
 <div *ngIf="evaluation != null; else elseBlock">
   <div class="info-container">
-    <span class="info-container-title">{{ evaluationTitle }}</span>
+    <div class="info-container-title">
+      <span>{{ evaluationTitle }}</span>
+      <div class="avg-avg-indicator">
+        <span></span>
+      </div>
+    </div>
 
     <hr />
 
@@ -12,19 +17,31 @@
         </div>
         <div *ngIf="evaluation.mcs_identifier != null" class="info-row">
           <span class="info-label">MCS Identifier:</span>
-          <span class="info-value">{{ evaluation['mcs_identifier'] }}</span>
+          <span class="info-value">{{ evaluation["mcs_identifier"] }}</span>
         </div>
         <div *ngIf="evaluation.mcs_version != null" class="info-row">
           <span class="info-label">MCS Version:</span>
-          <span class="info-value">{{ evaluation['mcs_version'] }}</span>
+          <span class="info-value">{{ evaluation["mcs_version"] }}</span>
         </div>
         <div *ngIf="evaluation.evaluator_id != null" class="info-row">
           <span class="info-label">Evaluator:</span>
-          <span class="info-value">{{ evaluation.evaluator_id }}</span>
+          <span class="info-value">{{
+            evaluatorService.getEvaluatorName(evaluation.evaluator_id) | async
+          }}</span>
         </div>
         <div class="info-row">
           <span class="info-label">Total Points:</span>
-          <span class="info-value">{{ evaluation.total_points }}</span>
+          <span class="info-value"
+            >{{ evaluation.total_points }} ({{
+              metaEvalService.getEvaluationGrade(
+                evaluation.test_data_set_id,
+                evaluation.evaluation_id
+              )
+                | async
+                | number: "2.1-1"
+            }}
+            %)</span
+          >
         </div>
       </div>
     </div>
@@ -33,9 +50,9 @@
 
     <h4 class="subtitle">Results:</h4>
     <p class="description">
-      "These are the Results this evaluation is made up of. Each
-      Result represents a feature of the student solution, that
-      the evaluator took into account during the evaluation."
+      "These are the Results this evaluation is made up of. Each Result
+      represents a feature of the student solution, that the evaluator took into
+      account during the evaluation."
     </p>
 
     <div class="result-container">
@@ -58,8 +75,8 @@
                 <div class="info-row">
                   <span class="info-label">Expert Element:</span>
                   <span class="info-value">
-                    {{ result.expert_element['element_type'] }} -
-                    {{ result.expert_element['element_label'] }}
+                    {{ result.expert_element["element_type"] }} -
+                    {{ result.expert_element["element_label"] }}
                   </span>
                 </div>
                 <div class="info-row">

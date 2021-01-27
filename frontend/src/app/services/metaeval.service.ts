@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { Evaluation } from '../classes/evaluation';
 import { TestDataSet } from '../classes/test-data-set';
 import { TestDataSetService } from './test-data-set-service.service';
 
@@ -9,15 +10,21 @@ import { TestDataSetService } from './test-data-set-service.service';
 })
 export class MetaEvalService {
   metaEvalCache: Map<string, BehaviorSubject<Object>>;
+  excMetaEvalCache: Map<string, BehaviorSubject<Object>>;
 
   constructor(
     private http: HttpClient,
     private tdsService: TestDataSetService
   ) {
     this.metaEvalCache = new Map();
+    this.excMetaEvalCache = new Map();
+
     this.fetchTDSMetaEvals();
   }
 
+  /*
+  Get a TDS Level Meta Eval.
+  */
   getTDSMetaEval(testDataSetId: string): BehaviorSubject<Object> {
     if (!this.metaEvalCache.has(testDataSetId)) {
       this.metaEvalCache.set(testDataSetId, new BehaviorSubject<Object>([]));
@@ -27,6 +34,21 @@ export class MetaEvalService {
     return this.metaEvalCache.get(testDataSetId);
   }
 
+  /*
+  Get an Exercise Level Meta Eval.
+  */
+  getEXCMetaEval(exerciseId: string): BehaviorSubject<Object> {
+    if (!this.excMetaEvalCache.has(exerciseId)) {
+      this.excMetaEvalCache.set(exerciseId, new BehaviorSubject<Object>([]));
+      this.refreshEXCMetaEvalCache();
+    }
+
+    return this.excMetaEvalCache.get(exerciseId);
+  }
+
+  /*
+  Get the tdsMetaEvals of all TDS of an exercise.
+  */
   getExerciseMetaEvals(exerciseId: string): Observable<Map<string, Object>> {
     let metaEvals$: Observable<Map<string, Object>> = new Observable((sub) =>
       this.tdsService
@@ -36,7 +58,6 @@ export class MetaEvalService {
           testDataSets.map((testDataSet: TestDataSet) => {
             this.getTDSMetaEval(testDataSet.test_data_set_id).subscribe(
               (metaEval: Object) => {
-                metaEval['student-id'] = testDataSet.student_id;
                 exerciseMetaEvals.set(testDataSet.test_data_set_id, metaEval);
                 sub.next(exerciseMetaEvals);
               }
@@ -48,28 +69,138 @@ export class MetaEvalService {
     return metaEvals$;
   }
 
-  getGradeQuotient(testDataSetId: string, evalId: string): Observable<number> {
+  /*
+  Get the exercise level avg-man-grade from the exercise
+  level meta evaluation.
+  */
+  getExerciseAverageGradeQuotient(exerciseId: string): Observable<number> {
+    let avgGradeQt$: Observable<number> = new Observable((sub) => {
+      this.getEXCMetaEval(exerciseId).subscribe(
+        (excMetaEval: Map<string, Object>) => {
+          if (Object.keys(excMetaEval).length > 0) {
+            sub.next(excMetaEval['avg-grade-quotient']);
+          }
+        }
+      );
+    });
+    return avgGradeQt$;
+  }
+
+  /*
+  Get the exercise level avg-man-pct-difference from the exercise
+  level meta evaluation.
+  */
+  getExerciseAveragePctDiff(exerciseId: string): Observable<number> {
+    let avgPctDiff$: Observable<number> = new Observable((sub) => {
+      this.getEXCMetaEval(exerciseId).subscribe(
+        (excMetaEval: Map<string, Object>) => {
+          if (Object.keys(excMetaEval).length > 0) {
+            sub.next(excMetaEval['avg-percentage-differences']);
+          }
+        }
+      );
+    });
+    return avgPctDiff$;
+  }
+
+  /*
+  Get the TDS Level meta evals for all tds of an evalautor.
+  */
+  getEvaluationsMetaEvals(
+    evaluations: Evaluation[]
+  ): Observable<Map<string, Object>> {
+    let metaEvals$: Observable<Map<string, Object>> = new Observable((sub) =>
+      this.tdsService
+        .getTestDataSetsOfEvaluations(evaluations)
+        .subscribe((testDataSets: TestDataSet[]) => {
+          let exerciseMetaEvals: Map<string, Object> = new Map();
+          testDataSets.map((testDataSet: TestDataSet) => {
+            this.getTDSMetaEval(testDataSet.test_data_set_id).subscribe(
+              (metaEval: Object) => {
+                exerciseMetaEvals.set(testDataSet.test_data_set_id, metaEval);
+                sub.next(exerciseMetaEvals);
+              }
+            );
+          });
+        })
+    );
+
+    return metaEvals$;
+  }
+
+  /*
+  Get the TDS level grade quotient of an evaluation.
+  */
+  getGradeQuotient(testDataSetId: string, comparisonId: string): Observable<number> {
     let avgGradeQuotient$: Observable<number> = new Observable((sub) => {
       this.getTDSMetaEval(testDataSetId).subscribe((metaEvals: Object) => {
         if (metaEvals['grade-quotients']) {
-          sub.next(metaEvals['grade-quotients'][evalId]);
+          sub.next(metaEvals['grade-quotients'][comparisonId]);
         }
       });
     });
+
     return avgGradeQuotient$;
   }
 
-  getKPIValue(testDataSetId: string, kpiKey: string): Observable<number> {
-    let kpiValue$: Observable<number> = new Observable((sub) => {
-      if (testDataSetId) {
-        this.getTDSMetaEval(testDataSetId).subscribe((metaEvals: Object) => {
-          if (Object.keys(metaEvals).length > 0) {
-            sub.next(metaEvals[kpiKey]);
-          }
-        });
-      }
+  getEvaluationGrade(
+    testDataSetId: string,
+    evalId: string
+  ): Observable<number> {
+    let evalGrade$: Observable<number> = new Observable((sub) => {
+      this.getTDSMetaEval(testDataSetId).subscribe((metaEval: Object) => {
+        if (metaEval['eval-stats']) {
+          sub.next(metaEval['eval-stats'][evalId]['grade']);
+        }
+      });
     });
-    return kpiValue$;
+
+    return evalGrade$;
+  }
+
+  getEvaluationPtDiff(
+    testDataSetId: string,
+    evalId: string
+  ): Observable<number> {
+    let ptDiff$: Observable<number> = new Observable((sub) => {
+      this.getTDSMetaEval(testDataSetId).subscribe((metaEval: Object) => {
+        if (metaEval['eval-stats']) {
+          sub.next(metaEval['point-differences'][evalId]);
+        }
+      });
+    });
+
+    return ptDiff$;
+  }
+
+  getEvaluationPctDiff(
+    testDataSetId: string,
+    evalId: string
+  ): Observable<number> {
+    let pctDiff$: Observable<number> = new Observable((sub) => {
+      this.getTDSMetaEval(testDataSetId).subscribe((metaEval: Object) => {
+        if (metaEval['eval-stats']) {
+          sub.next(metaEval['percentage-differences'][evalId]);
+        }
+      });
+    });
+
+    return pctDiff$;
+  }
+
+  getEvaluationTotalPoints(
+    testDataSetId: string,
+    evalId: string
+  ): Observable<number> {
+    let totalPoints$: Observable<number> = new Observable((sub) => {
+      this.getTDSMetaEval(testDataSetId).subscribe((metaEval: Object) => {
+        if (metaEval['eval-stats']) {
+          sub.next(metaEval['eval-stats'][evalId]['total-points']);
+        }
+      });
+    });
+
+    return totalPoints$;
   }
 
   refreshTDSMetaEvalCache(): void {
@@ -78,6 +209,16 @@ export class MetaEvalService {
         .get('http://localhost:3001/metaeval/tds:' + testDataSetId)
         .subscribe((result) => {
           this.metaEvalCache.get(testDataSetId).next(result);
+        });
+    });
+  }
+
+  refreshEXCMetaEvalCache(): void {
+    this.excMetaEvalCache.forEach((_, exerciseId) => {
+      this.http
+        .get('http://localhost:3001/metaeval/exc:' + exerciseId)
+        .subscribe((result) => {
+          this.excMetaEvalCache.get(exerciseId).next(result);
         });
     });
   }

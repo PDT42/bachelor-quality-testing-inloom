@@ -1,7 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { Evaluation } from '../classes/evaluation';
 import { TestDataSet } from '../classes/test-data-set';
+import { EvaluationService } from './evaluation.service';
 
 @Injectable({
   providedIn: 'root',
@@ -28,6 +30,26 @@ export class TestDataSetService {
             (tds: TestDataSet) => tds.exercise_id === exerciseId
           )
         );
+      });
+    });
+    return testDataSets$;
+  }
+
+  getTestDataSetsOfEvaluations(
+    evaluations: Evaluation[]
+  ): Observable<TestDataSet[]> {
+    let testDataSets$: Observable<TestDataSet[]> = new Observable((sub) => {
+      this.getTestDataSets().subscribe((testDataSets: TestDataSet[]) => {
+        let testdataSets: TestDataSet[] = testDataSets.filter(
+          (testDataSet: TestDataSet) =>
+            evaluations &&
+            evaluations
+              .map((evaluation: Evaluation) => evaluation.test_data_set_id)
+              .includes(testDataSet.test_data_set_id)
+        );
+        if (testDataSets.length > 0) {
+          sub.next(testDataSets);
+        }
       });
     });
     return testDataSets$;

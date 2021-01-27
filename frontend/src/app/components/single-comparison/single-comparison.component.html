@@ -1,1 +1,17 @@
-<div style="width: parent;" id="points-per-expert-element-type"></div>
+<mat-tab-group
+  style="margin-top: 8px"
+  (selectedTabChange)="onTabChange($event)"
+>
+  <mat-tab label="Points/ElementType">
+    <div style="width: parent" id="points-per-expert-element-type"></div>
+  </mat-tab>
+  <mat-tab label="Points/Category">
+    <div style="width: parent" id="points-per-result-category" on></div>
+  </mat-tab>
+  <mat-tab *ngIf="manEvalKey != 'avg-man-eval'" label="Categories/Element">
+    <app-category-by-element
+      [manEvalId]="manEvalKey"
+      [autoEvalId]="autoEvalKey"
+    ></app-category-by-element>
+  </mat-tab>
+</mat-tab-group>

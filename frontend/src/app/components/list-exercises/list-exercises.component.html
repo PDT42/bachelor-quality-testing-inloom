@@ -5,16 +5,30 @@
       [routerLink]="'/exercise'"
       [queryParams]="{ id: item.exercise_id }"
     >
-      <span class="exercise-card-header">
-        Exercise: {{ item.exercise_id }}
-      </span>
+      <div class="exercise-card-header-container">
+        <span class="exercise-card-header">
+          Exercise: {{ item.exercise_id }}
+        </span>
+        <div
+          class="avg-avg-indicator"
+          [style.backgroundColor]="getPctDifferenceColor(item.exercise_id) | async"
+        >
+          <span class="avg-avg-indicator-value">
+            {{
+              metaEvalService.getExerciseAveragePctDiff(item.exercise_id)
+                | async
+                | number: "1.1-1"
+            }}
+            %
+          </span>
+          <span class="avg-avg-indicator-label">Average Pt. Diff.</span>
+        </div>
+      </div>
       <hr />
       <div class="exercise-card-body">
         <div class="exercise-literals">
           <div class="exercise-literal">
-            <span class="exercise-literal-label">
-              Semester:
-            </span>
+            <span class="exercise-literal-label"> Semester: </span>
             <span class="exercise-literal-value">
               {{ item.semester }} - {{ item.year }}
             </span>

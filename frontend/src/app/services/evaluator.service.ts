@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { Evaluator } from '../classes/evaluator';
 
 @Injectable({
@@ -28,6 +28,38 @@ export class EvaluatorService {
     if (!this.evaluatorsFetched) this.fetchEvaluators();
 
     return this.evaluators;
+  }
+
+  getEvaluator(evaluatorId: string): Observable<Evaluator> {
+    if (!this.evaluatorsFetched) this.fetchEvaluators();
+
+    let evaluator$: Observable<Evaluator> = new Observable((sub) => {
+      this.evaluators.subscribe((evaluators: Evaluator[]) => {
+        sub.next(
+          evaluators
+            .filter(
+              (evaluator: Evaluator) => evaluator.evaluator_id == evaluatorId
+            )
+            .pop()
+        );
+      });
+    });
+    return evaluator$;
+  }
+
+  getEvaluatorName(evaluatorId: string): Observable<string> {
+    if (!this.evaluatorsFetched) this.fetchEvaluators();
+
+    let evaluatorName$: Observable<string> = new Observable((sub) => {
+      this.evaluators.subscribe((evaluators: Evaluator[]) => {
+        let evaluator: Evaluator = evaluators
+          .filter((e: Evaluator) => e.evaluator_id == evaluatorId)
+          .pop();
+        if (evaluator != undefined)
+          sub.next(evaluator.first_name + ' ' + evaluator.last_name);
+      });
+    });
+    return evaluatorName$;
   }
 
   fetchEvaluators(): void {

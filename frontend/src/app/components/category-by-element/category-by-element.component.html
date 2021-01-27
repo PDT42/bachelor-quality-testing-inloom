@@ -1,0 +1,15 @@
+<div class="list-container">
+  <div class="list-item" *ngFor="let resultCategoryItem of getExpertTypeCategoryItems() | async">
+    <div class="list-item-body">
+      <div class="result-category" [style.backgroundColor]="resultCategoryItem['man-eval-category-color']">
+        <span class="result-category-label">{{ resultCategoryItem['man-eval-category-label'] }}</span>
+      </div>
+      <div class="result-item">
+        <span class="result-item-label">{{ resultCategoryItem['result-category-item'] }}</span>
+      </div>
+      <div class="result-category" [style.backgroundColor]="resultCategoryItem['auto-eval-category-color']">
+        <span class="result-category-label">{{ resultCategoryItem['auto-eval-category-label'] }}</span>
+      </div>
+    </div>
+  </div>
+</div>

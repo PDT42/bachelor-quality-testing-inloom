@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { EvaluatorService } from 'src/app/services/evaluator.service';
+import { MetaEvalService } from 'src/app/services/metaeval.service';
 import { Evaluation } from '../../classes/evaluation';
 import { EvaluationService } from '../../services/evaluation.service';
 
@@ -22,7 +24,9 @@ export class EvaluationDetailsComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    public evalService: EvaluationService
+    public evalService: EvaluationService,
+    public evaluatorService: EvaluatorService,
+    public metaEvalService: MetaEvalService
   ) {}
 
   ngOnInit(): void {

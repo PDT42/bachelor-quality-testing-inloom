@@ -18,7 +18,14 @@
 }
 
 .test-data-card-header {
-  font-size: 18px;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.test-data-card-header-title {
+  font-size: 24px;
 }
 
 .test-data-set-card-body {
@@ -49,4 +56,23 @@
 .test-data-literal-value {
   flex-grow: 1;
   text-align: end;
+}
+
+.quotient-indicator{
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-content: center;
+  padding: 4px;
+  border: solid 1px rgba(169, 170, 170, 0.616);
+  border-radius: 6px;
+}
+
+.quotient-indicator-value {
+  font-size: 18px;
+  text-align: center;
+}
+
+.quotient-indicator-label {
+  font-size: 11px;
 }

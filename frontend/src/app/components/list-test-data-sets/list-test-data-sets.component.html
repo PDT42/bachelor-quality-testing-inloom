@@ -5,9 +5,30 @@
       [routerLink]="'/testdataset'"
       [queryParams]="{ id: item.test_data_set_id }"
     >
-      <span class="test-data-card-header">
-        Exercise: {{ item.exercise_id }} - Student: {{ item.student_id }}
-      </span>
+      <div class="test-data-card-header">
+        <span class="test-data-card-header-title">
+          Exercise: {{ item.exercise_id }} - Student: {{ item.student_id }}
+        </span>
+        <div
+          class="quotient-indicator"
+          [style.background]="
+          getPtDifferenceColor(item.test_data_set_id, 'avg-man-eval') | async
+          "
+        >
+          <span class="quotient-indicator-value">
+            {{
+              metaEvalService.getEvaluationPctDiff(
+                item.test_data_set_id,
+                "avg-man-eval"
+              )
+                | async
+                | number: "1.1-1"
+            }}
+            %
+          </span>
+          <span class="quotient-indicator-label">Average Pt. Diff.</span>
+        </div>
+      </div>
       <hr />
       <div class="test-data-set-card-body">
         <div class="test-data-literals">
@@ -27,11 +48,10 @@
               {{
                 (metaEvalService.getGradeQuotient(
                   item.test_data_set_id,
-                  "average-man-eval"
-                )
-                  | async) * 100
-                  | number: "2.1-1"
-              }} %
+                  "avg-man-eval"
+                ) | async) * 100 | number: "2.1-1"
+              }}
+              %
             </span>
           </div>
         </div>

@@ -22,7 +22,10 @@ export class ExerciseService {
     const formData: FormData = new FormData();
 
     formData.append('file', fileToUpload, fileToUpload.name);
-    return this.http.post('http://127.0.0.1:3001/expertsolution/register', formData);
+    return this.http.post(
+      'http://127.0.0.1:3001/expertsolution/register',
+      formData
+    );
   }
 
   getExpertSolutions(): BehaviorSubject<ExpertSolution[]> {
@@ -38,28 +41,36 @@ export class ExerciseService {
   }
 
   getExercise(exerciseId: string): Observable<Exercise> {
+    if (!this.exercisesFetched) this.fetchExercises();
+
     let exercise$: Observable<Exercise> = new Observable((sub) => {
       this.getExercises().subscribe((exercises: Exercise[]) => {
-          sub.next(
-            exercises
-              .filter((ex: Exercise) => ex.exercise_id === exerciseId)
-              .pop()
-          );
+        sub.next(
+          exercises
+            .filter((ex: Exercise) => ex.exercise_id === exerciseId)
+            .pop()
+        );
       });
     });
     return exercise$;
   }
 
   getExpertSolution(expertSolutionId: string): Observable<ExpertSolution> {
+    if (!this.exercisesFetched) this.fetchExercises();
+
     let expertSolution$: Observable<ExpertSolution> = new Observable((sub) => {
-      this.getExpertSolutions()
-        .subscribe((expertSolutions: ExpertSolution[]) => {
-          sub.next(
-            expertSolutions
+      this.getExpertSolutions().subscribe(
+        (expertSolutions: ExpertSolution[]) => {
+          if (expertSolutions.length > 0) {
+            let expertSolution: ExpertSolution = expertSolutions
               .filter((ex) => ex.expert_solution_id === expertSolutionId)
-              .pop()
-          );
-        });
+              .pop();
+            if (expertSolution){
+              sub.next(expertSolution);
+            }
+          }
+        }
+      );
     });
     return expertSolution$;
   }
@@ -76,6 +87,7 @@ export class ExerciseService {
         }
         this.expertSolutions.next(_expertSolutions);
 
-        return this.exercises.next(result)});
+        return this.exercises.next(result);
+      });
   }
 }

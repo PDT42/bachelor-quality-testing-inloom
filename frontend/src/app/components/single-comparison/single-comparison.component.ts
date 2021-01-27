@@ -1,5 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import * as d3 from 'd3';
+import { BehaviorSubject } from 'rxjs';
+import { EvaluationService } from 'src/app/services/evaluation.service';
 import { MetaEvalService } from 'src/app/services/metaeval.service';
 
 @Component({
@@ -8,60 +10,78 @@ import { MetaEvalService } from 'src/app/services/metaeval.service';
   styleUrls: ['./single-comparison.component.css'],
 })
 export class SingleComparisonComponent implements OnInit {
-  @Input()
-  testDataSetId: string;
-  @Input()
-  chartTitle: string;
-  @Input()
-  manEvalKey: string = null;
-  @Input()
-  autoEvalKey: string = null;
+  // TODO: Rename this -> TDSComparison ?
 
-  constructor(public metaEvalService: MetaEvalService) {}
+  @Input()
+  metaEval$: BehaviorSubject<Object>;
+  @Input()
+  manEvalKey: string;
+  @Input()
+  autoEvalKey: string;
+
+  manEvalStats: Object;
+  autoEvalStats: Object;
+
+  pointsPerElementTypeCreated: boolean = false;
+  pointsPerCategoryCreated: boolean = false;
+
+  constructor(
+    public metaEvalService: MetaEvalService,
+    public evaluationService: EvaluationService
+  ) {}
 
   ngOnInit(): void {}
 
   ngAfterViewInit(): void {
-    this.metaEvalService
-      .getTDSMetaEval(this.testDataSetId)
-      .subscribe((result) => {
-        // if the query has a body
-        if (Object.keys(result).length > 0) {
-          let manEvalStats: Object;
-          if (this.manEvalKey) {
-            manEvalStats = result['man-eval-stats'][this.manEvalKey];
-          } else {
-            manEvalStats = result['avg-man-eval-stats'];
-          }
+    this.metaEval$.subscribe((metaEval: Object) => {
+      if (
+        Object.keys(metaEval).length > 0 &&
+        !this.pointsPerElementTypeCreated
+      ) {
+        // Getting eval stats
+        this.manEvalStats = metaEval['eval-stats'][this.manEvalKey];
+        this.autoEvalStats = metaEval['eval-stats'][this.autoEvalKey];
 
-          let autoEvalStats: Object;
-          if (this.autoEvalKey) {
-            autoEvalStats = result['auto-eval-stats'][this.autoEvalKey];
-          } else {
-            autoEvalStats = result['latest-auto-eval-stats'];
-          }
-
-          // Create chart
-          this.createElementPerTypeChart(manEvalStats, autoEvalStats);
-        }
-      });
+        // Create chart
+        this.createComparisonChart(
+          this.manEvalStats,
+          this.autoEvalStats,
+          'points-per-expert-element-type'
+        );
+        this.pointsPerElementTypeCreated = true;
+      }
+    });
   }
 
-  createElementPerTypeChart(manEvalStats: Object, autoEvalStats: Object): void {
-    const CHART_KEY = 'points-per-expert-element-type';
-    const ROOT = d3.select('div#' + CHART_KEY);
+  onTabChange(event: any) {
+    if (event['index'] == 1 && !this.pointsPerCategoryCreated) {
+      this.createComparisonChart(
+        this.manEvalStats,
+        this.autoEvalStats,
+        'points-per-result-category'
+      );
+      this.pointsPerCategoryCreated = true;
+    }
+  }
+
+  createComparisonChart(
+    manEvalStats: Object,
+    autoEvalStats: Object,
+    chartKey: string
+  ): void {
+    const ROOT = d3.select('div#' + chartKey);
 
     if (ROOT.size() != 0) {
       const MARGIN_VERTICAL = 20;
       const MARGIN_HORIZONTAL = 20;
-      const ROOT_WIDTH = parseInt(ROOT.style('width'));
+      const ROOT_WIDTH = parseInt(ROOT.style('width')) - MARGIN_HORIZONTAL;
       const ROOT_HEIGHT = 400;
-      const SVG_WIDTH = ROOT_WIDTH - 3 * MARGIN_HORIZONTAL;
+      const SVG_WIDTH = ROOT_WIDTH - 4 * MARGIN_HORIZONTAL;
       const SVG_HEIGHT = ROOT_HEIGHT - 2 * MARGIN_VERTICAL;
 
       // Unpack required data
-      let _autoLocalStats: Map<string, number> = autoEvalStats[CHART_KEY];
-      let _manLocalStats: Map<string, number> = manEvalStats[CHART_KEY];
+      let _autoLocalStats: Map<string, number> = autoEvalStats[chartKey];
+      let _manLocalStats: Map<string, number> = manEvalStats[chartKey];
 
       let xItems = Array.from(
         new Set([
@@ -76,18 +96,18 @@ export class SingleComparisonComponent implements OnInit {
         ])
       );
 
-      let _evalStats: Map<string, Object[]> = new Map();
+      let xCategoryStats: Map<string, Object[]> = new Map();
 
-      for (let elementType of xItems) {
-        let manPoints: number = _manLocalStats[elementType];
-        let autoPoints: number = _autoLocalStats[elementType];
+      for (let xCategory of xItems) {
+        let manPoints: number = _manLocalStats[xCategory];
+        let autoPoints: number = _autoLocalStats[xCategory];
 
         if (!manPoints) manPoints = 0;
         if (!autoPoints) autoPoints = 0;
 
-        _evalStats.set(elementType, [
-          { evalType: 'A', points: autoPoints },
-          { evalType: 'M', points: manPoints },
+        xCategoryStats.set(xCategory, [
+          { xCategory: 'A', points: autoPoints },
+          { xCategory: 'M', points: manPoints },
         ]);
       }
 
@@ -112,7 +132,7 @@ export class SingleComparisonComponent implements OnInit {
         .scaleBand()
         .domain(xItems)
         .range([0, SVG_WIDTH])
-        .padding(0.4);
+        .padding(0.3);
 
       svg_root
         .append('g')
@@ -150,28 +170,28 @@ export class SingleComparisonComponent implements OnInit {
         .data(xItems)
         .enter()
         .append('g')
-        .attr('transform', (elementType) => {
-          return 'translate(' + xScale(elementType) + ')';
+        .attr('transform', (xCategory) => {
+          return 'translate(' + xScale(xCategory) + ')';
         })
         .selectAll('rect')
-        .data((elementType) => {
-          return _evalStats.get(elementType);
+        .data((xCategory) => {
+          return xCategoryStats.get(xCategory);
         })
         .enter()
         .append('rect')
-        .attr('x', (elementTypeStats) => {
-          return xSubScale(elementTypeStats['evalType']);
+        .attr('x', (xCategoryStats) => {
+          return xSubScale(xCategoryStats['xCategory']);
         })
-        .attr('y', (elementTypeStats) => {
-          return yScale(elementTypeStats['points']);
+        .attr('y', (xCategoryStats) => {
+          return yScale(xCategoryStats['points']);
         })
-        .attr('height', (elementTypeStats) => {
-          return SVG_HEIGHT - yScale(elementTypeStats['points']);
+        .attr('height', (xCategoryStats) => {
+          return SVG_HEIGHT - yScale(xCategoryStats['points']);
         })
         .attr('width', xSubScale.bandwidth())
-        .attr('fill', (elementTypeStats): string => {
-          if (elementTypeStats['evalType'] != null) {
-            return color.get(elementTypeStats['evalType']);
+        .attr('fill', (xCategoryStats): string => {
+          if (xCategoryStats['xCategory'] != null) {
+            return color.get(xCategoryStats['xCategory']);
           } else return null;
         });
     }
