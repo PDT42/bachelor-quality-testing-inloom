@@ -6,7 +6,10 @@
     <div style="width: parent" id="points-per-expert-element-type"></div>
   </mat-tab>
   <mat-tab label="Points/Category">
-    <div style="width: parent" id="points-per-result-category" on></div>
+    <div style="width: parent" id="points-per-result-category"></div>
+  </mat-tab>
+  <mat-tab label="Category Flag Totals">
+    <div style="width: parent" id="category-count"></div>
   </mat-tab>
   <mat-tab *ngIf="manEvalKey != 'avg-man-eval'" label="Categories/Element">
     <app-category-by-element

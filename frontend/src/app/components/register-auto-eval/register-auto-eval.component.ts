@@ -36,13 +36,14 @@ export class RegisterAutoEval implements OnInit {
   }
 
   uploadFile(): void {
-    this.fileUploadService.postAutoEvalFile(this.fileToUpload)
-    .subscribe((result: any) => {
-      this.testDataSetService.fetchData();
-      this.metaEvalService.fetchTDSMetaEvals();
-      this.evalService.fetchEvaluations();
-      this.router.navigate(['/register']);
-      return result;
-    });
+    this.fileUploadService
+      .postAutoEvalFile(this.fileToUpload)
+      .subscribe((result: any) => {
+        this.testDataSetService.fetchData();
+        this.metaEvalService.fetchTDSMetaEvals();
+        this.evalService.fetchEvaluations();
+        this.router.navigate(['/register']);
+        return result;
+      });
   }
 }

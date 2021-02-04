@@ -57,7 +57,7 @@ export class MultipleComparisonComponent implements OnInit {
       const MARGIN_HORIZONTAL = 20;
       const ROOT_WIDTH = parseInt(ROOT.style('width'));
       const ROOT_HEIGHT = 400;
-      const SVG_WIDTH = ROOT_WIDTH - 3 * MARGIN_HORIZONTAL;
+      const SVG_WIDTH = ROOT_WIDTH - 4 * MARGIN_HORIZONTAL;
       const SVG_HEIGHT = ROOT_HEIGHT - 2 * MARGIN_VERTICAL;
 
       let xItems: Array<string> = [];
@@ -81,25 +81,24 @@ export class MultipleComparisonComponent implements OnInit {
       } else {
         Array.from(tdsMetaEvals.entries()).map(([_, tdsMetaEval]) => {
           Object.entries(tdsMetaEval['eval-stats']).map(([key, value]) => {
-            if (!['avg-man-eval', 'latest-auto-eval'].includes(key) && value['type'] != 'A') {
+            if (
+              !['avg-man-eval', 'latest-auto-eval'].includes(key) &&
+              value['type'] != 'A'
+            ) {
               let studentId: string = tdsMetaEval['student-id'];
               let created: Date = new Date(value['created'] * 1000);
 
-              xItems.push(studentId + " - " + created.toDateString());
-              studentGrades.set(
-                studentId + " - " + created.toDateString(),
-                [
-                  {
-                    evalType: 'A',
-                    grade:
-                      tdsMetaEval['eval-stats']['latest-auto-eval']['grade'],
-                  },
-                  {
-                    evalType: 'M',
-                    grade: value['grade'],
-                  },
-                ]
-              );
+              xItems.push(studentId + ' - ' + created.toDateString());
+              studentGrades.set(studentId + ' - ' + created.toDateString(), [
+                {
+                  evalType: 'A',
+                  grade: tdsMetaEval['eval-stats']['latest-auto-eval']['grade'],
+                },
+                {
+                  evalType: 'M',
+                  grade: value['grade'],
+                },
+              ]);
             }
           });
         });
@@ -136,6 +135,43 @@ export class MultipleComparisonComponent implements OnInit {
           'translate(' + MARGIN_HORIZONTAL + ', ' + SVG_HEIGHT + ')'
         )
         .call(d3.axisBottom(xScale).tickSize(0).tickPadding(6));
+
+      // Append Legend
+      // ~~~~~~~~~~~~~
+      // Add legend container
+      let legend = svg_root
+        .append('g')
+        .style('font', '14px roboto')
+        .attr('transform', 'translate(' + (SVG_WIDTH - 60) + ', 8)');
+
+      // Add Legend Entry -> ManEval
+      let manEntry = legend.append('g');
+      manEntry
+        .append('rect')
+        .attr('width', 14)
+        .attr('height', 14)
+        .attr('fill', color.get('M'));
+      manEntry
+        .append('text')
+        .text('Man')
+        .attr('x', 22)
+        .attr('y', 9)
+        .attr('alignment-baseline', 'middle');
+
+      // Add Legend Entry -> AutoEval
+      let autoEntry = legend.append('g').attr('transform', 'translate(0, 24)');
+      autoEntry
+        .append('rect')
+        .attr('width', 14)
+        .attr('height', 14)
+        .attr('fill', color.get('A'));
+      autoEntry
+        .append('text')
+        .text('Auto')
+        .attr('x', 22)
+        .attr('y', 9)
+        .attr('alignment-baseline', 'middle');
+      // ~~~~~~~~~~~~~
 
       // Define x-sub-scale
       let xSubScale = d3

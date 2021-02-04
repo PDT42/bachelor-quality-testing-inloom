@@ -103,6 +103,19 @@ export class MetaEvalService {
     return avgPctDiff$;
   }
 
+  getExerciseAveragePtDiff(exerciseId: string): Observable<number> {
+    let avgPtDiff$: Observable<number> = new Observable((sub) => {
+      this.getEXCMetaEval(
+        exerciseId
+      ).subscribe((excMetaEval: Map<string, Object>) => {
+        if (Object.keys(excMetaEval).length > 0) {
+          sub.next(excMetaEval['avg-point-differences']);
+        }
+      });
+    });
+    return avgPtDiff$;
+  }
+
   /*
   Get the TDS Level meta evals for all tds of an evalautor.
   */
@@ -161,11 +174,16 @@ export class MetaEvalService {
   /*
   Get the TDS level grade quotient of an evaluation.
   */
-  getComparisonGradeQuotient(testDataSetId: string, comparisonId: string): Observable<number> {
+  getComparisonGradeQuotient(
+    testDataSetId: string,
+    comparisonId: string
+  ): Observable<number> {
     let avgGradeQuotient$: Observable<number> = new Observable((sub) => {
       this.getTDSMetaEval(testDataSetId).subscribe((metaEval: Object) => {
         if (metaEval['comparison-stats']) {
-          sub.next(metaEval['comparison-stats']['grade-quotients'][comparisonId]);
+          sub.next(
+            metaEval['comparison-stats']['grade-quotients'][comparisonId]
+          );
         }
       });
     });
@@ -195,7 +213,26 @@ export class MetaEvalService {
     let pctDiff$: Observable<number> = new Observable((sub) => {
       this.getTDSMetaEval(testDataSetId).subscribe((metaEval: Object) => {
         if (metaEval['comparison-stats']) {
-          sub.next(metaEval['comparison-stats']['point-pct-diffs'][comparisonId]);
+          sub.next(
+            metaEval['comparison-stats']['point-pct-diffs'][comparisonId]
+          );
+        }
+      });
+    });
+
+    return pctDiff$;
+  }
+
+  getComparisonCategoryMatches(
+    testDataSetId: string,
+    comparisonId: string
+  ): Observable<number> {
+    let pctDiff$: Observable<number> = new Observable((sub) => {
+      this.getTDSMetaEval(testDataSetId).subscribe((metaEval: Object) => {
+        if (metaEval['comparison-stats']) {
+          sub.next(
+            metaEval['comparison-stats']['category-matches'][comparisonId]
+          );
         }
       });
     });

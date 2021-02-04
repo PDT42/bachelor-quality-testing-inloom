@@ -199,9 +199,11 @@ export class RegisterManEvalComponent implements OnInit {
 
     if (this.evalFile) {
       // Upload the evaluation PDF if one was supplied
-      this.fileUploadService.postManEvalFile(this.uploadEvalFile).subscribe(() => {
-        this.evalService.registerEvaluation(manEval);
-      });
+      this.fileUploadService
+        .postManEvalFile(this.uploadEvalFile)
+        .subscribe(() => {
+          this.evalService.registerEvaluation(manEval);
+        });
     } else {
       this.evalService.registerEvaluation(manEval);
     }

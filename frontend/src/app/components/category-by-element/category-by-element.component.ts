@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Evaluation } from 'src/app/classes/evaluation';
 import { EvaluationService } from 'src/app/services/evaluation.service';
+import { MetaEvalService } from 'src/app/services/metaeval.service';
 
 @Component({
   selector: 'app-category-by-element',
@@ -14,7 +15,10 @@ export class CategoryByElementComponent implements OnInit {
   @Input()
   autoEvalId: string;
 
-  constructor(public evaluationService: EvaluationService) {}
+  constructor(
+    public evaluationService: EvaluationService,
+    public metaEvalService: MetaEvalService
+    ) {}
 
   ngOnInit(): void {}
 

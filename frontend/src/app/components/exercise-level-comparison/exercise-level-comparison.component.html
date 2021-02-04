@@ -1,0 +1,25 @@
+<mat-tab-group
+  style="margin-top: 8px"
+  (selectedTabChange)="onTabChange($event)"
+>
+  <!-- Grades Multi-Comparison Chart -->
+  <mat-tab label="Grades">
+    <app-multiple-comparison
+      [metaEvals$]="metaEvals$"
+      [testDataSets$]="testDataSets$"
+      [averageMode]="averageMode"
+    ></app-multiple-comparison>
+  </mat-tab>
+
+  <mat-tab label="Grade Quotients">
+    <div style="width: parent" id="grade-quotients-pct"></div>
+  </mat-tab>
+
+  <mat-tab label="Total Point Differences">
+    <div style="width: parent" id="point-diffs"></div>
+  </mat-tab>
+
+  <mat-tab label="Point Percentage Differences">
+    <div style="width: parent" id="point-pct-diffs"></div>
+  </mat-tab>
+</mat-tab-group>

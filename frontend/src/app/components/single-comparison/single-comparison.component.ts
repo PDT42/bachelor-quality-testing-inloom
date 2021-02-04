@@ -24,6 +24,7 @@ export class SingleComparisonComponent implements OnInit {
 
   pointsPerElementTypeCreated: boolean = false;
   pointsPerCategoryCreated: boolean = false;
+  categoryCountCreated: boolean = false
 
   constructor(
     public metaEvalService: MetaEvalService,
@@ -61,6 +62,15 @@ export class SingleComparisonComponent implements OnInit {
         'points-per-result-category'
       );
       this.pointsPerCategoryCreated = true;
+    }
+
+    if (event['index'] == 2 && !this.categoryCountCreated) {
+      this.createComparisonChart(
+        this.manEvalStats,
+        this.autoEvalStats,
+        'category-count'
+      );
+      this.categoryCountCreated = true;
     }
   }
 
@@ -142,6 +152,44 @@ export class SingleComparisonComponent implements OnInit {
           'translate(' + MARGIN_HORIZONTAL + ', ' + SVG_HEIGHT + ')'
         )
         .call(d3.axisBottom(xScale).tickSize(0).tickPadding(6));
+
+      // Append Legend
+      // ~~~~~~~~~~~~~
+      // Add legend container
+      let legend = svg_root
+        .append('g')
+        .style('font', '14px roboto')
+        .attr('transform', 'translate(' + (SVG_WIDTH - 60) + ', 8)');
+
+      // Add Legend Entry -> ManEval
+      let manEntry = legend.append('g');
+      manEntry
+        .append('rect')
+        .attr('width', 14)
+        .attr('height', 14)
+        .attr('fill', color.get('M'));
+      manEntry
+        .append('text')
+        .text('Man')
+        .attr('x', 22)
+        .attr('y', 9)
+        .attr('alignment-baseline', 'middle');
+
+      // Add Legend Entry -> AutoEval
+      let autoEntry = legend.append('g').attr('transform', 'translate(0, 24)');
+      autoEntry
+        .append('rect')
+        .attr('width', 14)
+        .attr('height', 14)
+        .attr('fill', color.get('A'));
+      autoEntry
+        .append('text')
+        .text('Auto')
+        .attr('x', 22)
+        .attr('y', 9)
+        .attr('alignment-baseline', 'middle');
+      // ~~~~~~~~~~~~~
+
 
       // Define x-sub-scale
       let xSubScale = d3

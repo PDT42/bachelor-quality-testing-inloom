@@ -1,65 +1,92 @@
 <div *ngIf="exerciseService.getExercise(exerciseId) | async; else elseBlock">
-  <div class="container">
-    <div class="title-container">
-      <span class="title">{{
-        (exerciseService.getExercise(exerciseId) | async).exercise_id
-      }}</span>
-      <div
-        class="avg-avg-indicator"
-        [style.backgroundColor]="getPctDifferenceColor(exerciseId) | async"
+  <div *ngIf="metaEvalService.getExerciseMetaEvals(exerciseId) | async; else elseBlock">
+    <div class="container">
+      <div class="title-container">
+        <span class="title">{{
+          (exerciseService.getExercise(exerciseId) | async).exercise_id
+        }}</span>
+        <div
+          class="avg-avg-indicator"
+          [style.backgroundColor]="getPctDifferenceColor(exerciseId) | async"
+        >
+          <span class="avg-avg-indicator-value">
+            {{
+              metaEvalService.getExerciseAveragePctDiff(exerciseId)
+                | async
+                | number: "1.1-1"
+            }}
+            %
+          </span>
+          <span class="avg-avg-indicator-label">Average Pt. Diff.</span>
+        </div>
+      </div>
+
+      <mat-divider class="divider"></mat-divider>
+
+      <div class="interactions">
+        <div class="option-list">
+          <div [routerLink]="'/exercise/register'" class="option-list-item">
+            <span class="option-list-item-text"> Add Expert Solution </span>
+          </div>
+        </div>
+      </div>
+
+      <mat-divider class="divider"></mat-divider>
+
+      <div class="exercise-data">
+        <div class="exercise-literals">
+          <div class="exercise-literal">
+            <span class="exercise-literal-label"> TestDataSets available </span>
+            <span class="exercise-literal-value">{{
+              (tdsService.getTestDataSetsOfExercise(exerciseId) | async).length
+                | number: "1.0"
+            }}</span>
+          </div>
+
+          <div class="exercise-literal">
+            <span class="exercise-literal-label"> Average Grade Quotient </span>
+            <span class="exercise-literal-value"
+              >{{
+                (metaEvalService.getExerciseAverageGradeQuotient(exerciseId)
+                  | async) * 100 | number: "1.1-1"
+              }}%
+            </span>
+          </div>
+
+          <div class="exercise-literal">
+            <span class="exercise-literal-label">
+              Average Point Difference
+            </span>
+            <span class="exercise-literal-value"
+              >{{
+                metaEvalService.getExerciseAveragePtDiff(exerciseId)
+                  | async
+                  | number: "1.1-1"
+              }}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <mat-divider class="divider"></mat-divider>
+
+      <!-- Adding Comparison Charts -->
+
+      <app-exercise-level-comparison
+        [metaEvals$]="metaEvalService.getExerciseMetaEvals(exerciseId)"
+        [testDataSets$]="tdsService.getTestDataSetsOfExercise(exerciseId)"
+        averageMode="{{ true }}"
       >
-        <span class="avg-avg-indicator-value">
-          {{
-            metaEvalService.getExerciseAveragePctDiff(exerciseId)
-              | async
-              | number: "1.1-1"
-          }}
-          %
-        </span>
-        <span class="avg-avg-indicator-label">Average Pt. Diff.</span>
-      </div>
+      </app-exercise-level-comparison>
+
+      <mat-divider class="divider"></mat-divider>
+
+      <!-- Adding List of TestDataSets -->
+
+      <app-listtestdatasets
+        [testDataSets$]="tdsService.getTestDataSetsOfExercise(exerciseId)"
+      ></app-listtestdatasets>
     </div>
-
-    <mat-divider class="divider"></mat-divider>
-
-    <div class="interactions">
-      <div class="option-list">
-        <div [routerLink]="'/exercise/register'" class="option-list-item">
-          <span class="option-list-item-text"> Add Expert Solution </span>
-        </div>
-      </div>
-    </div>
-
-    <mat-divider class="divider"></mat-divider>
-
-    <div class="exercise-data">
-      <div class="exercise-literals">
-        <div class="exercise-literal">
-          <span class="exercise-literal-label"> TestDataSets available </span>
-          <span class="exercise-literal-value">{{
-            (tdsService.getTestDataSetsOfExercise(exerciseId) | async).length
-          }}</span>
-        </div>
-      </div>
-    </div>
-
-    <mat-divider class="divider"></mat-divider>
-
-    <!-- Adding Multi Comparison Chart -->
-
-    <app-multiple-comparison
-      [metaEvals$]="metaEvalService.getExerciseMetaEvals(exerciseId)"
-      [testDataSets$]="tdsService.getTestDataSetsOfExercise(exerciseId)"
-      [averageMode]="true"
-    ></app-multiple-comparison>
-
-    <mat-divider class="divider"></mat-divider>
-
-    <!-- Adding List of TestDataSets -->
-
-    <app-listtestdatasets
-      [testDataSets$]="tdsService.getTestDataSetsOfExercise(exerciseId)"
-    ></app-listtestdatasets>
   </div>
 </div>
 <ng-template #elseBlock>

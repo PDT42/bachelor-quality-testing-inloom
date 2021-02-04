@@ -42,6 +42,8 @@ import { MultipleComparisonComponent } from './components/multiple-comparison/mu
 import { TdsComparisonComponent } from './components/tds-comparison/tds-comparison.component';
 import { CategoryByElementComponent } from './components/category-by-element/category-by-element.component';
 import { BackButtonComponent } from './components/back-button/back-button.component';
+import { ExerciseLevelComparisonComponent } from './components/exercise-level-comparison/exercise-level-comparison.component';
+import { AbsolutePipe } from './pipes/absolute.pipe';
 
 @NgModule({
   declarations: [
@@ -66,6 +68,8 @@ import { BackButtonComponent } from './components/back-button/back-button.compon
     TdsComparisonComponent,
     CategoryByElementComponent,
     BackButtonComponent,
+    ExerciseLevelComparisonComponent,
+    AbsolutePipe,
   ],
   imports: [
     AppRoutingModule,

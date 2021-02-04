@@ -11,7 +11,9 @@
         </span>
         <div
           class="avg-avg-indicator"
-          [style.backgroundColor]="getPctDifferenceColor(item.exercise_id) | async"
+          [style.backgroundColor]="
+            getPctDifferenceColor(item.exercise_id) | async
+          "
         >
           <span class="avg-avg-indicator-value">
             {{

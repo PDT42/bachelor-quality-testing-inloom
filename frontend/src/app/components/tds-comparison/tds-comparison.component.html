@@ -70,8 +70,10 @@
       <span class="test-data-set-literal-label"> Grade Quotient </span>
       <span class="test-data-set-literal-value">
         {{
-          (metaEvalService.getComparisonGradeQuotient(this.testDataSetId, this.autoEvalKey + this.manEvalKey)
-            | async) * 100 | number: "2.1-1"
+          (metaEvalService.getComparisonGradeQuotient(
+            this.testDataSetId,
+            this.autoEvalKey + this.manEvalKey
+          ) | async) * 100 | number: "2.1-1"
         }}
         %
       </span>
@@ -81,13 +83,49 @@
       <span class="test-data-set-literal-label">Point Difference</span>
       <span class="test-data-set-literal-value">
         {{
-          metaEvalService.getComparisonPtDiff(testDataSetId, this.autoEvalKey + this.manEvalKey)
-            | async
+          metaEvalService.getComparisonPtDiff(
+            testDataSetId,
+            this.autoEvalKey + this.manEvalKey
+          ) | async | absolute
         }}
         ({{
-          metaEvalService.getComparisonPctDiff(testDataSetId, this.autoEvalKey + this.manEvalKey)
+          metaEvalService.getComparisonPctDiff(
+            testDataSetId,
+            this.autoEvalKey + this.manEvalKey
+          )
             | async
+            | absolute
             | number: "1.1-1"
+        }}
+        %)
+      </span>
+    </div>
+
+    <div
+      *ngIf="manEvalKey != 'avg-man-eval'"
+      label="Categories/Element"
+      class="test-data-set-literal"
+    >
+      <span class="test-data-set-literal-label">Category Matches</span>
+      <span class="test-data-set-literal-value">
+        {{
+          (metaEvalService.getComparisonCategoryMatches(
+            testDataSetId,
+            this.autoEvalKey + this.manEvalKey
+          ) | async)["match"]
+        }}
+        /
+        {{
+          (metaEvalService.getComparisonCategoryMatches(
+            testDataSetId,
+            this.autoEvalKey + this.manEvalKey
+          ) | async)["total"]
+        }}
+        ({{
+          (metaEvalService.getComparisonCategoryMatches(
+            testDataSetId,
+            this.autoEvalKey + this.manEvalKey
+          ) | async)["pct-matched"] | number: "1.1-1"
         }}
         %)
       </span>

@@ -21,6 +21,8 @@ export class ListExercisesComponent implements OnInit {
       this.metaEvalService
         .getExerciseAveragePctDiff(exerciseId)
         .subscribe((avgPctDiff: number) => {
+          avgPctDiff = Math.abs(avgPctDiff);
+
           if (avgPctDiff < 5) {
             sub.next('#358f17');
           } else if (5 <= avgPctDiff && avgPctDiff < 10) {
