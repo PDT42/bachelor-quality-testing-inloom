@@ -4,6 +4,7 @@
 
 This is the module for the ``EvalServer``.
 """
+
 import json
 import os
 from typing import Any, Dict
@@ -15,7 +16,7 @@ from data_types.evaluation import Evaluation, ManEval
 from data_types.test_data_set import TestDataSet
 from managers.evaluation_manager import EvalManager
 from managers.testdata_manager import TDManager
-from servers import AUTO_EVAL_FORMATS, AUTO_EVAL_PATH
+from servers import AUTO_EVAL_FORMATS, AUTO_EVAL_PATH, MAN_EVAL_FORMATS, MAN_EVAL_PATH
 from xml_adapter import XMLAdapter, XMLAdapterResult
 
 
@@ -51,6 +52,13 @@ class EvalServer:
             endpoint='register-man-eval',
             view_func=EvalServer._post_register_man_eval,
             methods=['POST', 'OPTIONS']
+        )
+
+        app.add_url_rule(
+            rule='/eval/upload/man',
+            endpoint='upload-man-eval',
+            view_func=EvalServer._post_upload_man_eval,
+            methods=['POST']
         )
 
         app.add_url_rule(
@@ -164,8 +172,26 @@ class EvalServer:
     def _post_upload_man_eval():
         """Handle POST requests to [/eval/man/upload]"""
 
-        # TODO
-        pass
+        # Get the file from the received request
+        man_eval_file = request.files['file']
+        man_eval_file_file_name: str = man_eval_file.filename
+
+        # Create a response to return later
+        response = make_response()
+
+        # Check whether the uploaded file has an allowed format
+        if man_eval_file_file_name == '' \
+                or man_eval_file_file_name.split('.')[-1].lower() not in MAN_EVAL_FORMATS:
+            response.status_code = 301
+            return response
+
+        man_eval_file_file_name = secure_filename(man_eval_file_file_name)
+        man_eval_path = os.path.join(MAN_EVAL_PATH, man_eval_file_file_name)
+        man_eval_file.save(man_eval_path)
+
+        response.status_code = 200
+
+        return response
 
     @staticmethod
     def _get_eval_by_id(evaluation_id: str):

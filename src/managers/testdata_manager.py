@@ -68,6 +68,23 @@ class TDManager:
 
         return TestDataSet(**db_results[0])
 
+    def get_exercise_tds(self, exercise_id: str):
+        """Get the tds for this exercise."""
+
+        equals: FilterOperation = FilterOperation.EQUALS
+
+        query: Query = SELECTQuery(self.test_data_set_table) \
+            .where(Filter(self.EXERCISE_ID_COLUMN, equals, exercise_id))
+        results: List[Mapping[str, Any]] = self.db_connection.execute(query)
+
+        test_data_sets: List[TestDataSet] = [TestDataSet(**item) for item in results]
+
+        for tds in test_data_sets:
+            tds.auto_evals = self.eval_manager.get_all_of(tds.test_data_set_id, required_type=AutoEval)
+            tds.man_evals = self.eval_manager.get_all_of(tds.test_data_set_id, required_type=ManEval)
+
+        return test_data_sets
+
     def get_one(self, test_data_set_id: str):
         """Get one with the supplied id."""
 
@@ -154,7 +171,8 @@ class TDManager:
         if not db_test_data_set:
             return
 
-        query: Query = DELETEQuery(self.test_data_set_table)
+        query: Query = DELETEQuery(self.test_data_set_table) \
+            .where(Filter(self.TEST_DATA_SET_ID_COLUMN, FilterOperation.EQUALS, test_data_set_id))
         self.db_connection.execute(query)
 
         for evaluation in db_test_data_set.auto_evals + db_test_data_set.man_evals:

@@ -25,6 +25,7 @@ class ExerciseManager:
     EXPERT_SOLUTION_TABLE_NAME: str = 'expert_solutions'
 
     EXERCISE_ID_COLUMN: DbColumn = DbColumn('exercise_id', VARCHAR(), primary_key=True)
+    EXPERT_SOLUTION_ID_COLUMN: DbColumn = DbColumn('expert_solution_id', VARCHAR(), primary_key=True)
 
     # Variables
     db_connection: DbConnection
@@ -51,7 +52,7 @@ class ExerciseManager:
         expert_solution_table_columns: List[DbColumn] = [
             DbColumn('file', VARCHAR(), not_null=True),
             DbColumn('created_time', INTEGER(), not_null=True),
-            DbColumn('expert_solution_id', VARCHAR(), primary_key=True),
+            self.EXPERT_SOLUTION_ID_COLUMN,
             DbColumn('maximum_points', FLOAT(), not_null=True),
             DbColumn(self.EXERCISE_ID_COLUMN.column_name, VARCHAR(), not_null=True)
         ]
@@ -126,6 +127,19 @@ class ExerciseManager:
             ExpertSolution(**item) for item in db_results
         ]
         return exercise
+
+    def get_one_expert_solution(self, exercise_id: str, expert_solution_id: str):
+        """Get one ExpertSolution from the database."""
+
+        query: Query = SELECTQuery(db_table=self.expert_solution_table) \
+            .where(Filter(self.EXERCISE_ID_COLUMN, FilterOperation.EQUALS, exercise_id)) \
+            .where(Filter(self.EXPERT_SOLUTION_ID_COLUMN, FilterOperation.EQUALS, expert_solution_id))
+        db_results: Mapping[str, Any] = self.db_connection.execute(query)
+
+        if not db_results:
+            return None
+        return ExpertSolution(**db_results[0])
+
 
     def init_database_tables(self):
         """Initialize the tables required for storing

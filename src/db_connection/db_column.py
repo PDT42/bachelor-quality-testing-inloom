@@ -6,11 +6,9 @@ This is the module, that contains the ``DbColumn``.
 """
 
 from dataclasses import dataclass
-from datetime import datetime
 from typing import List, Mapping, Union
-from uuid import uuid4
 
-from src.db_connection.db_data_types import DbDataType, FLOAT, INTEGER, VARCHAR
+from db_connection.db_data_types import DbDataType, FLOAT, INTEGER, VARCHAR
 
 COLUMN_DATA_TYPES: Mapping[str, DbDataType] = {
     'str': VARCHAR(),
