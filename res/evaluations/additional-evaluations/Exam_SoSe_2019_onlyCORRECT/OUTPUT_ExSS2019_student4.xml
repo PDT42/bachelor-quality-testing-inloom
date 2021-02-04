@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TestResult>
+ <TestData>
+  <ExpertModel id="Expert_OOA_Class_SoSe2019"/>
+  <TestModel id="ExSS2019_student4"/>
+  <MetaModel type="OOAClassModel"/>
+  <MCSIdentifier id="mcs_inloom_ooa_class"/>
+  <MCSVersion value="1.1.0"/>
+ </TestData>
+ <Results>
+  <Result>
+   <ExpertObject>Subject</ExpertObject>
+   <ExpertType>Class</ExpertType>
+   <TestObject>Subject</TestObject>
+   <TestType>Class</TestType>
+   <Rule>R010101</Rule>
+   <Category>CORRECT</Category>
+   <Points>1.0</Points>
+   <Msg>Class Subject was found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>Comment</ExpertObject>
+   <ExpertType>Class</ExpertType>
+   <TestObject>Comment</TestObject>
+   <TestType>Class</TestType>
+   <Rule>R010101</Rule>
+   <Category>CORRECT</Category>
+   <Points>1.0</Points>
+   <Msg>Class Comment was found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>r1</ExpertObject>
+   <ExpertType>Relationship</ExpertType>
+   <TestObject>r1</TestObject>
+   <TestType>Relationship</TestType>
+   <Rule>R080101</Rule>
+   <Category>CORRECT</Category>
+   <Points>1.0</Points>
+   <Msg>A Relationship between Profile and Subject was found (Type: Shared).</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>r1e2_interest</ExpertObject>
+   <ExpertType>Role</ExpertType>
+   <TestObject>r1e2_interest</TestObject>
+   <TestType>Role</TestType>
+   <Rule>R100101</Rule>
+   <Category>CORRECT</Category>
+   <Points>0.5</Points>
+   <Msg>Role r1e2_interest was found.</Msg>
+  </Result>
+ </Results>
+ <ResultPoints>
+  <MaxPoints>13.0</MaxPoints>
+  <TestPoints>3.5</TestPoints>
+ </ResultPoints>
+</TestResult>

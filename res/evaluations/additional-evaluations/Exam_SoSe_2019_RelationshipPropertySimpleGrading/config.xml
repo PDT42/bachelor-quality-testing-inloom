@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Configuration>
+	<BlockFeedbackClass>
+		<FeedbackClass inactive="true">CORRECT</FeedbackClass>
+		<FeedbackClass inactive="true">WARNING</FeedbackClass>
+		<FeedbackClass inactive="true">ERROR</FeedbackClass>
+		<FeedbackClass inactive="true">MISSING</FeedbackClass>
+		<FeedbackClass inactive="true">INFO</FeedbackClass>
+	</BlockFeedbackClass>
+	<BlockRule>
+		<Rule inactive="false">R0802..</Rule>
+		<Rule inactive="false">R080301</Rule>
+		<Rule inactive="false">R080401</Rule>
+		<Rule inactive="false">R0202..</Rule>
+		<Rule inactive="false">R0203..</Rule>
+		<Rule inactive="false">R0204..</Rule>
+		<Rule inactive="false">R0205..</Rule>
+		<Rule inactive="false">R0206..</Rule>
+		<Rule inactive="false">R0207..</Rule>
+	</BlockRule>
+</Configuration>

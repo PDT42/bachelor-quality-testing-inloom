@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TestResult>
+ <TestData>
+  <ExpertModel id="Expert_OOA_Class_SoSe2019"/>
+  <TestModel id="ExSS2019_student9"/>
+  <MetaModel type="OOAClassModel"/>
+  <MCSIdentifier id="mcs_inloom_ooa_class"/>
+  <MCSVersion value="1.1.0"/>
+ </TestData>
+ <Results>
+  <Result>
+   <ExpertObject>Subject</ExpertObject>
+   <ExpertType>Class</ExpertType>
+   <TestObject>Subject</TestObject>
+   <TestType>Class</TestType>
+   <Rule>R010101</Rule>
+   <Category>CORRECT</Category>
+   <Points>1.0</Points>
+   <Msg>Class Subject was found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>Posting</ExpertObject>
+   <ExpertType>Class</ExpertType>
+   <TestObject>Posting</TestObject>
+   <TestType>Class</TestType>
+   <Rule>R010101</Rule>
+   <Category>CORRECT</Category>
+   <Points>1.0</Points>
+   <Msg>Class Posting was found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>Subject_subject</ExpertObject>
+   <ExpertType>Property</ExpertType>
+   <TestObject>Subject_subject</TestObject>
+   <TestType>Property</TestType>
+   <Rule>R020101</Rule>
+   <Category>CORRECT</Category>
+   <Points>0.5</Points>
+   <Msg>Property Subject_subject in Subject were found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>Profile_post</ExpertObject>
+   <ExpertType>Operation</ExpertType>
+   <TestObject>Profile_post</TestObject>
+   <TestType>Operation</TestType>
+   <Rule>R030101</Rule>
+   <Category>CORRECT</Category>
+   <Points>0.5</Points>
+   <Msg>Operation Profile_post were found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>r2e1_poster</ExpertObject>
+   <ExpertType>Role</ExpertType>
+   <TestObject>r3e2_poster</TestObject>
+   <TestType>Role</TestType>
+   <Rule>R100101</Rule>
+   <Category>CORRECT</Category>
+   <Points>0.5</Points>
+   <Msg>Role r3e2_poster was found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>ac1e1_commenter</ExpertObject>
+   <ExpertType>Role</ExpertType>
+   <TestObject>r4e2_commenter</TestObject>
+   <TestType>Role</TestType>
+   <Rule>R100101</Rule>
+   <Category>CORRECT</Category>
+   <Points>0.5</Points>
+   <Msg>Role r4e2_commenter was found.</Msg>
+  </Result>
+ </Results>
+ <ResultPoints>
+  <MaxPoints>13.0</MaxPoints>
+  <TestPoints>4.0</TestPoints>
+ </ResultPoints>
+</TestResult>

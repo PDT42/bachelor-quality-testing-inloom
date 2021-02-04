@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TestResult>
+ <TestData>
+  <ExpertModel id="Expert_OOA_Class_SoSe2019"/>
+  <TestModel id="ExSS2019_student10"/>
+  <MetaModel type="OOAClassModel"/>
+  <MCSIdentifier id="mcs_inloom_ooa_class"/>
+  <MCSVersion value="1.1.0"/>
+ </TestData>
+ <Results>
+  <Result>
+   <ExpertObject>Subject</ExpertObject>
+   <ExpertType>Class</ExpertType>
+   <TestObject>Subject</TestObject>
+   <TestType>Class</TestType>
+   <Rule>R010101</Rule>
+   <Category>CORRECT</Category>
+   <Points>1.0</Points>
+   <Msg>Class Subject was found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>Posting</ExpertObject>
+   <ExpertType>Class</ExpertType>
+   <TestObject>Posting</TestObject>
+   <TestType>Class</TestType>
+   <Rule>R010101</Rule>
+   <Category>CORRECT</Category>
+   <Points>1.0</Points>
+   <Msg>Class Posting was found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>Comment</ExpertObject>
+   <ExpertType>Class</ExpertType>
+   <TestObject></TestObject>
+   <TestType></TestType>
+   <Rule>R019801</Rule>
+   <Category>MISSING</Category>
+   <Points>0.0</Points>
+   <Msg>No Class with the name Comment was found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject></ExpertObject>
+   <ExpertType></ExpertType>
+   <TestObject>poster</TestObject>
+   <TestType>Class</TestType>
+   <Rule>R019901</Rule>
+   <Category>INFO</Category>
+   <Points>0.0</Points>
+   <Msg>Class names like poster should start with upper case. </Msg>
+  </Result>
+  <Result>
+   <ExpertObject>Subject_subject</ExpertObject>
+   <ExpertType>Property</ExpertType>
+   <TestObject>Subject_subject</TestObject>
+   <TestType>Property</TestType>
+   <Rule>R020101</Rule>
+   <Category>CORRECT</Category>
+   <Points>0.5</Points>
+   <Msg>Property Subject_subject in Subject were found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>Posting_text</ExpertObject>
+   <ExpertType>Property</ExpertType>
+   <TestObject></TestObject>
+   <TestType></TestType>
+   <Rule>R029801</Rule>
+   <Category>MISSING</Category>
+   <Points>0.0</Points>
+   <Msg>No Property with the name Posting_text was found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>Comment_text</ExpertObject>
+   <ExpertType>Property</ExpertType>
+   <TestObject></TestObject>
+   <TestType></TestType>
+   <Rule>R029801</Rule>
+   <Category>MISSING</Category>
+   <Points>0.0</Points>
+   <Msg>No Property with the name Comment_text was found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>Profile_post</ExpertObject>
+   <ExpertType>Operation</ExpertType>
+   <TestObject></TestObject>
+   <TestType></TestType>
+   <Rule>R039801</Rule>
+   <Category>MISSING</Category>
+   <Points>0.0</Points>
+   <Msg>No Operation with the name Profile_post was found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>Posting_comment</ExpertObject>
+   <ExpertType>Operation</ExpertType>
+   <TestObject></TestObject>
+   <TestType></TestType>
+   <Rule>R039801</Rule>
+   <Category>MISSING</Category>
+   <Points>0.0</Points>
+   <Msg>No Operation with the name Posting_comment was found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>r1</ExpertObject>
+   <ExpertType>Relationship</ExpertType>
+   <TestObject></TestObject>
+   <TestType></TestType>
+   <Rule>R089801</Rule>
+   <Category>MISSING</Category>
+   <Points>0.0</Points>
+   <Msg>No Relationship for r1 was found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>r2</ExpertObject>
+   <ExpertType>Relationship</ExpertType>
+   <TestObject>r2</TestObject>
+   <TestType>Relationship</TestType>
+   <Rule>R080501</Rule>
+   <Category>ERROR</Category>
+   <Points>0.5</Points>
+   <Msg>An Relationship between poster and Posting was found (Type: Association) but was not completely correct.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>r1e2_interest</ExpertObject>
+   <ExpertType>Role</ExpertType>
+   <TestObject></TestObject>
+   <TestType></TestType>
+   <Rule>R109801</Rule>
+   <Category>MISSING</Category>
+   <Points>0.0</Points>
+   <Msg>No Role for r1e2_interest was found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>r2e1_poster</ExpertObject>
+   <ExpertType>Role</ExpertType>
+   <TestObject>poster</TestObject>
+   <TestType>Class</TestType>
+   <Rule>R100301</Rule>
+   <Category>ERROR</Category>
+   <Points>0.25</Points>
+   <Msg>poster was found but it is not completely correct.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>r2e2_posting</ExpertObject>
+   <ExpertType>Role</ExpertType>
+   <TestObject></TestObject>
+   <TestType></TestType>
+   <Rule>R109801</Rule>
+   <Category>MISSING</Category>
+   <Points>0.0</Points>
+   <Msg>No Role for r2e2_posting was found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>ac1e1_commenter</ExpertObject>
+   <ExpertType>Role</ExpertType>
+   <TestObject></TestObject>
+   <TestType></TestType>
+   <Rule>R109801</Rule>
+   <Category>MISSING</Category>
+   <Points>0.0</Points>
+   <Msg>No Role for ac1e1_commenter was found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>ac1e2_commented</ExpertObject>
+   <ExpertType>Role</ExpertType>
+   <TestObject></TestObject>
+   <TestType></TestType>
+   <Rule>R109801</Rule>
+   <Category>MISSING</Category>
+   <Points>0.0</Points>
+   <Msg>No Role for ac1e2_commented was found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>ac1e1</ExpertObject>
+   <ExpertType>RelationshipEnd</ExpertType>
+   <TestObject>r4e1</TestObject>
+   <TestType>RelationshipEnd</TestType>
+   <Rule>R110101</Rule>
+   <Category>CORRECT</Category>
+   <Points>1.0</Points>
+   <Msg>An RelationshipEnd to Class Commenter was found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>ac1e2</ExpertObject>
+   <ExpertType>RelationshipEnd</ExpertType>
+   <TestObject>r4e2</TestObject>
+   <TestType>RelationshipEnd</TestType>
+   <Rule>R110102</Rule>
+   <Category>ERROR</Category>
+   <Points>0.5</Points>
+   <Msg>An RelationshipEnd to Class Posting was found but is not completely correct.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject></ExpertObject>
+   <ExpertType></ExpertType>
+   <TestObject>r1e2</TestObject>
+   <TestType>RelationshipEnd</TestType>
+   <Rule>R119901</Rule>
+   <Category>INFO</Category>
+   <Points>0.0</Points>
+   <Msg>Relationship Ends should normally have  a Multiplicity.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject></ExpertObject>
+   <ExpertType></ExpertType>
+   <TestObject>r2e1</TestObject>
+   <TestType>RelationshipEnd</TestType>
+   <Rule>R119901</Rule>
+   <Category>INFO</Category>
+   <Points>0.0</Points>
+   <Msg>Relationship Ends should normally have  a Multiplicity.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject></ExpertObject>
+   <ExpertType></ExpertType>
+   <TestObject>ac1e1</TestObject>
+   <TestType>RelationshipEnd</TestType>
+   <Rule>R119901</Rule>
+   <Category>INFO</Category>
+   <Points>0.0</Points>
+   <Msg>Relationship Ends should normally have  a Multiplicity.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject></ExpertObject>
+   <ExpertType></ExpertType>
+   <TestObject>ac1e2</TestObject>
+   <TestType>RelationshipEnd</TestType>
+   <Rule>R119901</Rule>
+   <Category>INFO</Category>
+   <Points>0.0</Points>
+   <Msg>Relationship Ends should normally have  a Multiplicity.</Msg>
+  </Result>
+ </Results>
+ <ResultPoints>
+  <MaxPoints>13.0</MaxPoints>
+  <TestPoints>4.75</TestPoints>
+ </ResultPoints>
+</TestResult>

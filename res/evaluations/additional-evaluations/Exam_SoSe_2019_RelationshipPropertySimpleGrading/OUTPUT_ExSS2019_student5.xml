@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TestResult>
+ <TestData>
+  <ExpertModel id="Expert_OOA_Class_SoSe2019"/>
+  <TestModel id="ExSS2019_student5"/>
+  <MetaModel type="OOAClassModel"/>
+  <MCSIdentifier id="mcs_inloom_ooa_class"/>
+  <MCSVersion value="1.1.0"/>
+ </TestData>
+ <Results>
+  <Result>
+   <ExpertObject>Subject</ExpertObject>
+   <ExpertType>Class</ExpertType>
+   <TestObject>Subject</TestObject>
+   <TestType>Class</TestType>
+   <Rule>R010101</Rule>
+   <Category>CORRECT</Category>
+   <Points>1.0</Points>
+   <Msg>Class Subject was found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>Posting</ExpertObject>
+   <ExpertType>Class</ExpertType>
+   <TestObject>Posting</TestObject>
+   <TestType>Class</TestType>
+   <Rule>R010101</Rule>
+   <Category>CORRECT</Category>
+   <Points>1.0</Points>
+   <Msg>Class Posting was found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>Comment</ExpertObject>
+   <ExpertType>Class</ExpertType>
+   <TestObject>Comment</TestObject>
+   <TestType>Class</TestType>
+   <Rule>R010101</Rule>
+   <Category>CORRECT</Category>
+   <Points>1.0</Points>
+   <Msg>Class Comment was found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>Subject_subject</ExpertObject>
+   <ExpertType>Property</ExpertType>
+   <TestObject>Subject_subject</TestObject>
+   <TestType>Property</TestType>
+   <Rule>R020101</Rule>
+   <Category>CORRECT</Category>
+   <Points>0.5</Points>
+   <Msg>Property Subject_subject in Subject were found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>Posting_text</ExpertObject>
+   <ExpertType>Property</ExpertType>
+   <TestObject>Posting_text</TestObject>
+   <TestType>Property</TestType>
+   <Rule>R020101</Rule>
+   <Category>CORRECT</Category>
+   <Points>0.5</Points>
+   <Msg>Property Posting_text in Posting were found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>Comment_text</ExpertObject>
+   <ExpertType>Property</ExpertType>
+   <TestObject>Comment_text</TestObject>
+   <TestType>Property</TestType>
+   <Rule>R020101</Rule>
+   <Category>CORRECT</Category>
+   <Points>0.5</Points>
+   <Msg>Property Comment_text in Comment were found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>Profile_post</ExpertObject>
+   <ExpertType>Operation</ExpertType>
+   <TestObject>Profile_post</TestObject>
+   <TestType>Operation</TestType>
+   <Rule>R030101</Rule>
+   <Category>CORRECT</Category>
+   <Points>0.5</Points>
+   <Msg>Operation Profile_post were found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>Posting_comment</ExpertObject>
+   <ExpertType>Operation</ExpertType>
+   <TestObject></TestObject>
+   <TestType></TestType>
+   <Rule>R039801</Rule>
+   <Category>MISSING</Category>
+   <Points>0.0</Points>
+   <Msg>No Operation with the name Posting_comment was found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>r1</ExpertObject>
+   <ExpertType>Relationship</ExpertType>
+   <TestObject>r1</TestObject>
+   <TestType>Relationship</TestType>
+   <Rule>R080501</Rule>
+   <Category>ERROR</Category>
+   <Points>0.5</Points>
+   <Msg>An Relationship between Profile and Subject was found (Type: Association) but was not completely correct.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>r2</ExpertObject>
+   <ExpertType>Relationship</ExpertType>
+   <TestObject>r2</TestObject>
+   <TestType>Relationship</TestType>
+   <Rule>R080501</Rule>
+   <Category>ERROR</Category>
+   <Points>0.5</Points>
+   <Msg>An Relationship between Profile and Posting was found (Type: Association) but was not completely correct.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>r1e2_interest</ExpertObject>
+   <ExpertType>Role</ExpertType>
+   <TestObject>r1e2_interest</TestObject>
+   <TestType>Role</TestType>
+   <Rule>R100101</Rule>
+   <Category>CORRECT</Category>
+   <Points>0.5</Points>
+   <Msg>Role r1e2_interest was found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>r2e1_poster</ExpertObject>
+   <ExpertType>Role</ExpertType>
+   <TestObject>r2e2_poster</TestObject>
+   <TestType>Role</TestType>
+   <Rule>R100103</Rule>
+   <Category>ERROR</Category>
+   <Points>0.25</Points>
+   <Msg>Role r2e2_poster was found but was not completely correct.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>r2e2_posting</ExpertObject>
+   <ExpertType>Role</ExpertType>
+   <TestObject></TestObject>
+   <TestType></TestType>
+   <Rule>R109801</Rule>
+   <Category>MISSING</Category>
+   <Points>0.0</Points>
+   <Msg>No Role for r2e2_posting was found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>ac1e1_commenter</ExpertObject>
+   <ExpertType>Role</ExpertType>
+   <TestObject></TestObject>
+   <TestType></TestType>
+   <Rule>R109801</Rule>
+   <Category>MISSING</Category>
+   <Points>0.0</Points>
+   <Msg>No Role for ac1e1_commenter was found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>ac1e2_commented</ExpertObject>
+   <ExpertType>Role</ExpertType>
+   <TestObject></TestObject>
+   <TestType></TestType>
+   <Rule>R109801</Rule>
+   <Category>MISSING</Category>
+   <Points>0.0</Points>
+   <Msg>No Role for ac1e2_commented was found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>ac1e1</ExpertObject>
+   <ExpertType>RelationshipEnd</ExpertType>
+   <TestObject>ac1e1</TestObject>
+   <TestType>RelationshipEnd</TestType>
+   <Rule>R110202</Rule>
+   <Category>ERROR</Category>
+   <Points>0.5</Points>
+   <Msg>An AssociationEnd to Class Profile was found but is not completely correct.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>ac1e2</ExpertObject>
+   <ExpertType>RelationshipEnd</ExpertType>
+   <TestObject></TestObject>
+   <TestType></TestType>
+   <Rule>R119801</Rule>
+   <Category>MISSING</Category>
+   <Points>0.0</Points>
+   <Msg>No RelationshipEnd for ac1e2 was found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject></ExpertObject>
+   <ExpertType></ExpertType>
+   <TestObject>r2e1</TestObject>
+   <TestType>RelationshipEnd</TestType>
+   <Rule>R119901</Rule>
+   <Category>INFO</Category>
+   <Points>0.0</Points>
+   <Msg>Relationship Ends should normally have  a Multiplicity.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject></ExpertObject>
+   <ExpertType></ExpertType>
+   <TestObject>ac1e1</TestObject>
+   <TestType>RelationshipEnd</TestType>
+   <Rule>R119901</Rule>
+   <Category>INFO</Category>
+   <Points>0.0</Points>
+   <Msg>Relationship Ends should normally have  a Multiplicity.</Msg>
+  </Result>
+ </Results>
+ <ResultPoints>
+  <MaxPoints>13.0</MaxPoints>
+  <TestPoints>7.25</TestPoints>
+ </ResultPoints>
+</TestResult>

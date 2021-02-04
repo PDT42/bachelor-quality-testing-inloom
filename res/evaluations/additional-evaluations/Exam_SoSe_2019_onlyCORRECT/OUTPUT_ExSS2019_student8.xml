@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TestResult>
+ <TestData>
+  <ExpertModel id="Expert_OOA_Class_SoSe2019"/>
+  <TestModel id="ExSS2019_student8"/>
+  <MetaModel type="OOAClassModel"/>
+  <MCSIdentifier id="mcs_inloom_ooa_class"/>
+  <MCSVersion value="1.1.0"/>
+ </TestData>
+ <Results>
+  <Result>
+   <ExpertObject>Subject</ExpertObject>
+   <ExpertType>Class</ExpertType>
+   <TestObject>Subject</TestObject>
+   <TestType>Class</TestType>
+   <Rule>R010101</Rule>
+   <Category>CORRECT</Category>
+   <Points>1.0</Points>
+   <Msg>Class Subject was found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>Posting</ExpertObject>
+   <ExpertType>Class</ExpertType>
+   <TestObject>Posting</TestObject>
+   <TestType>Class</TestType>
+   <Rule>R010101</Rule>
+   <Category>CORRECT</Category>
+   <Points>1.0</Points>
+   <Msg>Class Posting was found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>Comment</ExpertObject>
+   <ExpertType>Class</ExpertType>
+   <TestObject>Comment</TestObject>
+   <TestType>Class</TestType>
+   <Rule>R010101</Rule>
+   <Category>CORRECT</Category>
+   <Points>1.0</Points>
+   <Msg>Class Comment was found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>Subject_subject</ExpertObject>
+   <ExpertType>Property</ExpertType>
+   <TestObject>Subject_subject</TestObject>
+   <TestType>Property</TestType>
+   <Rule>R020101</Rule>
+   <Category>CORRECT</Category>
+   <Points>0.5</Points>
+   <Msg>Property Subject_subject in Subject were found.</Msg>
+  </Result>
+  <Result>
+   <ExpertObject>r2</ExpertObject>
+   <ExpertType>Relationship</ExpertType>
+   <TestObject>r2</TestObject>
+   <TestType>Relationship</TestType>
+   <Rule>R080101</Rule>
+   <Category>CORRECT</Category>
+   <Points>1.0</Points>
+   <Msg>A Relationship between poster and Posting was found (Type: Composite).</Msg>
+  </Result>
+ </Results>
+ <ResultPoints>
+  <MaxPoints>13.0</MaxPoints>
+  <TestPoints>4.5</TestPoints>
+ </ResultPoints>
+</TestResult>
