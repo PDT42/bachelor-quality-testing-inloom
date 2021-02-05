@@ -8,7 +8,7 @@ import os
 
 from db_connection.db_connection import SqliteConnection
 
-TEST_DB_PATH: str = "../../../res/inloomqt-res/test_database.db"
+TEST_DB_PATH: str = "../../res/inloomqt-res/test_database.db"
 
 
 # noinspection PyProtectedMember

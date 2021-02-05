@@ -31,10 +31,10 @@ export class CategoryByElementComponent implements OnInit {
       I: 'INFO',
     };
     let resultCategoryColors = {
-      M: '#6e1212',
-      E: '#c71c10',
+      M: '#d91414',
+      E: '#de5047',
       W: '#ebda46',
-      C: '#358f17',
+      C: '#5fab46',
       I: '#3b87a1',
     };
 

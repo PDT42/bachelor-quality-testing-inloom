@@ -1,3 +1,19 @@
+.list-header-container {
+  margin-top: 6px;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-around;
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
+.list-header {
+  font-size: 16px;
+  font-weight: bold;
+  width: 25%;
+  text-align: center;
+}
+
 .list-container {
   display: flex;
   flex-flow: column nowrap;

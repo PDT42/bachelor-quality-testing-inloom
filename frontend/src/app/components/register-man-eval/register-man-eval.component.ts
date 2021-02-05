@@ -32,10 +32,10 @@ export class RegisterManEvalComponent implements OnInit {
   type_elements: ExpertElement[] = [];
 
   result_category_colors = {
-    M: '#6e1212',
-    E: '#c71c10',
+    M: '#d91414',
+    E: '#de5047',
     W: '#ebda46',
-    C: '#358f17',
+    C: '#5fab46',
     I: '#3b87a1',
   };
 

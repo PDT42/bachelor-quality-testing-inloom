@@ -35,13 +35,13 @@ export class ExerciseDetailsComponent implements OnInit {
         .getExerciseAveragePctDiff(exerciseId)
         .subscribe((avgPctDiff: number) => {
           if (avgPctDiff < 5) {
-            sub.next('#358f17');
+            sub.next('#5fab46');
           } else if (5 <= avgPctDiff && avgPctDiff < 10) {
             sub.next('#ebda46');
           } else if (10 <= avgPctDiff && avgPctDiff < 15) {
-            sub.next('#c71c10');
+            sub.next('#de5047');
           } else {
-            sub.next('#6e1212');
+            sub.next('#d91414');
           }
         });
     });
